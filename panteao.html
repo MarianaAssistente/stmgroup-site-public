@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="facebook-domain-verification" content="nj6zmt96a9uar6mprq45bc461swq34" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panteão Digital — Como Criar Seu Panteão de Agentes IA</title>
+  <meta name="description" content="O guia completo para montar seu sistema de múltiplos agentes IA do zero ao funcionamento em 7 dias, sem precisar saber programar." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0A0A0F;
+      --bg-card: #0f0f18;
+      --bg2: #0d0d16;
+      --gold: #C9A84C;
+      --gold-light: #E8D5A3;
+      --text: #F5F5F0;
+      --text-sec: rgba(245,245,240,0.6);
+      --border: rgba(201,168,76,0.15);
+      --green: #6fcf97;
+    }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; font-size: 16px; }
+    img { max-width: 100%; height: auto; display: block; }
+    a { text-decoration: none; color: inherit; }
+    svg { display: inline-block; }
+    .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 1.25rem; }
+
+    /* ─── STICKY NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.9rem 1.25rem;
+      background: rgba(10,10,15,0.97); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-left { display: flex; align-items: center; gap: 0.75rem; }
+    .nav-brand { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.08em; }
+    .nav-brand span { color: var(--gold); }
+    .nav-countdown {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
+      color: var(--text-sec); display: flex; align-items: center; gap: 0.5rem;
+    }
+    .nav-countdown strong { color: var(--gold); font-variant-numeric: tabular-nums; }
+    .nav-cta {
+      padding: 0.55rem 1.1rem; border: 1px solid var(--gold);
+      color: var(--gold); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-cta:hover { background: var(--gold); color: var(--bg); }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 7rem 1.5rem 5rem; position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 20% 80%, rgba(76,110,201,0.06) 0%, transparent 60%);
+    }
+    .hero-grid-bg {
+      position: absolute; inset: 0; pointer-events: none; opacity: 0.025;
+      background-image: linear-gradient(var(--gold) 1px, transparent 1px), linear-gradient(90deg, var(--gold) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-content { width: 100%; max-width: 700px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      border: 1px solid var(--border); padding: 0.4rem 1rem;
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 2rem;
+    }
+    .hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: pulse 2s infinite; flex-shrink: 0; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+    h1.hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 700; line-height: 1.1;
+      color: var(--text); margin-bottom: 1.25rem;
+    }
+    h1.hero-title span { color: var(--gold); font-style: italic; }
+    .hero-sub { font-size: 0.95rem; font-weight: 300; color: var(--text-sec); line-height: 1.85; margin-bottom: 1.5rem; max-width: 600px; }
+    .hero-price {
+      display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;
+    }
+    .price-original { font-size: 1rem; color: var(--text-sec); text-decoration: line-through; opacity: 0.6; }
+    .price-current { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--gold); line-height: 1; }
+    .price-badge {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--gold); border: 1px solid var(--border); padding: 0.3rem 0.7rem;
+    }
+    .hero-actions { display: flex; flex-direction: column; gap: 0.85rem; width: 100%; align-items: center; }
+    .btn-primary {
+      display: inline-block; padding: 0.95rem 2rem; background: var(--gold); color: var(--bg);
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; text-align: center;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .btn-primary.wide { width: 100%; max-width: 420px; }
+    .btn-ghost {
+      display: inline-block; padding: 0.95rem 2rem;
+      border: 1px solid rgba(201,168,76,0.4); color: var(--text-sec);
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; text-align: center;
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+    .trust-note { font-size: 0.78rem; color: var(--text-sec); margin-top: 0.75rem; }
+
+    /* ─── SECTIONS ─── */
+    section { padding: 5rem 0; }
+    .section-label {
+      display: block; font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); text-align: center; margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.7rem, 5vw, 2.5rem); font-weight: 700; line-height: 1.18; text-align: center; color: var(--text);
+    }
+    .section-title span { color: var(--gold); font-style: italic; }
+    .section-title .danger { color: #c0392b; font-style: normal; }
+    .gold-rule { width: 40px; height: 1px; background: var(--gold); margin: 1.25rem auto 3rem; }
+    .section-intro { font-size: 0.9rem; color: var(--text-sec); line-height: 1.85; text-align: center; max-width: 600px; margin: 0 auto 3rem; }
+
+    /* ─── VIDEO ─── */
+    #video { background: var(--bg2); }
+    .video-wrap { max-width: 720px; margin: 0 auto; text-align: center; }
+    .video-label { font-size: 0.85rem; color: var(--text-sec); margin-bottom: 1.25rem; letter-spacing: 0.02em; }
+    .video-thumb {
+      position: relative; background: var(--bg-card);
+      border: 1px solid var(--border);
+      aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer;
+      transition: border-color 0.3s;
+    }
+    .video-thumb:hover { border-color: var(--gold); }
+    .video-thumb::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(201,168,76,0.06) 0%, transparent 70%);
+    }
+    .play-btn {
+      width: 72px; height: 72px; background: rgba(201,168,76,0.9);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 1; transition: transform 0.2s, background 0.2s;
+    }
+    .video-thumb:hover .play-btn { transform: scale(1.08); background: var(--gold); }
+    .play-btn::after {
+      content: ''; border-style: solid;
+      border-width: 12px 0 12px 20px; border-color: transparent transparent transparent #0A0A0F;
+      margin-left: 4px;
+    }
+
+    /* ─── CHECK LIST ─── */
+    .check-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+    .check-item {
+      display: flex; align-items: flex-start; gap: 0.85rem;
+      background: var(--bg-card); border: 1px solid var(--border);
+      padding: 1rem 1.25rem; transition: border-color 0.3s;
+    }
+    .check-item:hover { border-color: var(--gold); }
+    .check-icon {
+      width: 22px; height: 22px; border: 1px solid rgba(201,168,76,0.4);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 0.7rem; color: var(--gold); font-weight: 700; margin-top: 2px;
+    }
+    .check-item p { font-size: 0.875rem; line-height: 1.6; color: var(--text-sec); }
+    .check-item strong { color: var(--text); }
+
+    /* ─── MODULES ─── */
+    #modulos { background: var(--bg2); }
+    .modules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem; }
+    .module-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      padding: 1.75rem 1.5rem; transition: border-color 0.3s, transform 0.3s;
+    }
+    .module-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+    .module-num { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+    .module-icon { font-size: 1.6rem; margin-bottom: 0.85rem; }
+    .module-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem; }
+    .module-desc { font-size: 0.85rem; color: var(--text-sec); line-height: 1.7; }
+
+    /* ─── BONUS ─── */
+    .bonus-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; max-width: 860px; margin: 0 auto; }
+    .bonus-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      padding: 2rem 1.5rem; text-align: center; transition: border-color 0.3s, transform 0.3s;
+    }
+    .bonus-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+    .bonus-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .bonus-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem; }
+    .bonus-desc { font-size: 0.82rem; color: var(--text-sec); line-height: 1.65; margin-bottom: 1rem; }
+    .bonus-value {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--gold); border: 1px solid var(--border); display: inline-block; padding: 0.3rem 0.75rem;
+    }
+
+    /* ─── PRICING ─── */
+    #preco { background: var(--bg2); }
+    .preco-box {
+      max-width: 500px; margin: 0 auto;
+      background: var(--bg-card); border: 1px solid var(--gold);
+      padding: 2.5rem 2rem; text-align: center;
+    }
+    .preco-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+    .preco-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.65rem 0; border-bottom: 1px solid rgba(201,168,76,0.07);
+      font-size: 0.875rem;
+    }
+    .preco-row:last-of-type { border-bottom: none; }
+    .preco-row .label { color: var(--text-sec); }
+    .preco-row .value { font-weight: 600; }
+    .preco-row .value.strike { text-decoration: line-through; opacity: 0.45; }
+    .preco-row .value.discount { color: var(--green); }
+    .preco-row .value.total { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--gold); }
+    .preco-divider { margin: 1.5rem 0; border: none; border-top: 1px solid var(--border); }
+    .trust-seals { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-top: 1.25rem; font-size: 0.75rem; color: var(--text-sec); }
+
+    /* ─── DEPOIMENTOS ─── */
+    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
+    .testimonial-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      padding: 1.75rem 1.5rem; transition: border-color 0.3s;
+    }
+    .testimonial-card:hover { border-color: var(--gold); }
+    .testimonial-stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 1rem; letter-spacing: 0.2em; }
+    .testimonial-quote { font-size: 0.9rem; line-height: 1.75; color: var(--text-sec); font-style: italic; margin-bottom: 1.25rem; }
+    .testimonial-author { display: flex; align-items: center; gap: 0.85rem; }
+    .author-avatar {
+      width: 40px; height: 40px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--gold); flex-shrink: 0;
+    }
+    .author-name { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+    .author-role { font-size: 0.75rem; color: var(--text-sec); }
+
+    /* ─── X LIST ─── */
+    #nao-para-quem { background: var(--bg2); }
+    .x-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; max-width: 720px; margin: 0 auto; }
+    .x-item {
+      display: flex; align-items: flex-start; gap: 0.85rem;
+      background: rgba(192,57,43,0.05); border: 1px solid rgba(192,57,43,0.2);
+      padding: 1rem 1.25rem;
+    }
+    .x-icon {
+      width: 22px; height: 22px; border: 1px solid rgba(192,57,43,0.4);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 0.7rem; color: #c0392b; font-weight: 700; margin-top: 2px;
+    }
+    .x-item p { font-size: 0.875rem; color: var(--text-sec); line-height: 1.55; }
+
+    /* ─── GARANTIA ─── */
+    .garantia-box {
+      max-width: 580px; margin: 0 auto;
+      background: var(--bg-card); border: 1px solid rgba(111,207,151,0.25);
+      padding: 2.75rem 2rem; text-align: center;
+    }
+    .garantia-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .garantia-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--green); margin-bottom: 1rem; }
+    .garantia-text { font-size: 0.9rem; color: var(--text-sec); line-height: 1.8; }
+
+    /* ─── FAQ ─── */
+    #faq { background: var(--bg2); }
+    .faq-list { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.75rem; }
+    details {
+      background: var(--bg-card); border: 1px solid var(--border); overflow: hidden;
+    }
+    details[open] { border-color: var(--gold); }
+    summary {
+      font-size: 0.9rem; font-weight: 600; padding: 1.1rem 1.4rem;
+      cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+      list-style: none; user-select: none; color: var(--text);
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: '+'; font-size: 1.2rem; color: var(--gold); flex-shrink: 0; transition: transform 0.2s; }
+    details[open] summary::after { content: '−'; }
+    .faq-answer { padding: 0 1.4rem 1.1rem; font-size: 0.875rem; color: var(--text-sec); line-height: 1.75; }
+
+    /* ─── PLANS ─── */
+    #planos { background: var(--bg); }
+    .plans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; align-items: start; }
+    .plan-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      padding: 2rem 1.5rem; text-align: center; position: relative;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .plan-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+    .plan-card.featured { border-color: var(--gold); }
+    .plan-card.featured::before {
+      content: '⭐ Mais Popular';
+      position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+      background: var(--gold); color: var(--bg);
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.3rem 1rem; white-space: nowrap;
+    }
+    .plan-name { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; margin-top: 0.25rem; }
+    .plan-price { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 0.3rem; }
+    .plan-price-note { font-size: 0.75rem; color: var(--text-sec); margin-bottom: 1.5rem; }
+    .plan-features { list-style: none; text-align: left; margin-bottom: 1.75rem; display: flex; flex-direction: column; gap: 0.65rem; }
+    .plan-features li { font-size: 0.825rem; color: var(--text-sec); display: flex; gap: 0.6rem; align-items: flex-start; line-height: 1.5; }
+    .plan-features li span.check { color: var(--gold); font-weight: 700; flex-shrink: 0; }
+    .plan-cta { display: block; width: 100%; }
+    .plan-card.fundador .plan-price { color: var(--gold); }
+    .plan-card.fundador .plan-cta { background: rgba(201,168,76,0.12); border: 1px solid var(--gold); color: var(--gold); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.85rem 1.5rem; text-align: center; transition: background 0.2s; }
+    .plan-card.fundador .plan-cta:hover { background: var(--gold); color: var(--bg); }
+
+    /* ─── CTA FINAL ─── */
+    #cta-final {
+      background:
+        radial-gradient(ellipse 70% 60% at 50% 100%, rgba(201,168,76,0.08) 0%, transparent 70%),
+        var(--bg);
+      text-align: center;
+    }
+    .urgency-text { font-size: 0.85rem; font-weight: 500; color: var(--gold); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .cta-price { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 700; color: var(--gold); line-height: 1; margin: 1.5rem 0 0.5rem; }
+    .cta-price-after { font-size: 0.85rem; color: var(--text-sec); margin-bottom: 2.25rem; }
+
+    /* ─── FOOTER ─── */
+    footer { background: #07070b; border-top: 1px solid var(--border); padding: 2rem 0; }
+    .footer-inner { padding: 0 1.25rem; max-width: 1100px; margin: 0 auto; text-align: center; }
+    .footer-copy { font-size: 0.75rem; color: var(--text-sec); }
+
+    /* ─── ANIMATIONS ─── */
+    .fade-up { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-up.visible { opacity: 1; transform: none; }
+    .delay-1 { transition-delay: 0.1s; } .delay-2 { transition-delay: 0.2s; }
+    .delay-3 { transition-delay: 0.3s; } .delay-4 { transition-delay: 0.4s; }
+    .delay-5 { transition-delay: 0.5s; } .delay-6 { transition-delay: 0.6s; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (min-width: 640px) {
+      .hero-actions { flex-direction: row; justify-content: center; }
+    }
+    @media (min-width: 768px) {
+      .nav-countdown { display: flex; }
+    }
+    @media (max-width: 767px) {
+      .nav-countdown { display: none; }
+      section { padding: 4rem 0; }
+      #hero { padding: 6rem 1.25rem 4rem; }
+      .preco-box { padding: 2rem 1.25rem; }
+      .garantia-box { padding: 2rem 1.25rem; }
+    }
+  </style>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1993275764902945');
+fbq('track', 'PageView');
+fbq('track', 'ViewContent', {
+  content_name: 'Panteao Digital Landing Page',
+  content_category: 'Empreendedorismo Digital',
+  value: 57.00,
+  currency: 'BRL'
+});
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1993275764902945&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+</head>
+<body>
+
+<!-- ═══ NAV ════════════════════════════════════════════════════ -->
+<nav>
+  <div class="nav-left">
+    <div class="nav-brand">STM <span>Digital</span></div>
+  </div>
+  <div class="nav-countdown">
+    <span>Lançamento em:</span>
+    <strong id="nav-countdown">--d --h --m --s</strong>
+  </div>
+  <a href="#lista-espera" onclick="document.getElementById('lista-espera').scrollIntoView({behavior:'smooth'});return false;" class="nav-cta">Entrar na Lista de Espera</a>
+</nav>
+
+<!-- ═══ HERO ═══════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge fade-up">
+      <span class="hero-badge-dot"></span>
+      Lançamento · 25 de Março de 2026
+    </div>
+    <h1 class="hero-title fade-up delay-1">
+      Uma Pessoa. Oito Agentes de IA.<br/><span>Uma Empresa Inteira.</span>
+    </h1>
+    <p class="hero-sub fade-up delay-2">
+      O guia completo para montar seu Panteão do Olimpo — do zero ao funcionamento em 7 dias, sem precisar saber programar.
+    </p>
+    <div class="hero-price fade-up delay-3">
+      <span class="price-badge" style="font-size:1rem;padding:0.4rem 1.2rem;">🗓️ Lançamento: 25 de Março de 2026</span>
+    </div>
+    <div class="hero-actions fade-up delay-4">
+      <a href="#lista-espera" onclick="document.getElementById('lista-espera').scrollIntoView({behavior:'smooth'});return false;" class="btn-primary">Entrar na Lista VIP 🚀</a>
+    </div>
+    <p class="trust-note fade-up delay-5">✨ Garanta seu acesso antecipado &nbsp;·&nbsp; Lista exclusiva de fundadores</p>
+  </div>
+</section>
+
+<!-- ═══ VÍDEO ════════════════════════════════════════════════════ -->
+<section id="video">
+  <div class="container">
+    <div class="video-wrap fade-up">
+      <p class="video-label">Assista: Como o Panteão do Olimpo funciona na prática (2 min)</p>
+      <div class="video-thumb" style="padding:0;overflow:hidden;border-radius:12px;position:relative;">
+        <video controls poster="" style="width:100%;display:block;border-radius:12px;" preload="metadata">
+          <source src="/video-panteao.mp4"
+          onerror="this.src='https://files.catbox.moe/v2qx96.mp4'" type="video/mp4">
+          Seu navegador não suporta vídeo HTML5.
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PARA QUEM É ══════════════════════════════════════════════ -->
+<section id="para-quem">
+  <div class="container">
+    <span class="section-label fade-up">Público</span>
+    <h2 class="section-title fade-up delay-1">Esse e-book é <span>para você</span> se…</h2>
+    <div class="gold-rule fade-up delay-2"></div>
+    <div class="check-list">
+      <div class="check-item fade-up delay-1">
+        <div class="check-icon">✓</div>
+        <p><strong>É empreendedor</strong> e quer escalar seu negócio sem contratar uma equipe inteira</p>
+      </div>
+      <div class="check-item fade-up delay-2">
+        <div class="check-icon">✓</div>
+        <p><strong>É profissional liberal</strong> e quer multiplicar sua produtividade sem trabalhar mais horas</p>
+      </div>
+      <div class="check-item fade-up delay-3">
+        <div class="check-icon">✓</div>
+        <p><strong>É gestor ou líder</strong> e quer automatizar tarefas operacionais repetitivas do seu time</p>
+      </div>
+      <div class="check-item fade-up delay-4">
+        <div class="check-icon">✓</div>
+        <p><strong>Já usa IA superficialmente</strong> e quer ir além do ChatGPT básico para uso real no negócio</p>
+      </div>
+      <div class="check-item fade-up delay-5">
+        <div class="check-icon">✓</div>
+        <p><strong>Tem projeto pessoal ou SaaS</strong> e quer uma equipe digital operando 24h por dia</p>
+      </div>
+      <div class="check-item fade-up delay-6">
+        <div class="check-icon">✓</div>
+        <p><strong>Quer soberania tecnológica</strong> — um sistema que você controla, não depende de terceiros</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MÓDULOS ══════════════════════════════════════════════════ -->
+<section id="modulos">
+  <div class="container">
+    <span class="section-label fade-up">Conteúdo</span>
+    <h2 class="section-title fade-up delay-1">O que você vai <span>aprender</span></h2>
+    <div class="gold-rule fade-up delay-2"></div>
+    <div class="modules-grid">
+      <div class="module-card fade-up delay-1">
+        <div class="module-num">Módulo 01</div>
+        <div class="module-icon">🏛️</div>
+        <div class="module-title">O que é o Panteão do Olimpo</div>
+        <p class="module-desc">A fundação conceitual: como um sistema de múltiplos agentes IA coordenados funciona e por que isso é diferente de simplesmente usar o ChatGPT.</p>
+      </div>
+      <div class="module-card fade-up delay-2">
+        <div class="module-num">Módulo 02</div>
+        <div class="module-icon">⚙️</div>
+        <div class="module-title">Infraestrutura e setup do OpenClaw</div>
+        <p class="module-desc">Pré-requisitos, instalação e configuração do OpenClaw passo a passo — o ambiente onde seus agentes vão viver e operar.</p>
+      </div>
+      <div class="module-card fade-up delay-3">
+        <div class="module-num">Módulo 03</div>
+        <div class="module-icon">🤖</div>
+        <div class="module-title">Criando seus 8 agentes C-Level</div>
+        <p class="module-desc">Como definir personalidade, especialização e capacidades de cada agente: CEO, CTO, CMO, CFO, COO, CHRO, CLO e CDO.</p>
+      </div>
+      <div class="module-card fade-up delay-4">
+        <div class="module-num">Módulo 04</div>
+        <div class="module-icon">🧠</div>
+        <div class="module-title">Memória de longo prazo</div>
+        <p class="module-desc">Como criar sistemas de memória persistente para que seus agentes nunca percam o contexto — mesmo após semanas sem uso.</p>
+      </div>
+      <div class="module-card fade-up delay-5">
+        <div class="module-num">Módulo 05</div>
+        <div class="module-icon">🔗</div>
+        <div class="module-title">Integrações: Telegram, Notion, Drive e Trello</div>
+        <p class="module-desc">Conecte seus agentes às ferramentas que você já usa. Delegue por mensagem e receba entregas completas no Notion ou Drive.</p>
+      </div>
+      <div class="module-card fade-up delay-6">
+        <div class="module-num">Módulo 06</div>
+        <div class="module-icon">🚀</div>
+        <div class="module-title">Delegação e automações avançadas</div>
+        <p class="module-desc">Heartbeats automáticos, sub-agentes, fluxos de delegação e como fazer seu Panteão trabalhar enquanto você dorme.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BÔNUS ════════════════════════════════════════════════════ -->
+<section id="bonus">
+  <div class="container">
+    <span class="section-label fade-up">Exclusivo</span>
+    <h2 class="section-title fade-up delay-1">Bônus <span>incluídos</span></h2>
+    <div class="gold-rule fade-up delay-2"></div>
+    <div class="bonus-grid">
+      <div class="bonus-card fade-up delay-1">
+        <div class="bonus-icon">📋</div>
+        <div class="bonus-title">Templates de SOUL.md</div>
+        <p class="bonus-desc">Arquivos de personalidade prontos para cada um dos 8 agentes C-Level. Copie, cole e adapte para o seu negócio.</p>
+        <span class="bonus-value">Valor: R$97</span>
+      </div>
+      <div class="bonus-card fade-up delay-2">
+        <div class="bonus-icon">✅</div>
+        <div class="bonus-title">Checklist de setup em 7 dias</div>
+        <p class="bonus-desc">Um roteiro dia a dia para você ter seu Panteão completamente operacional em uma semana. Sem enrolação.</p>
+        <span class="bonus-value">Valor: R$47</span>
+      </div>
+      <div class="bonus-card fade-up delay-3">
+        <div class="bonus-icon">💬</div>
+        <div class="bonus-title">Grupo de fundadores no Telegram</div>
+        <p class="bonus-desc">Acesso ao grupo exclusivo de fundadores do lançamento. Tire dúvidas, compartilhe resultados e evolua junto.</p>
+        <span class="bonus-value">Valor: R$197</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ LISTA DE ESPERA (ÂNCORA) ════════════════════════════════ -->
+<section id="lista-espera">
+  <div class="container">
+    <span class="section-label fade-up">Lista de Espera</span>
+    <h2 class="section-title fade-up delay-1">Seja o <span>primeiro a saber</span></h2>
+    <div class="gold-rule fade-up delay-2"></div>
+    <p class="section-intro fade-up delay-3">O Panteão Digital abre no dia <strong>25/03/2026</strong>. Inscreva-se na lista exclusiva de fundadores e seja notificado assim que as portas abrirem.</p>
+    <div class="preco-box fade-up delay-4" style="max-width:480px;margin:0 auto;text-align:left;">
+      <div class="preco-label">🏛️ Lista VIP — Lançamento 25/03/2026</div>
+      <form id="waitlist-form" style="display:flex;flex-direction:column;gap:0.85rem;margin-top:1rem;">
+        <input type="text" name="nome" id="wl-nome" placeholder="Seu nome *" required style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.3);border-radius:6px;padding:0.75rem 1rem;color:var(--text);font-size:0.9rem;outline:none;" />
+        <input type="email" name="email" id="wl-email" placeholder="Seu melhor e-mail *" required style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.5);border-radius:6px;padding:0.75rem 1rem;color:var(--text);font-size:0.9rem;outline:none;" />
+        <input type="tel" name="whatsapp" id="wl-whatsapp" placeholder="WhatsApp (opcional)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:6px;padding:0.75rem 1rem;color:var(--text);font-size:0.9rem;outline:none;" />
+        <input type="hidden" name="_subject" value="Novo lead — Lista VIP Panteão Digital" />
+        <input type="hidden" name="_next" value="https://stmgroup.com.br/panteao.html?sucesso=1" />
+        <button type="submit" class="btn-primary" style="width:100%;cursor:pointer;border:none;">Entrar na Lista VIP 🚀</button>
+      </form>
+      <div id="waitlist-success" style="display:none;text-align:center;padding:1.5rem;color:var(--gold);">
+        <div style="font-size:2rem;margin-bottom:0.5rem;">🚀</div>
+        <strong>Você está na lista VIP!</strong><br/>
+        <span style="font-size:0.9rem;color:var(--text-sec);">Te avisamos no dia 25/03. 🚀</span>
+      </div>
+      <!-- WhatsApp Group Button -->
+      <div style="margin-top:1.25rem;text-align:center;">
+        <a href="https://chat.whatsapp.com/GSvVX3udhb70TiMqw1igbn" target="_blank" rel="noopener noreferrer"
+          style="display:inline-flex;align-items:center;gap:0.6rem;padding:0.8rem 1.5rem;border-radius:6px;border:1px solid #25D366;color:#25D366;font-size:0.8rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;transition:background 0.2s,color 0.2s;text-decoration:none;"
+          onmouseover="this.style.background='rgba(37,211,102,0.12)'" onmouseout="this.style.background='transparent'">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Entrar no Grupo do WhatsApp →
+        </a>
+      </div>
+      <p style="font-size:0.78rem;color:var(--text-sec);margin-top:0.85rem;text-align:center;">✨ Sem spam. Apenas o aviso de lançamento.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DEPOIMENTOS ══════════════════════════════════════════════ -->
+<section id="depoimentos">
+  <div class="container">
+    <span class="section-label fade-up">Social Proof</span>
+    <h2 class="section-title fade-up delay-1">O que estão <span>dizendo</span></h2>
+    <div class="gold-rule fade-up delay-2"></div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card fade-up delay-1">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-quote">"Reduzi 60% do tempo operacional em apenas 2 semanas. Hoje minha equipe de agentes cuida de briefing, proposta, follow-up e relatório. Eu só aprovo."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">A</div>
+          <div>
+            <div class="author-name">Ana Paula M.</div>
+            <div class="author-role">CEO de agência de marketing digital</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card fade-up delay-2">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-quote">"É como ter um time de diretores trabalhando 24h por dia. Acordei segunda-feira com um relatório de mercado, uma proposta e 3 e-mails respondidos — tudo feito pelos agentes no fim de semana."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">R</div>
+          <div>
+            <div class="author-name">Ricardo F.</div>
+            <div class="author-role">Consultor B2B</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card fade-up delay-3">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-quote">"Nunca imaginei que seria tão simples configurar. Segui o passo a passo, e em 5 dias meu agente de marketing já estava gerando copies e calendários de conteúdo."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">F</div>
+          <div>
+            <div class="author-name">Fernanda R.</div>
+            <div class="author-role">Empreendedora digital</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PARA QUEM NÃO É ══════════════════════════════════════════ -->
+<section id="nao-para-quem">
+  <div class="container">
+    <span class="section-label fade-up">Honestidade</span>
+    <h2 class="section-title fade-up delay-1">Esse e-book <span class="danger">NÃO</span> é para você se…</h2>
+    <div class="gold-rule fade-up delay-2"></div>
+    <div class="x-list">
+      <div class="x-item fade-up delay-1">
+        <div class="x-icon">✗</div>
+        <p>Você quer resultado imediato sem dedicar nenhum esforço de configuração inicial</p>
+      </div>
+      <div class="x-item fade-up delay-2">
+        <div class="x-icon">✗</div>
+        <p>Você não tem nenhum negócio, projeto ou objetivo claro para os agentes trabalharem</p>
+      </div>
+      <div class="x-item fade-up delay-3">
+        <div class="x-icon">✗</div>
+        <p>Você quer apenas mais um produto digital para colecionar na gaveta sem aplicar</p>
+      </div>
+      <div class="x-item fade-up delay-4">
+        <div class="x-icon">✗</div>
+        <p>Você está procurando uma solução 100% plug-and-play que não exige nenhuma personalização</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GARANTIA ════════════════════════════════════════════════ -->
+<section id="garantia">
+  <div class="container">
+    <div class="garantia-box fade-up">
+      <div class="garantia-icon">🏛️</div>
+      <div class="garantia-title">Lançamento oficial: 25 de Março de 2026</div>
+      <p class="garantia-text">O e-book está em fase final de produção. Inscreva-se na lista de espera e seja avisado assim que as portas abrirem. Os primeiros a se inscrever terão acesso prioritário.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══════════════════════════════════════════════════════ -->
+<section id="faq">
+  <div class="container">
+    <span class="section-label fade-up">Dúvidas</span>
+    <h2 class="section-title fade-up delay-1">Perguntas <span>frequentes</span></h2>
+    <div class="gold-rule fade-up delay-2"></div>
+    <div class="faq-list fade-up delay-3">
+      <details>
+        <summary>Preciso saber programar?</summary>
+        <div class="faq-answer">Não. O e-book foi escrito para pessoas sem conhecimento técnico em programação. O OpenClaw tem uma interface de texto simples — você configura tudo por mensagens.</div>
+      </details>
+      <details>
+        <summary>Funciona para qualquer tipo de negócio?</summary>
+        <div class="faq-answer">Sim. O sistema de agentes é adaptável a qualquer vertical: agências, consultorias, e-commerce, infoprodutos, SaaS, escritórios, clínicas e mais. Os templates incluídos cobrem os casos mais comuns.</div>
+      </details>
+      <details>
+        <summary>Como faço para comprar no lançamento?</summary>
+        <div class="faq-answer">Inscreva-se na lista de espera acima. No dia 25/03/2026 você receberá um e-mail com o link de acesso e as instruções de compra. Quem estiver na lista terá prioridade.</div>
+      </details>
+      <details>
+        <summary>E se eu tiver dúvidas durante a implementação?</summary>
+        <div class="faq-answer">Você terá acesso ao grupo exclusivo de fundadores no Telegram, onde pode tirar dúvidas diretamente com a equipe STM e com outros usuários que já implementaram o sistema.</div>
+      </details>
+      <details>
+        <summary>Por que ter lista de espera?</summary>
+        <div class="faq-answer">O e-book está em fase final de produção e abre oficialmente no dia 25/03/2026. A lista de espera garante que você seja notificado assim que as portas abrirem — além de ter acesso antecipado aos planos de fundadores.</div>
+      </details>
+      <details>
+        <summary>O conteúdo fica desatualizado?</summary>
+        <div class="faq-answer">Não. Compradores recebem todas as atualizações futuras do e-book gratuitamente. O conteúdo é revisado toda vez que o OpenClaw lança uma versão relevante.</div>
+      </details>
+      <details>
+        <summary>Funciona no celular?</summary>
+        <div class="faq-answer">Sim. O e-book está disponível em PDF (leitura em qualquer dispositivo) e o OpenClaw pode ser controlado inteiramente pelo Telegram — inclusive pelo celular.</div>
+      </details>
+      <details>
+        <summary>Quero entrar em contato antes do lançamento.</summary>
+        <div class="faq-answer">Pode enviar um e-mail para suporte@stmgroup.com.br ou entrar em contato via Instagram @panteao_digital. Responderemos em até 24h.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ O QUE VEM NO PANTEÃO ══════════════════════════════════════ -->
+<section id="planos">
+  <div class="container">
+    <span class="section-label fade-up">O que você vai receber</span>
+    <h2 class="section-title fade-up delay-1">Tudo incluído no <span>lançamento</span></h2>
+    <div class="gold-rule fade-up delay-2"></div>
+    <p class="section-intro fade-up delay-3">Quem entrar na lista de espera será o primeiro a acessar quando abrirmos no dia 25/03.</p>
+    <div class="plans-grid" style="grid-template-columns: repeat(auto-fit,minmax(220px,1fr));">
+
+      <!-- STARTER -->
+      <div class="plan-card fade-up delay-1">
+        <div class="plan-name">Starter</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> E-book completo (6 módulos)</li>
+          <li><span class="check">✓</span> Checklist de setup em 7 dias</li>
+          <li><span class="check">✓</span> Acesso ao grupo de fundadores</li>
+        </ul>
+        <a href="#lista-espera" onclick="document.getElementById('lista-espera').scrollIntoView({behavior:'smooth'});return false;" class="btn-primary plan-cta">Entrar na lista de espera →</a>
+      </div>
+
+      <!-- PRO -->
+      <div class="plan-card featured fade-up delay-2">
+        <div class="plan-name">Pro</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Tudo do Starter</li>
+          <li><span class="check">✓</span> Pack de Templates SOUL.md</li>
+          <li><span class="check">✓</span> Templates prontos para 8 agentes</li>
+          <li><span class="check">✓</span> Suporte prioritário no grupo</li>
+        </ul>
+        <a href="#lista-espera" onclick="document.getElementById('lista-espera').scrollIntoView({behavior:'smooth'});return false;" class="btn-primary plan-cta">Entrar na lista de espera →</a>
+      </div>
+
+      <!-- VIP -->
+      <div class="plan-card fade-up delay-3">
+        <div class="plan-name">VIP</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Tudo do Pro</li>
+          <li><span class="check">✓</span> Webinar ao vivo de implementação</li>
+          <li><span class="check">✓</span> Gravação do webinar (acesso vitalício)</li>
+          <li><span class="check">✓</span> Sessão de Q&A exclusiva</li>
+        </ul>
+        <a href="#lista-espera" onclick="document.getElementById('lista-espera').scrollIntoView({behavior:'smooth'});return false;" class="btn-primary plan-cta">Entrar na lista de espera →</a>
+      </div>
+
+      <!-- FUNDADOR -->
+      <div class="plan-card fundador fade-up delay-4">
+        <div class="plan-name">Fundador</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Tudo do VIP</li>
+          <li><span class="check">✓</span> Comunidade privada de Fundadores</li>
+          <li><span class="check">✓</span> Acesso vitalício a todas as versões</li>
+          <li><span class="check">✓</span> Mentorias em grupo mensais</li>
+          <li><span class="check">✓</span> Badge exclusivo de Fundador 🏛️</li>
+        </ul>
+        <a href="#lista-espera" onclick="document.getElementById('lista-espera').scrollIntoView({behavior:'smooth'});return false;" class="plan-cta">Quero ser Fundador →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA FINAL ════════════════════════════════════════════════ -->
+<section id="cta-final">
+  <div class="container">
+    <span class="section-label fade-up">Não fique de fora</span>
+    <p class="urgency-text fade-up delay-1" id="urgency-days">🗓️ Lançamento em 25/03/2026</p>
+    <h2 class="section-title fade-up delay-2">Garanta seu lugar na<br/><span>lista de fundadores</span></h2>
+    <a href="#lista-espera" onclick="document.getElementById('lista-espera').scrollIntoView({behavior:'smooth'});return false;" class="btn-primary fade-up delay-4" style="font-size:0.8rem;padding:1.1rem 2.5rem;letter-spacing:0.12em;">Entrar na Lista VIP 🚀</a>
+    <p class="trust-note fade-up delay-5" style="margin-top:1rem;">✨ Gratuito entrar na lista &nbsp;·&nbsp; Sem spam &nbsp;·&nbsp; Aviso apenas no dia 25/03</p>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ══════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <p class="footer-copy">© 2026 STM Digital · STM Group. Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<script>
+  // ─── Countdown ────────────────────────────────────────────────
+  const target = new Date('2026-03-25T13:00:00Z'); // 10h BRT = 13h UTC
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = target - now;
+    const navEl = document.getElementById('nav-countdown');
+    const urgencyEl = document.getElementById('urgency-days');
+
+    if (diff <= 0) {
+      if (navEl) navEl.textContent = 'Disponível agora!';
+      if (urgencyEl) urgencyEl.textContent = '🏛️ O Panteão Digital já está no ar!';
+      return;
+    }
+
+    const days  = Math.floor(diff / 86400000);
+    const hours = Math.floor((diff % 86400000) / 3600000);
+    const mins  = Math.floor((diff % 3600000) / 60000);
+    const secs  = Math.floor((diff % 60000) / 1000);
+    const str   = `${pad(days)}d ${pad(hours)}h ${pad(mins)}m ${pad(secs)}s`;
+
+    if (navEl) navEl.textContent = str;
+    if (urgencyEl) {
+      urgencyEl.textContent = days === 0
+        ? '🗓️ Lançamento hoje — inscreva-se na lista!'
+        : `🗓️ Lançamento em ${days} dia${days > 1 ? 's' : ''}`;
+    }
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // ─── Fade-up Observer ─────────────────────────────────────────
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // ─── Waitlist Form ────────────────────────────────────────────
+  const wlForm = document.getElementById('waitlist-form');
+  if (wlForm) {
+    wlForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const nome = document.getElementById('wl-nome').value.trim();
+      const email = document.getElementById('wl-email').value.trim();
+      const whatsapp = document.getElementById('wl-whatsapp').value.trim();
+      if (!email || !nome) return;
+      const btn = wlForm.querySelector('button[type="submit"]');
+      btn.textContent = 'Entrando na lista VIP...';
+      btn.disabled = true;
+      try {
+        await fetch('https://relay.stmgroup.com.br/waitlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nome, email, whatsapp })
+        });
+      } catch(err) { /* silently ignore network errors, UX still confirms */ }
+      wlForm.style.display = 'none';
+      document.getElementById('waitlist-success').style.display = 'block';
+    });
+  }
+</script>
+
+</body>
+</html>

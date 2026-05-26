@@ -1,0 +1,974 @@
+<style>
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0a0f;
+  --bg-card: #111119;
+  --bg-code: #1a1a2e;
+  --bg-callout: #13131f;
+  --text: #e8e8f0;
+  --text-muted: #888899;
+  --gold: #c9a84c;
+  --gold-light: #e2c06e;
+  --purple: #7c3aed;
+  --purple-light: #9d5cf5;
+  --indigo: #4f46e5;
+  --green: #10b981;
+  --red: #e53e3e;
+  --orange: #f59e0b;
+  --border: #222235;
+  --max-width: 820px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.85;
+  overflow-x: hidden;
+}
+
+/* ===== PROGRESS BAR ===== */
+#progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--purple), var(--gold));
+  z-index: 1000;
+  transition: width 0.1s linear;
+}
+
+/* ===== BACK TO TOP ===== */
+#back-top {
+  position: fixed;
+  bottom: 2rem; right: 2rem;
+  background: var(--gold);
+  color: #000;
+  border: none;
+  border-radius: 50%;
+  width: 46px; height: 46px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-weight: 700;
+}
+#back-top.visible { opacity: 1; }
+#back-top:hover { transform: translateY(-3px); }
+
+/* ===== LAYOUT ===== */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+#sidebar {
+  width: 270px;
+  min-width: 270px;
+  background: var(--bg-card);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  flex-shrink: 0;
+  transition: transform 0.3s;
+  z-index: 100;
+}
+
+#sidebar-inner { padding: 1.5rem 1rem; }
+
+.sidebar-brand {
+  font-family: 'Playfair Display', serif;
+  color: var(--gold);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+.sidebar-sub {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+#sidebar h3 {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+#sidebar ul { list-style: none; }
+#sidebar ul li { margin-bottom: 0.1rem; }
+#sidebar ul li a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+  line-height: 1.3;
+}
+#sidebar ul li a:hover { background: rgba(201,168,76,0.08); color: var(--gold); }
+.toc-num {
+  display: inline-block;
+  min-width: 22px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--purple);
+  flex-shrink: 0;
+}
+
+/* ===== MAIN ===== */
+main {
+  flex: 1;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 2rem 5rem;
+  width: 100%;
+  min-width: 0;
+}
+
+/* ===== COVER ===== */
+#cover {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 4rem 2rem;
+  position: relative;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(124,58,237,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(201,168,76,0.06) 0%, transparent 50%);
+  overflow: hidden;
+}
+#cover::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+.cover-badge {
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+  display: block;
+}
+.cover-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 8vw, 4.8rem);
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 60px rgba(201,168,76,0.3);
+}
+.cover-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  max-width: 520px;
+  margin: 0 auto 2.5rem;
+  font-weight: 300;
+  line-height: 1.6;
+}
+.cover-divider {
+  width: 120px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto 2rem;
+}
+.cover-version {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--purple-light);
+  margin-bottom: 0.5rem;
+}
+.cover-meta {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 2.5rem;
+}
+.cover-cta {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.9rem 2.2rem;
+  background: linear-gradient(135deg, var(--purple), var(--indigo));
+  color: #fff;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 20px rgba(124,58,237,0.3);
+}
+.cover-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,58,237,0.4); }
+
+/* ===== CHAPTER SECTIONS ===== */
+.chapter {
+  padding: 5rem 0 3rem;
+  border-bottom: 1px solid var(--border);
+}
+.chapter:last-of-type { border-bottom: none; }
+
+.chapter-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--purple-light);
+  margin-bottom: 0.75rem;
+  display: block;
+}
+.chapter-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+}
+.chapter-intro {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 640px;
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+
+/* ===== CALLOUT BOXES ===== */
+.callout {
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  margin: 1.5rem 0;
+  border-left: 4px solid;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+.callout-tip {
+  background: rgba(16,185,129,0.07);
+  border-color: var(--green);
+  color: #b2f0db;
+}
+.callout-tip strong { color: var(--green); }
+.callout-warn {
+  background: rgba(245,158,11,0.07);
+  border-color: var(--orange);
+  color: #fde8a8;
+}
+.callout-warn strong { color: var(--orange); }
+.callout-danger {
+  background: rgba(229,62,62,0.07);
+  border-color: var(--red);
+  color: #fca5a5;
+}
+.callout-danger strong { color: var(--red); }
+.callout-info {
+  background: rgba(124,58,237,0.07);
+  border-color: var(--purple);
+  color: #c4b5fd;
+}
+.callout-info strong { color: var(--purple-light); }
+.callout-icon { font-size: 1.2rem; margin-right: 0.5rem; }
+
+/* ===== CODE BLOCKS ===== */
+.code-block {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  padding-top: 2.75rem;
+  margin: 1.25rem 0;
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: #a5b4fc;
+  position: relative;
+}
+.code-block .comment { color: #6b7280; }
+.code-block .string { color: #86efac; }
+.code-block .key { color: #f9a8d4; }
+/* ===== COPY BUTTON ===== */
+.copy-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: rgba(129,140,248,0.15);
+  border: 1px solid rgba(129,140,248,0.35);
+  color: #a5b4fc;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  letter-spacing: 0.02em;
+  z-index: 10;
+  user-select: none;
+}
+.copy-btn:hover {
+  background: rgba(129,140,248,0.28);
+  border-color: rgba(129,140,248,0.6);
+  color: #e0e7ff;
+}
+.copy-btn.copied {
+  background: rgba(34,197,94,0.18);
+  border-color: rgba(34,197,94,0.45);
+  color: #86efac;
+}
+.copy-btn svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+.code-filename {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--gold);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  padding: 0.4rem 1rem;
+  border-radius: 8px 8px 0 0;
+  display: inline-block;
+}
+.code-filename + .code-block { border-radius: 0 8px 8px 8px; margin-top: 0; }
+
+/* ===== CHECKLIST ===== */
+.checklist {
+  background: var(--bg-callout);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  margin: 2rem 0;
+}
+.checklist h4 {
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+.checklist ul { list-style: none; }
+.checklist ul li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.5rem 0.4rem;
+  font-size: 0.95rem;
+  color: var(--text);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+  user-select: none;
+}
+.checklist ul li:hover { background: rgba(129,140,248,0.06); }
+.checklist ul li:last-child { border-bottom: none; }
+.checklist ul li.done { color: #6b7280; }
+.checklist ul li.done .check-label { text-decoration: line-through; }
+.check-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px; height: 20px;
+  border: 2px solid var(--purple);
+  border-radius: 5px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  transition: background 0.2s, border-color 0.2s;
+  position: relative;
+  cursor: pointer;
+}
+.check-box.checked {
+  background: #818cf8;
+  border-color: #818cf8;
+}
+.check-box.checked::after {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 9px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+/* ===== TABLE ===== */
+.table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+th {
+  background: rgba(124,58,237,0.15);
+  color: var(--purple-light);
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--purple);
+}
+td {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+}
+tr:hover td { background: rgba(255,255,255,0.02); }
+.badge-free {
+  background: rgba(16,185,129,0.15);
+  color: var(--green);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge-paid {
+  background: rgba(245,158,11,0.15);
+  color: var(--orange);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge-premium {
+  background: rgba(201,168,76,0.15);
+  color: var(--gold);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* ===== STEP BOXES ===== */
+.step {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  margin: 1.5rem 0;
+}
+.step-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--purple), var(--indigo));
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+.step-body h4 { color: var(--gold); font-size: 1rem; margin-bottom: 0.3rem; }
+.step-body p { font-size: 0.95rem; color: var(--text-muted); }
+
+/* ===== BEFORE/AFTER ===== */
+.before-after {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+.ba-card {
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+.ba-before {
+  background: rgba(229,62,62,0.06);
+  border: 1px solid rgba(229,62,62,0.2);
+}
+.ba-after {
+  background: rgba(16,185,129,0.06);
+  border: 1px solid rgba(16,185,129,0.2);
+}
+.ba-card h4 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+.ba-before h4 { color: var(--red); }
+.ba-after h4 { color: var(--green); }
+.ba-card ul { list-style: none; }
+.ba-card ul li {
+  font-size: 0.9rem;
+  padding: 0.3rem 0;
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ===== TIER CARDS ===== */
+.tiers {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin: 2.5rem 0;
+}
+.tier-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.tier-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+.tier-card.featured {
+  border-color: var(--purple);
+  box-shadow: 0 0 30px rgba(124,58,237,0.15);
+}
+.tier-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--purple), var(--indigo));
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 3px 14px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.tier-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.tier-price {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 0.25rem;
+}
+.tier-price span { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
+.tier-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+.tier-features { list-style: none; text-align: left; margin-bottom: 1.5rem; }
+.tier-features li {
+  font-size: 0.85rem;
+  padding: 0.3rem 0;
+  color: var(--text);
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+.tier-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+.tier-btn {
+  display: block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.88rem;
+  transition: transform 0.2s;
+  background: linear-gradient(135deg, var(--purple), var(--indigo));
+  color: #fff;
+}
+.tier-btn:hover { transform: translateY(-2px); }
+
+/* ===== GLOSSARY ===== */
+.glossary-item {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.glossary-term {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.glossary-def {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+.glossary-analogy {
+  font-size: 0.85rem;
+  color: var(--purple-light);
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+/* ===== SECTION DIVIDER ===== */
+.section-divider {
+  width: 60px; height: 3px;
+  background: linear-gradient(90deg, var(--purple), var(--indigo));
+  border-radius: 2px;
+  margin: 1.5rem 0;
+}
+
+/* ===== HIGHLIGHT BOX ===== */
+.highlight-box {
+  background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(79,70,229,0.08));
+  border: 1px solid rgba(124,58,237,0.25);
+  border-radius: 12px;
+  padding: 1.75rem;
+  margin: 2rem 0;
+}
+.highlight-box h3 { color: var(--purple-light); font-size: 1.1rem; margin-bottom: 0.75rem; }
+
+/* ===== HEADING STYLES ===== */
+h2 { font-size: 1.5rem; color: var(--text); margin: 2rem 0 0.75rem; }
+h3 { font-size: 1.15rem; color: var(--gold-light); margin: 1.5rem 0 0.5rem; }
+p { margin-bottom: 1rem; }
+strong { color: var(--gold-light); }
+em { color: var(--purple-light); }
+a { color: var(--purple-light); }
+
+/* ===== TOC ===== */
+#toc-section {
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+.toc-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 0.88rem;
+  transition: all 0.2s;
+}
+.toc-item:hover { border-color: var(--purple); color: var(--gold); }
+.toc-item-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--purple-light);
+  min-width: 28px;
+}
+
+/* ===== PRINT PROTECTION ===== */
+@media print { body { display: none !important; } }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  #sidebar { display: none; }
+  main { padding: 0 1.25rem 4rem; }
+  .before-after { grid-template-columns: 1fr; }
+  .tiers { grid-template-columns: 1fr; }
+  .toc-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== ILLUSTRAÇÕES SVG ===== */
+.illustration {
+  background: #111;
+  border: 1px solid #D4AF37;
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2.5rem 0;
+  text-align: center;
+  overflow: hidden;
+}
+.illustration svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.illustration figcaption {
+  color: #888;
+  font-size: 0.85rem;
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+
+</style>
+
+<section id="cap2" class="chapter">
+  <span class="chapter-label">Capítulo 02</span>
+  <h1 class="chapter-title">Instalando OpenClaw do Zero</h1>
+  <p class="chapter-intro">OpenClaw é a "central de comando" dos seus agentes de IA. Pense nele como um sistema operacional para agentes — ele faz a ponte entre você, seus modelos de IA e o mundo exterior. Após a instalação, você controla tudo por uma interface visual (TUI) — sem mais precisar do terminal no dia a dia.</p>
+
+<div class="illustration">
+<svg viewBox="0 0 620 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Arquitetura OpenClaw">
+  <!-- Você -->
+  <circle cx="50" cy="75" r="24" fill="none" stroke="#D4AF37" stroke-width="2"/>
+  <text x="50" y="70" text-anchor="middle" fill="#D4AF37" font-size="18">👤</text>
+  <text x="50" y="85" text-anchor="middle" fill="#D4AF37" font-size="9" font-family="Inter,sans-serif">Você</text>
+  <text x="50" y="115" text-anchor="middle" fill="#888" font-size="10" font-family="Inter,sans-serif">(celular/PC)</text>
+  <!-- Seta -->
+  <line x1="78" y1="75" x2="128" y2="75" stroke="#D4AF37" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <polygon points="128,70 138,75 128,80" fill="#D4AF37"/>
+  <!-- Telegram -->
+  <rect x="142" y="52" width="90" height="46" rx="10" fill="#0a1929" stroke="#29B6F6" stroke-width="2"/>
+  <text x="187" y="72" text-anchor="middle" fill="#29B6F6" font-size="11" font-family="Inter,sans-serif" font-weight="700">✈ Telegram</text>
+  <text x="187" y="88" text-anchor="middle" fill="#888" font-size="9" font-family="Inter,sans-serif">canal</text>
+  <!-- Seta -->
+  <line x1="235" y1="75" x2="278" y2="75" stroke="#D4AF37" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <polygon points="278,70 288,75 278,80" fill="#D4AF37"/>
+  <!-- OpenClaw -->
+  <rect x="292" y="40" width="110" height="70" rx="12" fill="#0d0d20" stroke="#D4AF37" stroke-width="2.5"/>
+  <text x="347" y="66" text-anchor="middle" fill="#D4AF37" font-size="12" font-family="Inter,sans-serif" font-weight="700">🐾 OpenClaw</text>
+  <text x="347" y="82" text-anchor="middle" fill="#aaa" font-size="9" font-family="Inter,sans-serif">central de</text>
+  <text x="347" y="94" text-anchor="middle" fill="#aaa" font-size="9" font-family="Inter,sans-serif">comando</text>
+  <!-- Setas para direita -->
+  <line x1="404" y1="58" x2="448" y2="35" stroke="#D4AF37" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <polygon points="444,28 454,35 446,41" fill="#D4AF37"/>
+  <line x1="404" y1="75" x2="448" y2="75" stroke="#D4AF37" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <polygon points="448,70 458,75 448,80" fill="#D4AF37"/>
+  <line x1="404" y1="92" x2="448" y2="115" stroke="#D4AF37" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <polygon points="444,109 454,116 446,122" fill="#D4AF37"/>
+  <!-- APIs e Ferramentas -->
+  <rect x="460" y="18" width="90" height="30" rx="6" fill="#1a1a2e" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="505" y="36" text-anchor="middle" fill="#9d5cf5" font-size="10" font-family="Inter,sans-serif">LLM (Claude, etc)</text>
+  <rect x="460" y="60" width="90" height="30" rx="6" fill="#1a1a2e" stroke="#10b981" stroke-width="1.5"/>
+  <text x="505" y="78" text-anchor="middle" fill="#10b981" font-size="10" font-family="Inter,sans-serif">APIs & Ferramentas</text>
+  <rect x="460" y="102" width="90" height="30" rx="6" fill="#1a1a2e" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="505" y="120" text-anchor="middle" fill="#f59e0b" font-size="10" font-family="Inter,sans-serif">Skills & Automações</text>
+  <text x="505" y="155" text-anchor="middle" fill="#888" font-size="10" font-family="Inter,sans-serif">Capacidades</text>
+</svg>
+<figcaption>Você → Telegram → OpenClaw → modelos, ferramentas e automações</figcaption>
+</div>
+
+
+  <div class="section-divider"></div>
+
+  <h2>O Que é o OpenClaw?</h2>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">💡</span>
+    <div><strong>Analogia:</strong> Se o agente de IA é um funcionário, o OpenClaw é a empresa. Ele gerencia os contratos (APIs), fornece as ferramentas (e-mail, calendário, internet), controla os acessos e mantém tudo funcionando. Você fala com os agentes pelo Telegram; eles executam tudo via OpenClaw. E você monitora tudo pela interface visual do OpenClaw — o Dashboard.</div>
+  </div>
+
+  <p>O OpenClaw é instalado na sua VPS e fica rodando como um serviço permanente. Quando você manda mensagem para o seu agente no Telegram, o OpenClaw recebe, processa com o modelo de IA, executa as ações e responde. Tudo automático. <strong>O SSH é usado apenas nesta instalação inicial</strong> — depois, você gerencia tudo pelo painel visual.</p>
+
+  <div class="callout callout-success">
+    <span class="callout-icon">✅</span>
+    <div><strong>Boa notícia para leigos:</strong> O OpenClaw tem um assistente de configuração interativo chamado <code>openclaw onboard</code>. Ele faz perguntas na tela e você só responde — sem precisar editar arquivos manualmente.</div>
+  </div>
+
+  <h2>Passo 1 — Instalar o Node.js (obrigatório primeiro)</h2>
+  <p>O OpenClaw é feito em Node.js. <strong>Node.js</strong> é como o "motor" que faz o OpenClaw funcionar — assim como o Java precisa estar instalado para rodar programas Java.</p>
+  <p>Usamos o <strong>NVM</strong> (Node Version Manager) para instalar o Node.js — ele é mais seguro e fácil de atualizar depois.</p>
+
+  <div class="code-block">
+<span class="comment"># Baixar e instalar o NVM (gerenciador de versões do Node.js)</span>
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+
+<span class="comment"># Recarregar o terminal para reconhecer o NVM (obrigatório após instalar)</span>
+source ~/.bashrc
+
+<span class="comment"># Instalar o Node.js versão 24 (versão recomendada pelo OpenClaw)</span>
+nvm install 24
+nvm use 24
+nvm alias default 24
+
+<span class="comment"># Verificar se instalou — deve aparecer "v24.x.x"</span>
+node --version
+
+<span class="comment"># Verificar o NPM (gerenciador de pacotes) — deve aparecer "10.x.x" ou superior</span>
+npm --version
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">⚠️</span>
+    <div><strong>Node.js mínimo:</strong> O OpenClaw requer Node 24 (recomendado) ou Node 22 LTS (versão 22.16 ou superior). Versões mais antigas não funcionarão.</div>
+  </div>
+
+  <h2>Passo 2 — Instalar o OpenClaw (oficial)</h2>
+  <p>Com o Node.js instalado, instale o OpenClaw usando o <strong>script oficial</strong> — a forma mais recomendada:</p>
+
+  <div class="callout callout-success">
+    <span class="callout-icon">✅</span>
+    <div><strong>Método recomendado — Mac/Linux/VPS Ubuntu:</strong><br>Use o script de instalação oficial. Ele verifica dependências, instala e configura tudo automaticamente.</div>
+  </div>
+
+  <div class="code-block">
+<span class="comment"># Mac, Linux ou VPS Ubuntu — script oficial recomendado</span>
+curl -fsSL https://openclaw.ai/install.sh | bash
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">💡</span>
+    <div><strong>Windows:</strong> Para Windows, o OpenClaw recomenda usar o <strong>WSL2</strong> (Windows Subsystem for Linux). WSL2 é uma camada que permite rodar Linux dentro do Windows — gratuita, oficial da Microsoft, e faz o OpenClaw funcionar de forma mais estável. Se preferir usar o PowerShell nativo, também funciona (mas WSL2 é mais confiável).</div>
+  </div>
+
+  <div class="code-block">
+<span class="comment"># Windows — PowerShell (nativo)</span>
+iwr -useb https://openclaw.ai/install.ps1 | iex
+  </div>
+
+  <div class="code-block">
+<span class="comment"># Alternativa: instalação via npm (também funciona em qualquer SO)</span>
+npm install -g openclaw@latest
+  </div>
+
+  <div class="code-block">
+<span class="comment"># Verificar se instalou — deve aparecer a versão atual</span>
+openclaw --version
+  </div>
+
+  <h2>Passo 3 — Executar o Assistente de Configuração (onboard)</h2>
+  <p>Agora vem a parte mais fácil: o OpenClaw tem um <strong>assistente interativo</strong> que guia você por toda a configuração. Execute:</p>
+
+  <div class="code-block">
+<span class="comment"># Iniciar o assistente de configuração e instalar como serviço permanente</span>
+<span class="comment"># "--install-daemon" faz o OpenClaw iniciar automaticamente toda vez que a VPS ligar</span>
+openclaw onboard --install-daemon
+  </div>
+
+  <p>O assistente vai perguntar:</p>
+  <ul style="margin: 12px 0 12px 24px; line-height: 2;">
+    <li>🤖 Qual modelo de IA você quer usar (vamos configurar OpenRouter no próximo capítulo)</li>
+    <li>📱 Qual canal de mensagens (Telegram, WhatsApp, Discord)</li>
+    <li>🔑 Suas chaves de API</li>
+    <li>📁 Onde ficará o workspace dos seus agentes</li>
+  </ul>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">💡</span>
+    <div><strong>Dica:</strong> Se travar em alguma pergunta, aperte <code>Ctrl+C</code> para sair e execute <code>openclaw onboard</code> novamente. O assistente é tolerante a erros — você pode recomeçar quantas vezes quiser.</div>
+  </div>
+
+  <h2>Passo 4 — Abrindo o TUI (sua interface de chat) 🎉</h2>
+  <p>Após o onboard, o OpenClaw está rodando. O <strong>TUI</strong> (Terminal User Interface) é a interface de chat onde você conversa com seu agente — direto no terminal SSH, como uma conversa por texto. <strong>Você continua no mesmo terminal onde instalou tudo.</strong></p>
+
+  <div class="code-block">
+<span class="comment"># Se fechou o terminal, conecte novamente via SSH:</span>
+ssh root@SEU_IP_DA_VPS
+
+<span class="comment"># Para iniciar o TUI e conversar com o agente:</span>
+openclaw tui
+  </div>
+
+  <div class="callout callout-success">
+    <span class="callout-icon">✅</span>
+    <div><strong>O que você verá:</strong> Uma tela de chat em texto — fundo escuro, mensagens do agente em destaque, e uma barra de status na parte inferior mostrando: <code>connected | idle | agent main | modelo | tokens usados</code>. Você digita sua mensagem e pressiona Enter. O agente responde.</div>
+  </div>
+
+  <div style="background: #000; border: 1px solid #334155; border-radius: 12px; padding: 24px; margin: 24px 0; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.8;">
+    <div style="color: #6b7280; margin-bottom: 12px;">─── Exemplo real do TUI ───────────────────────────────</div>
+    <div style="background: #1e1e1e; padding: 10px 14px; border-radius: 6px; margin-bottom: 10px; color: #d1d5db;">oi</div>
+    <div style="color: #86efac; margin-bottom: 4px;">Oi! O que precisa?</div>
+    <div style="color: #6b7280; margin-bottom: 16px;">connected | idle</div>
+    <div style="color: #818cf8; font-size: 11px;">agent main | session openclaw-tui | llama-3.2-8b | tokens 2k/200k (1%)</div>
+    <div style="color: #475569; margin-top: 8px; font-size: 11px;">▌  ← você digita aqui</div>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">💡</span>
+    <div><strong>Windows (PowerShell) ou Mac/Linux (Terminal):</strong> O TUI funciona igual em qualquer sistema. O que muda é só o programa que você usa para conectar via SSH — no Windows use o PowerShell ou o Windows Terminal; no Mac/Linux use o Terminal nativo.</div>
+  </div>
+
+  <h2>Como Verificar se Está Tudo Funcionando</h2>
+
+  <div class="code-block">
+<span class="comment"># Verificar o status do gateway (serviço principal do OpenClaw)</span>
+openclaw gateway status
+
+<span class="comment"># Se aparecer "running" — está funcionando ✅</span>
+<span class="comment"># Se aparecer "stopped" — iniciar manualmente:</span>
+openclaw gateway start
+  </div>
+
+  <h2>Como Usar o TUI no Dia a Dia</h2>
+  <p>O TUI é o seu canal principal com o agente. Você conecta via SSH e conversa normalmente — em português, como se fosse um WhatsApp em modo texto. Tudo que você pedir, o agente executa.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>O que fazer</th><th>Como fazer no TUI</th></tr></thead>
+      <tbody>
+        <tr><td>Conversar com o agente</td><td>Abra o SSH e digite normalmente</td></tr>
+        <tr><td>Configurar o agente</td><td>Diga ao agente o que mudar — ele atualiza os arquivos</td></tr>
+        <tr><td>Criar automações</td><td>"Crie um cron job que faz X todo dia às 8h"</td></tr>
+        <tr><td>Verificar status</td><td><code>openclaw gateway status</code> no terminal</td></tr>
+        <tr><td>Reiniciar</td><td><code>openclaw gateway restart</code> no terminal</td></tr>
+        <tr><td>Integrar com Telegram</td><td>Peça ao agente no TUI: "Configure a integração com Telegram"</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">💡</span>
+    <div><strong>Dica:</strong> Após integrar o Telegram (próximos capítulos), você não precisará mais abrir o SSH para conversar com o agente. Poderá mandar mensagem direto pelo Telegram do celular. O TUI via SSH é mais usado para configurações iniciais e manutenção.</div>
+  </div>
+
+  <h2>Referência Rápida — Comandos CLI do OpenClaw</h2>
+  <p>Ao digitar <code>openclaw</code> no terminal sem argumentos, você vê o menu completo de comandos. Aqui estão os principais:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Comando</th><th>O que faz</th></tr></thead>
+      <tbody>
+        <tr><td><code>openclaw tui</code></td><td>Abre o chat com o agente no terminal</td></tr>
+        <tr><td><code>openclaw onboard</code></td><td>Assistente interativo de configuração inicial</td></tr>
+        <tr><td><code>openclaw configure</code></td><td>Wizard de configuração (credenciais, canais, gateway)</td></tr>
+        <tr><td><code>openclaw gateway status</code></td><td>Verifica se o gateway está rodando</td></tr>
+        <tr><td><code>openclaw gateway restart</code></td><td>Reinicia o gateway</td></tr>
+        <tr><td><code>openclaw models</code></td><td>Descobre, escaneia e configura modelos de IA disponíveis</td></tr>
+        <tr><td><code>openclaw skills</code></td><td>Lista e inspeciona skills instaladas</td></tr>
+        <tr><td><code>openclaw channels</code></td><td>Gerencia canais conectados (Telegram, WhatsApp etc.)</td></tr>
+        <tr><td><code>openclaw memory</code></td><td>Busca e reindexar arquivos de memória</td></tr>
+        <tr><td><code>openclaw sessions</code></td><td>Gerencia sessões de conversa</td></tr>
+        <tr><td><code>openclaw update</code></td><td>Atualiza o OpenClaw para a versão mais recente</td></tr>
+        <tr><td><code>openclaw system</code></td><td>Saúde do sistema, heartbeat e presença</td></tr>
+        <tr><td><code>openclaw cron</code></td><td>Gerencia cron jobs via Gateway</td></tr>
+        <tr><td><code>openclaw plugins</code></td><td>Gerencia plugins e extensões</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="checklist">
+    <h4>✅ Checklist — Cap 2</h4>
+    <ul>
+      <li><span class="check-box"></span>Instalei Node.js 24 via NVM (<code style="font-family:monospace">node --version</code> retorna v24.x.x)</li>
+      <li><span class="check-box"></span>Instalei o OpenClaw via script oficial (<code style="font-family:monospace">curl -fsSL https://openclaw.ai/install.sh | bash</code>) ou via npm</li>
+      <li><span class="check-box"></span>Executei <code style="font-family:monospace">openclaw onboard --install-daemon</code> e completei a configuração</li>
+      <li><span class="check-box"></span>Gateway rodando (<code style="font-family:monospace">openclaw gateway status</code> mostra "running")</li>
+      <li><span class="check-box"></span>Testei <code style="font-family:monospace">openclaw tui</code> e vi o chat na tela</li>
+      <li><span class="check-box"></span>Digitei "oi" e o agente respondeu</li>
+    </ul>
+  </div>
+</section>

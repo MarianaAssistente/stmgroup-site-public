@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roteiro de Stories — @panteao_digital</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C86A;
+    --gold-dark: #9A7A2E;
+    --black: #08080f;
+    --black2: #0f0f1a;
+    --black3: #161625;
+    --white: #f0f0f0;
+    --gray: #888;
+    --green: #2ecc71;
+    --blue: #3498db;
+    --purple: #9b59b6;
+    --red: #e74c3c;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--black); color: var(--white); font-family: 'Inter', sans-serif; min-height: 100vh; }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--black2) 0%, var(--black3) 100%);
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+    padding: 32px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .header-left h1 { font-size: 28px; font-weight: 800; color: var(--gold); letter-spacing: -0.5px; }
+  .header-left p { color: var(--gray); font-size: 14px; margin-top: 4px; }
+  .launch-badge {
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    color: var(--black);
+    padding: 8px 20px; border-radius: 20px;
+    font-weight: 700; font-size: 13px; letter-spacing: 1px;
+  }
+
+  /* COUNTDOWN */
+  .countdown-bar {
+    background: var(--black3);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    padding: 20px 40px;
+    display: flex; align-items: center; gap: 24px;
+  }
+  .countdown-bar .label { color: var(--gray); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+  .countdown-bar .num { font-size: 36px; font-weight: 800; color: var(--gold); line-height: 1; }
+  .countdown-bar .divider { color: var(--gold-dark); font-size: 24px; }
+  .countdown-bar .desc { color: var(--white); font-size: 13px; margin-top: 2px; }
+
+  /* TABS */
+  .tabs {
+    display: flex; padding: 0 40px;
+    background: var(--black2);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .tab {
+    padding: 16px 24px; cursor: pointer;
+    font-size: 13px; font-weight: 600; color: var(--gray);
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .tab:hover { color: var(--white); }
+
+  /* CONTENT */
+  .content { padding: 32px 40px; max-width: 1400px; margin: 0 auto; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* SECTION */
+  .section-title {
+    font-size: 18px; font-weight: 700; color: var(--gold);
+    margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(to right, rgba(201,168,76,0.3), transparent);
+  }
+
+  /* WEEK GRID */
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+  .day-card {
+    background: var(--black3);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+  .day-card:hover { transform: translateY(-2px); }
+  .day-card.today { border-color: var(--gold); }
+  .day-card.meeting { border-color: var(--purple); }
+  .day-card .day-header {
+    padding: 12px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    text-align: center;
+  }
+  .day-card.today .day-header { background: rgba(201,168,76,0.1); }
+  .day-card.meeting .day-header { background: rgba(155,89,182,0.15); }
+  .day-name { font-size: 11px; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; }
+  .day-date { font-size: 20px; font-weight: 700; color: var(--white); line-height: 1.2; }
+  .day-card.today .day-date { color: var(--gold); }
+  .day-card.meeting .day-date { color: #9b59b6; }
+  .day-body { padding: 12px; }
+  .story-item {
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    border-left: 3px solid var(--gold);
+  }
+  .story-item.morning { border-left-color: #f39c12; }
+  .story-item.night { border-left-color: #3498db; }
+  .story-item.meeting-item { border-left-color: var(--purple); }
+  .story-time { font-size: 10px; color: var(--gray); font-weight: 600; margin-bottom: 3px; }
+  .story-theme { font-size: 11px; color: var(--white); font-weight: 500; line-height: 1.3; }
+  .story-type {
+    display: inline-block;
+    font-size: 9px; padding: 2px 6px; border-radius: 4px;
+    margin-top: 4px; font-weight: 600; letter-spacing: 0.5px;
+  }
+  .type-teaser { background: rgba(201,168,76,0.2); color: var(--gold); }
+  .type-poll { background: rgba(52,152,219,0.2); color: #3498db; }
+  .type-countdown { background: rgba(231,76,60,0.2); color: #e74c3c; }
+  .type-bastidor { background: rgba(46,204,113,0.2); color: #2ecc71; }
+  .type-depoimento { background: rgba(155,89,182,0.2); color: #9b59b6; }
+  .type-dica { background: rgba(241,196,15,0.2); color: #f1c40f; }
+  .type-reuniao { background: rgba(155,89,182,0.25); color: #9b59b6; }
+
+  /* SCHEDULE TABLE */
+  .schedule-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; }
+  .schedule-table th {
+    padding: 12px 16px;
+    background: var(--black3);
+    color: var(--gold);
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+    text-align: left;
+    border-bottom: 2px solid rgba(201,168,76,0.3);
+  }
+  .schedule-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 13px; color: var(--white);
+    vertical-align: middle;
+  }
+  .schedule-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+  }
+  .status-done { background: rgba(46,204,113,0.15); color: #2ecc71; }
+  .status-scheduled { background: rgba(52,152,219,0.15); color: #3498db; }
+  .status-pending { background: rgba(255,255,255,0.08); color: var(--gray); }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .status-done .status-dot { background: #2ecc71; }
+  .status-scheduled .status-dot { background: #3498db; }
+  .status-pending .status-dot { background: var(--gray); }
+
+  /* MEETING CARD */
+  .meeting-card {
+    background: linear-gradient(135deg, rgba(155,89,182,0.15), rgba(155,89,182,0.05));
+    border: 1px solid rgba(155,89,182,0.4);
+    border-radius: 16px;
+    padding: 28px 32px;
+    display: flex; align-items: center; gap: 24px;
+    margin-bottom: 32px;
+  }
+  .meeting-icon { font-size: 48px; }
+  .meeting-info h3 { font-size: 20px; font-weight: 700; color: #9b59b6; margin-bottom: 6px; }
+  .meeting-info p { color: var(--gray); font-size: 14px; line-height: 1.6; }
+  .meeting-tags { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .meeting-tag {
+    background: rgba(155,89,182,0.2); color: #9b59b6;
+    padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;
+  }
+
+  /* RULES CARD */
+  .rules-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+  .rule-card {
+    background: var(--black3);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .rule-card .rule-icon { font-size: 28px; margin-bottom: 10px; }
+  .rule-card h4 { font-size: 14px; font-weight: 700; color: var(--gold); margin-bottom: 6px; }
+  .rule-card p { font-size: 12px; color: var(--gray); line-height: 1.5; }
+
+  /* LEGEND */
+  .legend { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 24px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--gray); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1100px) {
+    .week-grid { grid-template-columns: repeat(4, 1fr); }
+    .rules-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 700px) {
+    .week-grid { grid-template-columns: repeat(2, 1fr); }
+    .rules-grid { grid-template-columns: 1fr; }
+    .header { flex-direction: column; gap: 16px; }
+    .content { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>📱 Gestão de Stories & Posts — @panteao_digital</h1>
+    <p>Roteiro completo de conteúdo · Semana de 17/03 a 25/03/2026 · Lançamento confirmado</p>
+  </div>
+  <div class="launch-badge">🚀 LANÇAMENTO 25/03</div>
+</div>
+
+<div class="countdown-bar">
+  <div>
+    <div class="label">Hoje</div>
+    <div class="num">17</div>
+    <div class="desc">Mar 2026</div>
+  </div>
+  <div class="divider">→</div>
+  <div>
+    <div class="label">Dias para o lançamento</div>
+    <div class="num" id="days-count">8</div>
+    <div class="desc">dias restantes</div>
+  </div>
+  <div class="divider">→</div>
+  <div>
+    <div class="label">Lançamento</div>
+    <div class="num">25</div>
+    <div class="desc">Mar 2026</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('stories')">📖 Roteiro de Stories</div>
+  <div class="tab" onclick="showTab('posts')">📸 Posts Agendados</div>
+  <div class="tab" onclick="showTab('regras')">📋 Regras & Estratégia</div>
+  <div class="tab" onclick="showTab('reuniao')">🟣 Reunião Semanal</div>
+</div>
+
+<div class="content">
+
+  <!-- TAB: STORIES -->
+  <div class="tab-content active" id="tab-stories">
+    <div class="section-title">Roteiro Semanal de Stories (17–23/03)</div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> 07h30 — Manhã</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#3498db"></div> 21h — Noite</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div> Reunião</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#C9A84C"></div> Dia de post</div>
+    </div>
+
+    <div class="week-grid">
+
+      <!-- SEGUNDA 17/03 -->
+      <div class="day-card today">
+        <div class="day-header">
+          <div class="day-name">Segunda</div>
+          <div class="day-date">17</div>
+        </div>
+        <div class="day-body">
+          <div class="story-item morning">
+            <div class="story-time">☀️ 07h30</div>
+            <div class="story-theme">Bom dia + teaser "Sou Mariana, CEO do Panteão"</div>
+            <span class="story-type type-teaser">TEASER</span>
+          </div>
+          <div class="story-item night">
+            <div class="story-time">🌙 21h</div>
+            <div class="story-theme">Poll: "Você já usa IA no seu negócio?"</div>
+            <span class="story-type type-poll">POLL</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TERÇA 18/03 -->
+      <div class="day-card">
+        <div class="day-header">
+          <div class="day-name">Terça</div>
+          <div class="day-date">18</div>
+        </div>
+        <div class="day-body">
+          <div class="story-item morning">
+            <div class="story-time">☀️ 07h30</div>
+            <div class="story-theme">Bastidor: "Como a Atena analisa mercados para o Boss"</div>
+            <span class="story-type type-bastidor">BASTIDOR</span>
+          </div>
+          <div class="story-item night">
+            <div class="story-time">🌙 21h</div>
+            <div class="story-theme">Countdown: "Faltam 7 dias para o lançamento 🔥"</div>
+            <span class="story-type type-countdown">COUNTDOWN</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUARTA 19/03 -->
+      <div class="day-card">
+        <div class="day-header">
+          <div class="day-name">Quarta</div>
+          <div class="day-date">19</div>
+        </div>
+        <div class="day-body">
+          <div class="story-item morning">
+            <div class="story-time">☀️ 07h30</div>
+            <div class="story-theme">Dica IA: "3 tarefas que você pode automatizar hoje"</div>
+            <span class="story-type type-dica">DICA</span>
+          </div>
+          <div class="story-item night">
+            <div class="story-time">🌙 21h</div>
+            <div class="story-theme">Poll: "Qual agente você mais precisaria?"</div>
+            <span class="story-type type-poll">POLL</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUINTA 20/03 -->
+      <div class="day-card">
+        <div class="day-header">
+          <div class="day-name">Quinta</div>
+          <div class="day-date">20</div>
+        </div>
+        <div class="day-body">
+          <div class="story-item morning">
+            <div class="story-time">☀️ 07h30</div>
+            <div class="story-theme">Bastidor: Hefesto buildando a landing page</div>
+            <span class="story-type type-bastidor">BASTIDOR</span>
+          </div>
+          <div class="story-item night">
+            <div class="story-time">🌙 21h</div>
+            <div class="story-theme">Countdown: "Faltam 5 dias — acesso antecipado disponível"</div>
+            <span class="story-type type-countdown">COUNTDOWN</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEXTA 21/03 -->
+      <div class="day-card">
+        <div class="day-header">
+          <div class="day-name">Sexta</div>
+          <div class="day-date">21</div>
+        </div>
+        <div class="day-body">
+          <div class="story-item morning">
+            <div class="story-time">☀️ 07h30</div>
+            <div class="story-theme">Depoimento antecipado de beta tester</div>
+            <span class="story-type type-depoimento">DEPOIMENTO</span>
+          </div>
+          <div class="story-item night">
+            <div class="story-time">🌙 21h</div>
+            <div class="story-theme">Poll: "Você está na lista de espera?"</div>
+            <span class="story-type type-poll">POLL</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SÁBADO 22/03 -->
+      <div class="day-card">
+        <div class="day-header">
+          <div class="day-name">Sábado</div>
+          <div class="day-date">22</div>
+        </div>
+        <div class="day-body">
+          <div class="story-item morning">
+            <div class="story-time">☀️ 07h30</div>
+            <div class="story-theme">Dica de fim de semana: "Automatize antes de segunda"</div>
+            <span class="story-type type-dica">DICA</span>
+          </div>
+          <div class="story-item night">
+            <div class="story-time">🌙 21h</div>
+            <div class="story-theme">Countdown: "3 dias. Últimas vagas com preço de lançamento"</div>
+            <span class="story-type type-countdown">COUNTDOWN</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOMINGO 23/03 — REUNIÃO -->
+      <div class="day-card meeting">
+        <div class="day-header">
+          <div class="day-name">Domingo</div>
+          <div class="day-date">23</div>
+        </div>
+        <div class="day-body">
+          <div class="story-item morning">
+            <div class="story-time">☀️ 07h30</div>
+            <div class="story-theme">Story leve: "A semana que vai mudar tudo começa amanhã"</div>
+            <span class="story-type type-teaser">TEASER</span>
+          </div>
+          <div class="story-item meeting-item">
+            <div class="story-time">🟣 19h</div>
+            <div class="story-theme">REUNIÃO SEMANAL — Panteão + Yuri</div>
+            <span class="story-type type-reuniao">REUNIÃO</span>
+          </div>
+          <div class="story-item night">
+            <div class="story-time">🌙 21h</div>
+            <div class="story-theme">Countdown: "AMANHÃ. 48h para o lançamento 🔥"</div>
+            <span class="story-type type-countdown">COUNTDOWN</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SEMANA DO LANÇAMENTO -->
+    <div class="section-title">Semana do Lançamento (24–25/03)</div>
+    <div class="week-grid" style="grid-template-columns: repeat(2,1fr)">
+      <div class="day-card">
+        <div class="day-header">
+          <div class="day-name">Segunda</div>
+          <div class="day-date">24/03 — Pré-lançamento</div>
+        </div>
+        <div class="day-body">
+          <div class="story-item morning">
+            <div class="story-time">☀️ 07h30</div>
+            <div class="story-theme">Bastidor: O panteão se prepara para amanhã</div>
+            <span class="story-type type-bastidor">BASTIDOR</span>
+          </div>
+          <div class="story-item night">
+            <div class="story-time">🌙 21h</div>
+            <div class="story-theme">"AMANHÃ às 9h. Link na bio. 🔥"</div>
+            <span class="story-type type-countdown">URGÊNCIA</span>
+          </div>
+        </div>
+      </div>
+      <div class="day-card" style="border-color:var(--gold)">
+        <div class="day-header" style="background:rgba(201,168,76,0.15)">
+          <div class="day-name">Terça</div>
+          <div class="day-date" style="color:var(--gold)">25/03 🚀 LANÇAMENTO</div>
+        </div>
+        <div class="day-body">
+          <div class="story-item morning">
+            <div class="story-time">☀️ 07h30</div>
+            <div class="story-theme">"É HOJE. O Panteão Digital está aberto. Link na bio."</div>
+            <span class="story-type type-teaser">🚀 LANÇAMENTO</span>
+          </div>
+          <div class="story-item">
+            <div class="story-time">⚡ 09h</div>
+            <div class="story-theme">Repost do post 9 (Countdown) + link direto para compra</div>
+            <span class="story-type type-teaser">POST</span>
+          </div>
+          <div class="story-item night">
+            <div class="story-time">🌙 21h</div>
+            <div class="story-theme">Celebração: primeiras vendas + agradecimento</div>
+            <span class="story-type type-depoimento">CELEBRAÇÃO</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: POSTS -->
+  <div class="tab-content" id="tab-posts">
+    <div class="section-title">Posts Agendados — @panteao_digital</div>
+    <table class="schedule-table">
+      <thead>
+        <tr>
+          <th>Post</th>
+          <th>Conteúdo</th>
+          <th>Formato</th>
+          <th>Data</th>
+          <th>Horário</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Post 3</strong></td>
+          <td>Apresentação Mariana CEO</td>
+          <td>Estático</td>
+          <td>17/03 (Seg)</td>
+          <td>09h</td>
+          <td><span class="status-badge status-done"><span class="status-dot"></span> Publicado</span></td>
+        </tr>
+        <tr>
+          <td><strong>Post 4</strong></td>
+          <td>Apresentação Atena CSO</td>
+          <td>Estático</td>
+          <td>18/03 (Ter)</td>
+          <td>12h ⭐</td>
+          <td><span class="status-badge status-scheduled"><span class="status-dot"></span> Agendado</span></td>
+        </tr>
+        <tr>
+          <td><strong>Post 5</strong></td>
+          <td>Apresentação Hefesto CTO</td>
+          <td>Estático</td>
+          <td>19/03 (Qua)</td>
+          <td>09h</td>
+          <td><span class="status-badge status-scheduled"><span class="status-dot"></span> Agendado</span></td>
+        </tr>
+        <tr>
+          <td><strong>Post 6</strong></td>
+          <td>Carrossel 6 slides</td>
+          <td>Carrossel</td>
+          <td>20/03 (Qui)</td>
+          <td>11h</td>
+          <td><span class="status-badge status-scheduled"><span class="status-dot"></span> Agendado</span></td>
+        </tr>
+        <tr>
+          <td><strong>Post 7</strong></td>
+          <td>Chat IA na prática</td>
+          <td>Estático</td>
+          <td>22/03 (Sáb)</td>
+          <td>21h</td>
+          <td><span class="status-badge status-scheduled"><span class="status-dot"></span> Agendado</span></td>
+        </tr>
+        <tr>
+          <td><strong>Post 8</strong></td>
+          <td>E-book Panteão Digital</td>
+          <td>Estático</td>
+          <td>24/03 (Seg)</td>
+          <td>19h</td>
+          <td><span class="status-badge status-scheduled"><span class="status-dot"></span> Agendado</span></td>
+        </tr>
+        <tr>
+          <td><strong>Post 9</strong></td>
+          <td>Countdown Lançamento</td>
+          <td>Estático</td>
+          <td>25/03 (Ter)</td>
+          <td>09h</td>
+          <td><span class="status-badge status-pending"><span class="status-dot"></span> Pendente</span></td>
+        </tr>
+        <tr>
+          <td><strong>Post 10</strong></td>
+          <td>Carrossel 10 slides (lançamento)</td>
+          <td>Carrossel</td>
+          <td>25/03 (Ter)</td>
+          <td>12h ⭐</td>
+          <td><span class="status-badge status-pending"><span class="status-dot"></span> Pendente</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="color:var(--gray); font-size:12px;">⭐ Horário premium — maior engajamento para nicho tech/empreendedor (pesquisa Atena)</p>
+  </div>
+
+  <!-- TAB: REGRAS -->
+  <div class="tab-content" id="tab-regras">
+    <div class="section-title">Estratégia de Stories</div>
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-icon">⏰</div>
+        <h4>Horários Fixos</h4>
+        <p>07h30 (manhã) e 21h (noite) todos os dias. Consistência é o fator #1 para crescimento orgânico.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">🎯</div>
+        <h4>Formatos Prioritários</h4>
+        <p>Poll (engajamento), Countdown (urgência), Bastidor (autenticidade), Dica (valor). Alternar sempre.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">📊</div>
+        <h4>Algoritmo 2026</h4>
+        <p>Engajamento nos primeiros 30-60min é o fator crítico. Poste quando o público está ativo.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">🔄</div>
+        <h4>Repost Estratégico</h4>
+        <p>Todo post novo no feed vira story imediatamente. Maximiza alcance sem trabalho extra.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">❌</div>
+        <h4>Evitar</h4>
+        <p>Sábado e domingo de manhã — pior performance para nicho tech/B2B. Evitar posts de feed nesses dias.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">📱</div>
+        <h4>Frequência</h4>
+        <p>4-5 posts/semana no feed. Stories: mínimo 2/dia para manter posição na bandeja do Instagram.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: REUNIÃO -->
+  <div class="tab-content" id="tab-reuniao">
+    <div class="section-title">Reunião Semanal de Conteúdo</div>
+    <div class="meeting-card">
+      <div class="meeting-icon">🟣</div>
+      <div class="meeting-info">
+        <h3>Toda Domingo às 19h BRT — Reunião Semanal do Panteão</h3>
+        <p>Revisão de métricas da semana · Aprovação dos posts da semana seguinte · Ajuste de estratégia · Briefing para Afrodite e Apollo</p>
+        <div class="meeting-tags">
+          <span class="meeting-tag">📊 Métricas</span>
+          <span class="meeting-tag">✅ Aprovação de posts</span>
+          <span class="meeting-tag">🎯 Estratégia</span>
+          <span class="meeting-tag">📋 Briefing</span>
+          <span class="meeting-tag">🔄 Ajustes</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">Pauta Padrão da Reunião</div>
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-icon">1️⃣</div>
+        <h4>Métricas da Semana (10min)</h4>
+        <p>Reach, impressões, engajamento, novos seguidores, cliques no link da bio. Atena apresenta.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">2️⃣</div>
+        <h4>Review dos Posts (10min)</h4>
+        <p>O que performou melhor e por quê. Ajustar estratégia com base nos dados reais.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">3️⃣</div>
+        <h4>Aprovação Próxima Semana (15min)</h4>
+        <p>Afrodite apresenta os posts criados. Yuri aprova ou solicita ajustes. Captions revisadas.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">4️⃣</div>
+        <h4>Roteiro de Stories (5min)</h4>
+        <p>Confirmar temas dos stories da semana. Ajustar de acordo com tendências do momento.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">5️⃣</div>
+        <h4>Prioridades e Ajustes (10min)</h4>
+        <p>O que muda na estratégia. Novos temas emergentes. Campanhas ou ações especiais.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">6️⃣</div>
+        <h4>Briefing para a Semana (5min)</h4>
+        <p>Mariana distribui tarefas para todos os agentes com prazos claros para sexta.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function showTab(id) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // Calcular dias para lançamento
+  const launch = new Date('2026-03-25');
+  const today = new Date();
+  const diff = Math.ceil((launch - today) / (1000 * 60 * 60 * 24));
+  document.getElementById('days-count').textContent = diff > 0 ? diff : 0;
+</script>
+
+</body>
+</html>

@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>STM Group — Template de Apresentação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ─── Reset & Base ─────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #0A0A0F;
+  --card:    #111118;
+  --gold:    #C9A84C;
+  --gold2:   #E8D5A3;
+  --text:    #F5F5F0;
+  --muted:   rgba(245,245,240,.45);
+  --border:  rgba(201,168,76,.18);
+  --slide-w: 1280px;
+  --slide-h: 720px;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  background: #050508;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  color: var(--text);
+}
+
+/* ─── Deck container ────────────────────────────── */
+#deck {
+  width: var(--slide-w);
+  height: var(--slide-h);
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%) scale(var(--scale, 1));
+  transform-origin: center center;
+}
+
+/* ─── Slide base ────────────────────────────────── */
+.slide {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .55s ease, transform .55s ease;
+  transform: translateX(60px);
+  overflow: hidden;
+}
+.slide.active {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(0);
+}
+.slide.exit {
+  opacity: 0;
+  transform: translateX(-60px);
+}
+
+/* ─── Gold accent line (top) ────────────────────── */
+.slide::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold2) 60%, transparent 100%);
+  flex-shrink: 0;
+}
+
+/* ─── Noise texture overlay ─────────────────────── */
+.slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: .4;
+}
+
+/* ─── Logo watermark ─────────────────────────────── */
+.slide-logo {
+  position: absolute;
+  bottom: 28px; right: 40px;
+  font-family: 'Playfair Display', serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  color: rgba(201,168,76,.35);
+  text-transform: uppercase;
+  z-index: 10;
+}
+
+/* ─── Slide number ───────────────────────────────── */
+.slide-num {
+  position: absolute;
+  bottom: 28px; left: 40px;
+  font-size: 11px;
+  color: var(--muted);
+  z-index: 10;
+}
+
+/* ─── SLIDE 1 — Cover ──────────────────────────── */
+.cover {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: radial-gradient(ellipse 80% 60% at 50% 50%, #1a1408 0%, var(--bg) 70%);
+}
+.cover-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(201,168,76,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,.06) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+.cover-eyebrow {
+  font-size: 11px;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+}
+.cover-eyebrow::before,
+.cover-eyebrow::after {
+  content: '—';
+  margin: 0 10px;
+  opacity: .5;
+}
+.cover h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 68px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--text);
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+}
+.cover h1 em {
+  font-style: italic;
+  color: var(--gold);
+}
+.cover-sub {
+  margin-top: 24px;
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--muted);
+  position: relative;
+  z-index: 2;
+  max-width: 560px;
+  line-height: 1.6;
+}
+.cover-meta {
+  margin-top: 48px;
+  display: flex;
+  gap: 40px;
+  position: relative;
+  z-index: 2;
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: .08em;
+}
+.cover-meta span { display: flex; align-items: center; gap: 6px; }
+.cover-meta span::before { content: '◆'; color: var(--gold); font-size: 8px; }
+.cover-diamond {
+  position: absolute;
+  width: 500px; height: 500px;
+  border: 1px solid rgba(201,168,76,.08);
+  transform: rotate(45deg);
+  top: 50%; left: 50%;
+  margin: -250px 0 0 -250px;
+  pointer-events: none;
+  z-index: 1;
+}
+.cover-diamond2 {
+  width: 340px; height: 340px;
+  margin: -170px 0 0 -170px;
+  border-color: rgba(201,168,76,.12);
+}
+
+/* ─── SLIDE 2 — Agenda ──────────────────────────── */
+.slide-inner { padding: 52px 72px 52px; flex: 1; display: flex; flex-direction: column; }
+.slide-tag {
+  font-size: 10px;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.slide-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.slide-title em { font-style: italic; color: var(--gold); }
+.slide-line {
+  width: 48px; height: 2px;
+  background: var(--gold);
+  margin-bottom: 40px;
+}
+
+.agenda-list { display: flex; flex-direction: column; gap: 14px; flex: 1; justify-content: center; }
+.agenda-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 24px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255,255,255,.02);
+  transition: background .2s;
+  cursor: default;
+}
+.agenda-item:hover { background: rgba(201,168,76,.05); }
+.agenda-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  color: rgba(201,168,76,.3);
+  font-weight: 700;
+  min-width: 40px;
+}
+.agenda-text { flex: 1; }
+.agenda-text strong { font-size: 16px; font-weight: 600; color: var(--text); display: block; }
+.agenda-text span { font-size: 12px; color: var(--muted); margin-top: 2px; display: block; }
+.agenda-arrow { color: var(--gold); opacity: .4; font-size: 18px; }
+
+/* ─── SLIDE 3 — Conteúdo (2 colunas) ─────────── */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+.col-left { display: flex; flex-direction: column; justify-content: center; }
+.col-left p {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+.col-left p strong { color: var(--text); font-weight: 600; }
+.col-right { display: flex; flex-direction: column; gap: 16px; justify-content: center; }
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+}
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+.stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+/* ─── SLIDE 4 — Dados / Gráfico ──────────────── */
+.chart-wrap { flex: 1; display: flex; align-items: flex-end; gap: 20px; padding-top: 20px; }
+.bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.bar-outer {
+  width: 100%;
+  height: 240px;
+  background: rgba(255,255,255,.04);
+  border-radius: 6px 6px 0 0;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  position: relative;
+}
+.bar-fill {
+  width: 100%;
+  background: linear-gradient(180deg, var(--gold2) 0%, var(--gold) 100%);
+  border-radius: 6px 6px 0 0;
+  transition: height 1.2s cubic-bezier(.22,1,.36,1);
+  height: 0;
+}
+.bar-fill.prev { background: rgba(201,168,76,.25); }
+.bar-val { font-size: 13px; font-weight: 600; color: var(--gold2); }
+.bar-lbl { font-size: 11px; color: var(--muted); text-align: center; }
+.chart-legend {
+  display: flex; gap: 24px; margin-top: 24px;
+  font-size: 12px; color: var(--muted);
+}
+.chart-legend span { display: flex; align-items: center; gap: 8px; }
+.leg-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+/* ─── SLIDE 5 — Cards de pilares ────────────── */
+.pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; flex: 1; padding-top: 8px; }
+.pillar-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: border-color .2s, transform .2s;
+}
+.pillar-card:hover { border-color: rgba(201,168,76,.4); transform: translateY(-3px); }
+.pillar-icon { font-size: 28px; }
+.pillar-card h3 { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--text); }
+.pillar-card p { font-size: 13px; color: var(--muted); line-height: 1.65; flex: 1; }
+.pillar-card .tag {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3px 10px;
+  width: fit-content;
+}
+
+/* ─── SLIDE 6 — Quote / Depoimento ──────────── */
+.quote-slide {
+  background: radial-gradient(ellipse 70% 70% at 50% 50%, #120f05 0%, var(--bg) 70%);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.quote-mark {
+  font-family: 'Playfair Display', serif;
+  font-size: 120px;
+  line-height: .6;
+  color: rgba(201,168,76,.15);
+  user-select: none;
+}
+.quote-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 30px;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--text);
+  max-width: 820px;
+  margin: 0 24px;
+  position: relative;
+  z-index: 2;
+}
+.quote-text em { color: var(--gold); font-style: normal; }
+.quote-author {
+  margin-top: 32px;
+  font-size: 14px;
+  color: var(--muted);
+  letter-spacing: .08em;
+}
+.quote-author strong { color: var(--gold); display: block; font-size: 16px; margin-bottom: 2px; }
+
+/* ─── SLIDE 7 — Encerramento ─────────────────── */
+.closing {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: radial-gradient(ellipse 80% 60% at 50% 50%, #1a1408 0%, var(--bg) 70%);
+}
+.closing h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 54px;
+  font-weight: 700;
+  color: var(--text);
+  max-width: 700px;
+  line-height: 1.15;
+  position: relative; z-index: 2;
+}
+.closing h2 em { color: var(--gold); font-style: italic; }
+.closing-sub {
+  margin-top: 16px;
+  font-size: 16px;
+  color: var(--muted);
+  position: relative; z-index: 2;
+}
+.closing-cta {
+  margin-top: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--gold);
+  color: #0A0A0F;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: .08em;
+  padding: 14px 32px;
+  border-radius: 4px;
+  text-decoration: none;
+  position: relative; z-index: 2;
+  transition: background .2s;
+}
+.closing-cta:hover { background: var(--gold2); }
+.closing-contacts {
+  margin-top: 40px;
+  display: flex;
+  gap: 40px;
+  font-size: 13px;
+  color: var(--muted);
+  position: relative; z-index: 2;
+}
+.closing-contacts span { display: flex; align-items: center; gap: 8px; }
+.closing-contacts span::before { content: '◆'; color: var(--gold); font-size: 7px; }
+
+/* ─── Navigation ─────────────────────────────── */
+#nav {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 100;
+  background: rgba(10,10,15,.85);
+  border: 1px solid var(--border);
+  border-radius: 40px;
+  padding: 8px 20px;
+  backdrop-filter: blur(12px);
+}
+.nav-btn {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s, border-color .15s;
+}
+.nav-btn:hover { background: rgba(201,168,76,.12); border-color: var(--gold); }
+#slide-counter { font-size: 12px; color: var(--muted); min-width: 50px; text-align: center; }
+.nav-dots { display: flex; gap: 6px; }
+.dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(201,168,76,.25);
+  cursor: pointer;
+  transition: background .2s, transform .2s;
+}
+.dot.active { background: var(--gold); transform: scale(1.4); }
+
+/* ─── Animated entry for slide elements ──────── */
+.slide.active .anim {
+  animation: fadeUp .6s ease forwards;
+}
+.slide.active .anim:nth-child(1) { animation-delay: .1s; }
+.slide.active .anim:nth-child(2) { animation-delay: .2s; }
+.slide.active .anim:nth-child(3) { animation-delay: .3s; }
+.slide.active .anim:nth-child(4) { animation-delay: .4s; }
+.slide.active .anim:nth-child(5) { animation-delay: .5s; }
+.anim { opacity: 0; transform: translateY(20px); }
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Progress bar ───────────────────────────── */
+#progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--gold);
+  transition: width .4s ease;
+  z-index: 200;
+}
+
+/* ─── Keyboard hint ──────────────────────────── */
+#hint {
+  position: fixed;
+  top: 20px; right: 28px;
+  font-size: 11px;
+  color: rgba(201,168,76,.3);
+  z-index: 100;
+  letter-spacing: .06em;
+}
+
+/* ─── PRINT / PDF ────────────────────────────── */
+@media print {
+  @page { size: A4 landscape; margin: 0; }
+  html, body { overflow: visible; width: 297mm; height: 210mm; background: white; }
+  #nav, #hint, #progress { display: none !important; }
+  #deck {
+    position: static;
+    transform: none;
+    width: 297mm;
+    height: auto;
+  }
+  .slide {
+    position: relative;
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: all;
+    page-break-after: always;
+    width: 297mm;
+    height: 210mm;
+    background: white !important;
+    color: #1a1a1a !important;
+  }
+  .slide::before { background: linear-gradient(90deg, #B8860B 0%, #D4AF37 60%, transparent 100%) !important; }
+  .slide::after { display: none; }
+  .slide-logo, .slide-num { color: #999 !important; }
+  .cover, .quote-slide, .closing { background: white !important; }
+  .cover-grid, .cover-diamond, .cover-diamond2 { display: none; }
+  .cover h1, .slide-title, .closing h2 { color: #1a1a1a !important; }
+  .cover h1 em, .slide-title em, .closing h2 em { color: #B8860B !important; }
+  .cover-eyebrow, .slide-tag, .agenda-num, .stat-num, .bar-val,
+  .pillar-card .tag, .quote-text em, .closing-cta { color: #B8860B !important; }
+  .cover-sub, .col-left p, .stat-label, .pillar-card p,
+  .quote-author, .closing-sub, .closing-contacts { color: #555 !important; }
+  .agenda-item, .stat-card, .pillar-card {
+    background: #f9f9f9 !important;
+    border-color: #ddd !important;
+  }
+  .bar-outer { background: #f3f3f3 !important; }
+  .bar-fill { background: linear-gradient(180deg, #D4AF37 0%, #B8860B 100%) !important; }
+  .bar-fill.prev { background: #ddd !important; }
+  .anim { opacity: 1 !important; transform: none !important; }
+  .closing-cta { background: #B8860B !important; color: white !important; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div id="hint">← → ou setas do teclado</div>
+
+<div id="deck">
+
+  <!-- ─ SLIDE 1: CAPA ──────────────────────────────── -->
+  <div class="slide cover active" data-slide="1">
+    <div class="cover-grid"></div>
+    <div class="cover-diamond"></div>
+    <div class="cover-diamond cover-diamond2"></div>
+    <div class="cover-eyebrow anim">STM Group</div>
+    <h1 class="anim">Título da <em>Apresentação</em></h1>
+    <p class="cover-sub anim">Subtítulo descritivo da apresentação — contexto, objetivo ou proposta de valor</p>
+    <div class="cover-meta anim">
+      <span>Março 2026</span>
+      <span>Confidencial</span>
+      <span>STM Group</span>
+    </div>
+    <div class="slide-logo">STM GROUP</div>
+  </div>
+
+  <!-- ─ SLIDE 2: AGENDA ────────────────────────────── -->
+  <div class="slide" data-slide="2">
+    <div class="slide-inner">
+      <div class="slide-tag anim">Agenda</div>
+      <h2 class="slide-title anim">O que vamos <em>cobrir</em></h2>
+      <div class="slide-line anim"></div>
+      <div class="agenda-list">
+        <div class="agenda-item anim">
+          <span class="agenda-num">01</span>
+          <div class="agenda-text">
+            <strong>Contexto & Oportunidade</strong>
+            <span>Cenário atual do mercado e onde estamos posicionados</span>
+          </div>
+          <span class="agenda-arrow">→</span>
+        </div>
+        <div class="agenda-item anim">
+          <span class="agenda-num">02</span>
+          <div class="agenda-text">
+            <strong>Nossa Proposta</strong>
+            <span>Solução, diferencial e modelo de entrega</span>
+          </div>
+          <span class="agenda-arrow">→</span>
+        </div>
+        <div class="agenda-item anim">
+          <span class="agenda-num">03</span>
+          <div class="agenda-text">
+            <strong>Resultados & Evidências</strong>
+            <span>Cases, métricas e prova social</span>
+          </div>
+          <span class="agenda-arrow">→</span>
+        </div>
+        <div class="agenda-item anim">
+          <span class="agenda-num">04</span>
+          <div class="agenda-text">
+            <strong>Próximos Passos</strong>
+            <span>Proposta comercial e cronograma</span>
+          </div>
+          <span class="agenda-arrow">→</span>
+        </div>
+      </div>
+    </div>
+    <div class="slide-logo">STM GROUP</div>
+    <div class="slide-num">02</div>
+  </div>
+
+  <!-- ─ SLIDE 3: CONTEÚDO 2 COLUNAS ───────────────── -->
+  <div class="slide" data-slide="3">
+    <div class="slide-inner">
+      <div class="slide-tag anim">Contexto</div>
+      <h2 class="slide-title anim">O <em>cenário</em> atual</h2>
+      <div class="slide-line anim"></div>
+      <div class="cols">
+        <div class="col-left anim">
+          <p>O mercado está em <strong>transformação acelerada</strong>. Empresas que não adaptam sua estratégia perdem terreno para concorrentes mais ágeis.</p>
+          <p>A <strong>STM Group</strong> atua na interseção entre planejamento patrimonial, tecnologia e crescimento comercial — entregando resultados mensuráveis.</p>
+          <p>Nossa abordagem combina <strong>rigor analítico</strong> com execução pragmática, gerando impacto real em menos tempo.</p>
+        </div>
+        <div class="col-right anim">
+          <div class="stat-card">
+            <div class="stat-num">60+</div>
+            <div class="stat-label">Empresas atendidas em 2025</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">R$ 70M</div>
+            <div class="stat-label">Em receita gerada para clientes</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">8</div>
+            <div class="stat-label">Agentes especializados no Panteão</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-logo">STM GROUP</div>
+    <div class="slide-num">03</div>
+  </div>
+
+  <!-- ─ SLIDE 4: GRÁFICO ───────────────────────────── -->
+  <div class="slide" data-slide="4">
+    <div class="slide-inner">
+      <div class="slide-tag anim">Resultados</div>
+      <h2 class="slide-title anim">Crescimento <em>consistente</em></h2>
+      <div class="slide-line anim"></div>
+      <div class="chart-wrap anim" id="chartWrap">
+        <div class="bar-group">
+          <div class="bar-outer"><div class="bar-fill prev" data-h="38"></div></div>
+          <div class="bar-val">R$12M</div>
+          <div class="bar-lbl">2022</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-outer"><div class="bar-fill prev" data-h="55"></div></div>
+          <div class="bar-val">R$28M</div>
+          <div class="bar-lbl">2023</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-outer"><div class="bar-fill" data-h="72"></div></div>
+          <div class="bar-val">R$47M</div>
+          <div class="bar-lbl">2024</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-outer"><div class="bar-fill" data-h="100"></div></div>
+          <div class="bar-val">R$70M</div>
+          <div class="bar-lbl">2025</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-outer"><div class="bar-fill" data-h="85" style="background:linear-gradient(180deg,rgba(232,213,163,.8) 0%,rgba(201,168,76,.5) 100%);border:1px dashed rgba(201,168,76,.5);"></div></div>
+          <div class="bar-val" style="color:var(--muted)">R$120M</div>
+          <div class="bar-lbl">2026 meta</div>
+        </div>
+      </div>
+      <div class="chart-legend anim">
+        <span><span class="leg-dot" style="background:rgba(201,168,76,.3)"></span>Anos anteriores</span>
+        <span><span class="leg-dot" style="background:var(--gold)"></span>Realizado</span>
+        <span><span class="leg-dot" style="background:rgba(201,168,76,.4);border:1px dashed var(--gold)"></span>Meta 2026</span>
+      </div>
+    </div>
+    <div class="slide-logo">STM GROUP</div>
+    <div class="slide-num">04</div>
+  </div>
+
+  <!-- ─ SLIDE 5: PILARES ───────────────────────────── -->
+  <div class="slide" data-slide="5">
+    <div class="slide-inner">
+      <div class="slide-tag anim">Nossa Proposta</div>
+      <h2 class="slide-title anim">Três pilares de <em>valor</em></h2>
+      <div class="slide-line anim"></div>
+      <div class="pillars">
+        <div class="pillar-card anim">
+          <div class="pillar-icon">◆</div>
+          <h3>Patrimônio</h3>
+          <p>Estruturação patrimonial com consórcio estratégico, proteção familiar e planejamento de longo prazo para pessoas e empresas.</p>
+          <span class="tag">STM Capital</span>
+        </div>
+        <div class="pillar-card anim">
+          <div class="pillar-icon">◈</div>
+          <h3>Tecnologia</h3>
+          <p>Automação inteligente com agentes de IA especializados — do marketing à operação, reduzindo custos e aumentando escala.</p>
+          <span class="tag">STM Digital</span>
+        </div>
+        <div class="pillar-card anim">
+          <div class="pillar-icon">◉</div>
+          <h3>Crescimento</h3>
+          <p>Consultoria comercial com método comprovado: playbook, funil, KPIs e treinamento de equipes para escalar receita.</p>
+          <span class="tag">STM Consultancy</span>
+        </div>
+      </div>
+    </div>
+    <div class="slide-logo">STM GROUP</div>
+    <div class="slide-num">05</div>
+  </div>
+
+  <!-- ─ SLIDE 6: QUOTE ─────────────────────────────── -->
+  <div class="slide quote-slide" data-slide="6">
+    <div class="quote-mark anim">"</div>
+    <blockquote class="quote-text anim">
+      Não entregamos relatórios. Entregamos <em>resultados</em> — e ficamos até o final para garantir que aconteçam.
+    </blockquote>
+    <div class="quote-author anim">
+      <strong>Yuri Moraes</strong>
+      Fundador & CEO, STM Group
+    </div>
+    <div class="slide-logo">STM GROUP</div>
+    <div class="slide-num">06</div>
+  </div>
+
+  <!-- ─ SLIDE 7: ENCERRAMENTO ──────────────────────── -->
+  <div class="slide closing" data-slide="7">
+    <div class="cover-grid"></div>
+    <div class="cover-diamond"></div>
+    <div class="cover-diamond cover-diamond2"></div>
+    <h2 class="anim">Pronto para <em>começar</em>?</h2>
+    <p class="closing-sub anim">Fale com um especialista STM Group</p>
+    <a href="https://wa.me/5581987859731" class="closing-cta anim">Agendar conversa →</a>
+    <div class="closing-contacts anim">
+      <span>yuri.moraes@stmgroup.com.br</span>
+      <span>stmgroup.com.br</span>
+      <span>+55 (81) 98785-9731</span>
+    </div>
+    <div class="slide-logo">STM GROUP</div>
+  </div>
+
+</div><!-- /deck -->
+
+<!-- Navigation -->
+<div id="nav">
+  <button class="nav-btn" id="prevBtn">←</button>
+  <div class="nav-dots" id="dots"></div>
+  <span id="slide-counter">1 / 7</span>
+  <button class="nav-btn" id="nextBtn">→</button>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const dots   = document.getElementById('dots');
+const counter= document.getElementById('slide-counter');
+const prog   = document.getElementById('progress');
+let cur = 0;
+
+// Build dots
+slides.forEach((_,i)=>{
+  const d = document.createElement('div');
+  d.className = 'dot' + (i===0?' active':'');
+  d.onclick = ()=>goTo(i);
+  dots.appendChild(d);
+});
+
+function goTo(n){
+  if(n<0||n>=slides.length) return;
+  slides[cur].classList.remove('active');
+  slides[cur].classList.add('exit');
+  setTimeout(()=>{ slides[cur].classList.remove('exit'); cur=n; activate(); }, 550);
+}
+
+function activate(){
+  slides[cur].classList.add('active');
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===cur));
+  counter.textContent = `${cur+1} / ${slides.length}`;
+  prog.style.width = `${((cur+1)/slides.length)*100}%`;
+  // Animate bars if chart slide
+  slides[cur].querySelectorAll('.bar-fill').forEach(b=>{
+    b.style.height='0';
+    setTimeout(()=>{ b.style.height = b.dataset.h+'%'; }, 300);
+  });
+}
+
+document.getElementById('prevBtn').onclick = ()=>goTo(cur-1);
+document.getElementById('nextBtn').onclick = ()=>goTo(cur+1);
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') goTo(cur+1);
+  if(e.key==='ArrowLeft' ||e.key==='ArrowUp')   goTo(cur-1);
+  if(e.key==='p'||e.key==='P') window.print();
+});
+
+// Initial bar animation
+activate();
+
+// Scale to fit window
+function resize(){
+  const sw=window.innerWidth, sh=window.innerHeight;
+  const scale = Math.min(sw/1280, sh/720);
+  document.getElementById('deck').style.setProperty('--scale', scale);
+  document.getElementById('deck').style.transform = `translate(-50%,-50%) scale(${scale})`;
+}
+window.addEventListener('resize', resize);
+resize();
+</script>
+</body>
+</html>

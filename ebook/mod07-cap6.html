@@ -1,0 +1,1003 @@
+<style>
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0a0f;
+  --bg-card: #111119;
+  --bg-code: #1a1a2e;
+  --bg-callout: #13131f;
+  --text: #e8e8f0;
+  --text-muted: #888899;
+  --gold: #c9a84c;
+  --gold-light: #e2c06e;
+  --purple: #7c3aed;
+  --purple-light: #9d5cf5;
+  --indigo: #4f46e5;
+  --green: #10b981;
+  --red: #e53e3e;
+  --orange: #f59e0b;
+  --border: #222235;
+  --max-width: 820px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.85;
+  overflow-x: hidden;
+}
+
+/* ===== PROGRESS BAR ===== */
+#progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--purple), var(--gold));
+  z-index: 1000;
+  transition: width 0.1s linear;
+}
+
+/* ===== BACK TO TOP ===== */
+#back-top {
+  position: fixed;
+  bottom: 2rem; right: 2rem;
+  background: var(--gold);
+  color: #000;
+  border: none;
+  border-radius: 50%;
+  width: 46px; height: 46px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-weight: 700;
+}
+#back-top.visible { opacity: 1; }
+#back-top:hover { transform: translateY(-3px); }
+
+/* ===== LAYOUT ===== */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+#sidebar {
+  width: 270px;
+  min-width: 270px;
+  background: var(--bg-card);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  flex-shrink: 0;
+  transition: transform 0.3s;
+  z-index: 100;
+}
+
+#sidebar-inner { padding: 1.5rem 1rem; }
+
+.sidebar-brand {
+  font-family: 'Playfair Display', serif;
+  color: var(--gold);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+.sidebar-sub {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+#sidebar h3 {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+#sidebar ul { list-style: none; }
+#sidebar ul li { margin-bottom: 0.1rem; }
+#sidebar ul li a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+  line-height: 1.3;
+}
+#sidebar ul li a:hover { background: rgba(201,168,76,0.08); color: var(--gold); }
+.toc-num {
+  display: inline-block;
+  min-width: 22px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--purple);
+  flex-shrink: 0;
+}
+
+/* ===== MAIN ===== */
+main {
+  flex: 1;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 2rem 5rem;
+  width: 100%;
+  min-width: 0;
+}
+
+/* ===== COVER ===== */
+#cover {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 4rem 2rem;
+  position: relative;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(124,58,237,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(201,168,76,0.06) 0%, transparent 50%);
+  overflow: hidden;
+}
+#cover::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+.cover-badge {
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+  display: block;
+}
+.cover-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 8vw, 4.8rem);
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 60px rgba(201,168,76,0.3);
+}
+.cover-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  max-width: 520px;
+  margin: 0 auto 2.5rem;
+  font-weight: 300;
+  line-height: 1.6;
+}
+.cover-divider {
+  width: 120px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto 2rem;
+}
+.cover-version {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--purple-light);
+  margin-bottom: 0.5rem;
+}
+.cover-meta {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 2.5rem;
+}
+.cover-cta {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.9rem 2.2rem;
+  background: linear-gradient(135deg, var(--purple), var(--indigo));
+  color: #fff;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 20px rgba(124,58,237,0.3);
+}
+.cover-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,58,237,0.4); }
+
+/* ===== CHAPTER SECTIONS ===== */
+.chapter {
+  padding: 5rem 0 3rem;
+  border-bottom: 1px solid var(--border);
+}
+.chapter:last-of-type { border-bottom: none; }
+
+.chapter-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--purple-light);
+  margin-bottom: 0.75rem;
+  display: block;
+}
+.chapter-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+}
+.chapter-intro {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 640px;
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+
+/* ===== CALLOUT BOXES ===== */
+.callout {
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  margin: 1.5rem 0;
+  border-left: 4px solid;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+.callout-tip {
+  background: rgba(16,185,129,0.07);
+  border-color: var(--green);
+  color: #b2f0db;
+}
+.callout-tip strong { color: var(--green); }
+.callout-warn {
+  background: rgba(245,158,11,0.07);
+  border-color: var(--orange);
+  color: #fde8a8;
+}
+.callout-warn strong { color: var(--orange); }
+.callout-danger {
+  background: rgba(229,62,62,0.07);
+  border-color: var(--red);
+  color: #fca5a5;
+}
+.callout-danger strong { color: var(--red); }
+.callout-info {
+  background: rgba(124,58,237,0.07);
+  border-color: var(--purple);
+  color: #c4b5fd;
+}
+.callout-info strong { color: var(--purple-light); }
+.callout-icon { font-size: 1.2rem; margin-right: 0.5rem; }
+
+/* ===== CODE BLOCKS ===== */
+.code-block {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  padding-top: 2.75rem;
+  margin: 1.25rem 0;
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: #a5b4fc;
+  position: relative;
+}
+.code-block .comment { color: #6b7280; }
+.code-block .string { color: #86efac; }
+.code-block .key { color: #f9a8d4; }
+/* ===== COPY BUTTON ===== */
+.copy-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: rgba(129,140,248,0.15);
+  border: 1px solid rgba(129,140,248,0.35);
+  color: #a5b4fc;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  letter-spacing: 0.02em;
+  z-index: 10;
+  user-select: none;
+}
+.copy-btn:hover {
+  background: rgba(129,140,248,0.28);
+  border-color: rgba(129,140,248,0.6);
+  color: #e0e7ff;
+}
+.copy-btn.copied {
+  background: rgba(34,197,94,0.18);
+  border-color: rgba(34,197,94,0.45);
+  color: #86efac;
+}
+.copy-btn svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+.code-filename {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--gold);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  padding: 0.4rem 1rem;
+  border-radius: 8px 8px 0 0;
+  display: inline-block;
+}
+.code-filename + .code-block { border-radius: 0 8px 8px 8px; margin-top: 0; }
+
+/* ===== CHECKLIST ===== */
+.checklist {
+  background: var(--bg-callout);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  margin: 2rem 0;
+}
+.checklist h4 {
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+.checklist ul { list-style: none; }
+.checklist ul li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.5rem 0.4rem;
+  font-size: 0.95rem;
+  color: var(--text);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+  user-select: none;
+}
+.checklist ul li:hover { background: rgba(129,140,248,0.06); }
+.checklist ul li:last-child { border-bottom: none; }
+.checklist ul li.done { color: #6b7280; }
+.checklist ul li.done .check-label { text-decoration: line-through; }
+.check-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px; height: 20px;
+  border: 2px solid var(--purple);
+  border-radius: 5px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  transition: background 0.2s, border-color 0.2s;
+  position: relative;
+  cursor: pointer;
+}
+.check-box.checked {
+  background: #818cf8;
+  border-color: #818cf8;
+}
+.check-box.checked::after {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 9px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+/* ===== TABLE ===== */
+.table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+th {
+  background: rgba(124,58,237,0.15);
+  color: var(--purple-light);
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--purple);
+}
+td {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+}
+tr:hover td { background: rgba(255,255,255,0.02); }
+.badge-free {
+  background: rgba(16,185,129,0.15);
+  color: var(--green);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge-paid {
+  background: rgba(245,158,11,0.15);
+  color: var(--orange);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge-premium {
+  background: rgba(201,168,76,0.15);
+  color: var(--gold);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* ===== STEP BOXES ===== */
+.step {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  margin: 1.5rem 0;
+}
+.step-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--purple), var(--indigo));
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+.step-body h4 { color: var(--gold); font-size: 1rem; margin-bottom: 0.3rem; }
+.step-body p { font-size: 0.95rem; color: var(--text-muted); }
+
+/* ===== BEFORE/AFTER ===== */
+.before-after {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+.ba-card {
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+.ba-before {
+  background: rgba(229,62,62,0.06);
+  border: 1px solid rgba(229,62,62,0.2);
+}
+.ba-after {
+  background: rgba(16,185,129,0.06);
+  border: 1px solid rgba(16,185,129,0.2);
+}
+.ba-card h4 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+.ba-before h4 { color: var(--red); }
+.ba-after h4 { color: var(--green); }
+.ba-card ul { list-style: none; }
+.ba-card ul li {
+  font-size: 0.9rem;
+  padding: 0.3rem 0;
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ===== TIER CARDS ===== */
+.tiers {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin: 2.5rem 0;
+}
+.tier-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.tier-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+.tier-card.featured {
+  border-color: var(--purple);
+  box-shadow: 0 0 30px rgba(124,58,237,0.15);
+}
+.tier-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--purple), var(--indigo));
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 3px 14px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.tier-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.tier-price {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 0.25rem;
+}
+.tier-price span { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
+.tier-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+.tier-features { list-style: none; text-align: left; margin-bottom: 1.5rem; }
+.tier-features li {
+  font-size: 0.85rem;
+  padding: 0.3rem 0;
+  color: var(--text);
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+.tier-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+.tier-btn {
+  display: block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.88rem;
+  transition: transform 0.2s;
+  background: linear-gradient(135deg, var(--purple), var(--indigo));
+  color: #fff;
+}
+.tier-btn:hover { transform: translateY(-2px); }
+
+/* ===== GLOSSARY ===== */
+.glossary-item {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.glossary-term {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.glossary-def {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+.glossary-analogy {
+  font-size: 0.85rem;
+  color: var(--purple-light);
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+/* ===== SECTION DIVIDER ===== */
+.section-divider {
+  width: 60px; height: 3px;
+  background: linear-gradient(90deg, var(--purple), var(--indigo));
+  border-radius: 2px;
+  margin: 1.5rem 0;
+}
+
+/* ===== HIGHLIGHT BOX ===== */
+.highlight-box {
+  background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(79,70,229,0.08));
+  border: 1px solid rgba(124,58,237,0.25);
+  border-radius: 12px;
+  padding: 1.75rem;
+  margin: 2rem 0;
+}
+.highlight-box h3 { color: var(--purple-light); font-size: 1.1rem; margin-bottom: 0.75rem; }
+
+/* ===== HEADING STYLES ===== */
+h2 { font-size: 1.5rem; color: var(--text); margin: 2rem 0 0.75rem; }
+h3 { font-size: 1.15rem; color: var(--gold-light); margin: 1.5rem 0 0.5rem; }
+p { margin-bottom: 1rem; }
+strong { color: var(--gold-light); }
+em { color: var(--purple-light); }
+a { color: var(--purple-light); }
+
+/* ===== TOC ===== */
+#toc-section {
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+.toc-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 0.88rem;
+  transition: all 0.2s;
+}
+.toc-item:hover { border-color: var(--purple); color: var(--gold); }
+.toc-item-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--purple-light);
+  min-width: 28px;
+}
+
+/* ===== PRINT PROTECTION ===== */
+@media print { body { display: none !important; } }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  #sidebar { display: none; }
+  main { padding: 0 1.25rem 4rem; }
+  .before-after { grid-template-columns: 1fr; }
+  .tiers { grid-template-columns: 1fr; }
+  .toc-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== ILLUSTRAÇÕES SVG ===== */
+.illustration {
+  background: #111;
+  border: 1px solid #D4AF37;
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2.5rem 0;
+  text-align: center;
+  overflow: hidden;
+}
+.illustration svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.illustration figcaption {
+  color: #888;
+  font-size: 0.85rem;
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+
+</style>
+
+<section id="cap6" class="chapter">
+  <span class="chapter-label">Capítulo 06</span>
+  <h1 class="chapter-title">Memória: Como Seu Agente Lembra das Coisas</h1>
+  <p class="chapter-intro">Por padrão, um agente de IA "esquece" tudo após cada conversa. Com memória persistente, ele lembra do seu nome, suas preferências, projetos em andamento e contexto importante — para sempre.</p>
+
+<div class="illustration">
+<svg viewBox="0 0 600 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Memória com e sem persistência">
+  <!-- Sem memória (esquerda) -->
+  <text x="140" y="20" text-anchor="middle" fill="#e53e3e" font-size="13" font-family="Inter,sans-serif" font-weight="600">❌ Sem Memória</text>
+  <!-- Loop circular -->
+  <circle cx="140" cy="95" r="65" fill="none" stroke="#e53e3e" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="140" y="68" text-anchor="middle" fill="#fca5a5" font-size="10" font-family="Inter,sans-serif">pergunta</text>
+  <text x="195" y="100" text-anchor="middle" fill="#fca5a5" font-size="10" font-family="Inter,sans-serif">responde</text>
+  <text x="140" y="132" text-anchor="middle" fill="#fca5a5" font-size="10" font-family="Inter,sans-serif">esquece</text>
+  <text x="85" y="100" text-anchor="middle" fill="#fca5a5" font-size="10" font-family="Inter,sans-serif">pergunta</text>
+  <!-- Setas do loop -->
+  <path d="M155 70 Q200 70 198 90" stroke="#e53e3e" stroke-width="1.5" fill="none" marker-end="url(#arr-red)"/>
+  <path d="M195 108 Q195 135 165 135" stroke="#e53e3e" stroke-width="1.5" fill="none" marker-end="url(#arr-red)"/>
+  <path d="M120 133 Q90 133 85 110" stroke="#e53e3e" stroke-width="1.5" fill="none" marker-end="url(#arr-red)"/>
+  <path d="M85 88 Q85 68 115 65" stroke="#e53e3e" stroke-width="1.5" fill="none" marker-end="url(#arr-red)"/>
+  <defs>
+    <marker id="arr-red" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#e53e3e"/>
+    </marker>
+    <marker id="arr-gold" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#D4AF37"/>
+    </marker>
+  </defs>
+  <!-- VS -->
+  <text x="300" y="100" text-anchor="middle" fill="#D4AF37" font-size="22" font-family="Playfair Display,serif" font-weight="700">vs</text>
+  <!-- Com memória (direita) — linha crescente -->
+  <text x="460" y="20" text-anchor="middle" fill="#10b981" font-size="13" font-family="Inter,sans-serif" font-weight="600">✅ Com Memória</text>
+  <!-- Linha crescente -->
+  <line x1="360" y1="140" x2="560" y2="140" stroke="#555" stroke-width="1"/>
+  <polyline points="370,135 410,115 450,100 490,80 530,55" stroke="#10b981" stroke-width="2.5" fill="none"/>
+  <circle cx="370" cy="135" r="5" fill="#10b981"/>
+  <circle cx="410" cy="115" r="5" fill="#10b981"/>
+  <circle cx="450" cy="100" r="5" fill="#10b981"/>
+  <circle cx="490" cy="80" r="5" fill="#10b981"/>
+  <circle cx="530" cy="55" r="5" fill="#10b981"/>
+  <text x="370" y="158" text-anchor="middle" fill="#aaa" font-size="9" font-family="Inter,sans-serif">conv 1</text>
+  <text x="450" y="158" text-anchor="middle" fill="#aaa" font-size="9" font-family="Inter,sans-serif">conv 2</text>
+  <text x="530" y="158" text-anchor="middle" fill="#aaa" font-size="9" font-family="Inter,sans-serif">conv 3...</text>
+  <text x="540" y="45" fill="#10b981" font-size="10" font-family="Inter,sans-serif">cada vez</text>
+  <text x="540" y="58" fill="#10b981" font-size="10" font-family="Inter,sans-serif">mais inteligente</text>
+</svg>
+<figcaption>Sem memória o agente reinicia do zero. Com memória, ele evolui a cada conversa.</figcaption>
+</div>
+
+
+  <div class="section-divider"></div>
+
+  <h2>O Problema do "Amnésico Digital"</h2>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">💡</span>
+    <div><strong>Analogia:</strong> Imagine contratar um assistente que toda segunda-feira acorda sem se lembrar de nada da semana anterior. Você teria que reexplicar tudo do zero toda vez. É exatamente assim que um agente sem memória funciona. Frustrante, né?</div>
+  </div>
+
+  <p>No OpenClaw, a memória é resolvida de forma elegante com arquivos de texto simples que persistem na VPS. O agente lê esses arquivos no início de cada conversa e "lembra" do contexto.</p>
+
+  <h2>Tipos de Memória no OpenClaw</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Arquivo</th>
+          <th>O que armazena</th>
+          <th>Quando usar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Identidade</strong></td>
+          <td><code>SOUL.md</code></td>
+          <td>Personalidade fixa do agente</td>
+          <td>Sempre carregado</td>
+        </tr>
+        <tr>
+          <td><strong>Status Atual</strong></td>
+          <td><code>STATUS.md</code></td>
+          <td>O que está acontecendo agora</td>
+          <td>Atualizado pelo agente</td>
+        </tr>
+        <tr>
+          <td><strong>Log Diário</strong></td>
+          <td><code>daily/YYYY-MM-DD.md</code></td>
+          <td>O que aconteceu hoje</td>
+          <td>Criado automaticamente</td>
+        </tr>
+        <tr>
+          <td><strong>Decisões</strong></td>
+          <td><code>memory/decisions.md</code></td>
+          <td>Decisões importantes tomadas</td>
+          <td>Atualizado manualmente</td>
+        </tr>
+        <tr>
+          <td><strong>Projetos</strong></td>
+          <td><code>memory/projects.md</code></td>
+          <td>Contexto de projetos ativos</td>
+          <td>Atualizado conforme avança</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Criando a Estrutura de Memória</h2>
+  <p>Cole no chat do TUI — o agente cria toda a estrutura de pastas e o arquivo inicial para você:</p>
+
+  <div class="code-block">
+Crie a estrutura de memória para você mesmo. Faça o seguinte:
+
+1. Crie a pasta memory/ dentro do workspace
+2. Crie a pasta daily/ dentro do workspace
+3. Crie um arquivo STATUS.md no workspace com o conteúdo:
+
+# Status — [data de hoje]
+
+## Contexto Atual
+- Agente recém configurado
+- Aguardando primeiras tarefas
+
+## Projetos Ativos
+- (nenhum ainda)
+
+## Últimas Decisões
+- (nenhuma ainda)
+
+Após criar tudo, confirme listando os arquivos criados.
+  </div>
+
+  <div class="code-filename">~/.openclaw/workspace/STATUS.md</div>
+  <div class="code-block">
+# Status Atual — Meu Assistente Digital
+
+**Última atualização:** 2026-03-23
+
+## Em Andamento
+- Configurando sistema de agentes IA
+- Aprendendo a usar OpenClaw
+
+## Contexto Importante
+- Usuário: (seu nome aqui)
+- Fuso horário: UTC-3 (Horário de Brasília)
+- Projetos principais: (liste seus projetos aqui)
+
+## Preferências
+- Respostas diretas, sem enrolação
+- Usar emojis com moderação
+- Sempre confirmar antes de ações irreversíveis
+  </div>
+
+  <h2>Instruindo o Agente a Usar a Memória</h2>
+  <p>No chat do TUI, cole a mensagem abaixo. O agente vai atualizar o próprio SOUL.md com as regras de memória:</p>
+
+  <div class="code-block">
+Atualize seu SOUL.md adicionando as seguintes regras de gestão de memória no final do arquivo:
+
+## Gestão de Memória
+
+A cada sessão, leia obrigatoriamente:
+1. STATUS.md — estado atual, projetos, contexto
+2. daily/YYYY-MM-DD.md — log do dia (se existir)
+
+Ao final de cada sessão produtiva, atualize:
+- STATUS.md se algo importante mudou
+- Crie ou atualize daily/YYYY-MM-DD.md com o resumo
+
+Nunca confie apenas na memória da conversa atual.
+Se não está escrito em arquivo, não existe.
+
+Após atualizar, confirme que o SOUL.md foi salvo.
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">💡</span>
+    <div><strong>Dica:</strong> Você pode pedir ao agente para salvar qualquer coisa: "Lembre que minha reunião de vendas é toda terça às 15h" — ele vai escrever isso no STATUS.md automaticamente e lembrar na próxima vez que você mencionar reunião.</div>
+  </div>
+
+  <h2>🔍 Busca Semântica na Memória (Novo em v6)</h2>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">💡</span>
+    <div><strong>O que é busca semântica?</strong> Em vez de procurar por palavras exatas (como <code>grep</code>), a busca semântica entende o <em>significado</em> da sua pergunta. Pergunte "qual foi a decisão sobre preços?" e ela encontra trechos relevantes mesmo que a palavra "preços" não apareça exatamente — porque entende o contexto.</div>
+  </div>
+
+  <p>O sistema de memória do seu projeto agora usa <strong>Voyage AI + pgvector no Supabase</strong> para busca semântica em todos os arquivos de memória. O processo é simples:</p>
+
+  <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li>Os arquivos <code>memory/*.md</code> são convertidos em vetores pelo Voyage AI</li>
+    <li>Os vetores ficam armazenados no Supabase com pgvector</li>
+    <li>Quando você busca, o sistema compara vetores por similaridade (não por texto exato)</li>
+    <li>Resultado: encontra contexto relevante mesmo com palavras diferentes</li>
+  </ol>
+
+  <h3>Como Usar a Busca Semântica</h3>
+
+  <div class="code-block">
+<span class="comment"># Buscar por significado na memória do agente</span>
+python3 ~/.openclaw/workspace/shared/memory-search.py "sua pergunta em linguagem natural"
+
+<span class="comment"># Exemplos práticos:</span>
+python3 shared/memory-search.py "qual foi a decisão sobre o dashboard"
+python3 shared/memory-search.py "erros cometidos com Meta API"
+python3 shared/memory-search.py "status atual dos projetos"
+python3 shared/memory-search.py "preços e planos do produto digital"
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>O que é indexado</th>
+          <th>Arquivo/Fonte</th>
+          <th>Tipo de Memória</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Decisões tomadas</td>
+          <td><code>memory/decisions.md</code></td>
+          <td>Local (hot tier)</td>
+        </tr>
+        <tr>
+          <td>Lições e aprendizados</td>
+          <td><code>memory/lessons.md</code></td>
+          <td>Local (hot tier)</td>
+        </tr>
+        <tr>
+          <td>Bloqueios ativos</td>
+          <td><code>memory/pending.md</code></td>
+          <td>Local</td>
+        </tr>
+        <tr>
+          <td>Status de projetos</td>
+          <td><code>memory/projects.md</code></td>
+          <td>Local</td>
+        </tr>
+        <tr>
+          <td>Fatos sobre pessoas</td>
+          <td><code>memory/people.md</code></td>
+          <td>Local</td>
+        </tr>
+        <tr>
+          <td>Base de conhecimento geral</td>
+          <td>Supabase tabela <code>knowledge</code></td>
+          <td>Nuvem (Supabase)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">💰</span>
+    <div><strong>Custo: Gratuito.</strong> O Voyage AI oferece <strong>200 milhões de tokens</strong> no free tier — mais do que suficiente para indexar e buscar a memória de um time de agentes por meses. Modelo usado: <code>voyage-3.5-lite</code>. Re-indexação automática roda todo dia às 3h BRT.</div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">ℹ️</span>
+    <div><strong>Quando usar:</strong> Antes de tomar qualquer decisão importante, ao retomar uma tarefa ou quando precisar recuperar contexto histórico. Pense como uma "memória de longo prazo" que o agente pode consultar sob demanda.</div>
+  </div>
+
+  <div class="checklist">
+    <h4>✅ Checklist — Cap 6</h4>
+    <ul>
+      <li><span class="check-box"></span>Criei a pasta <code style="font-family:monospace">memory/</code> e <code style="font-family:monospace">daily/</code></li>
+      <li><span class="check-box"></span>Criei e preenchi o STATUS.md com meu contexto</li>
+      <li><span class="check-box"></span>Atualizei o SOUL.md com instruções de memória</li>
+      <li><span class="check-box"></span>Testei a busca semântica: <code style="font-family:monospace">python3 shared/memory-search.py "teste"</code></li>
+      <li><span class="check-box"></span>Testei: pedi ao agente para lembrar de algo e verificar se ele lembrou na próxima mensagem</li>
+    </ul>
+  </div>
+</section>

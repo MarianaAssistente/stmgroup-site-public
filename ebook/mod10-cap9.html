@@ -1,0 +1,935 @@
+<style>
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0a0f;
+  --bg-card: #111119;
+  --bg-code: #1a1a2e;
+  --bg-callout: #13131f;
+  --text: #e8e8f0;
+  --text-muted: #888899;
+  --gold: #c9a84c;
+  --gold-light: #e2c06e;
+  --purple: #7c3aed;
+  --purple-light: #9d5cf5;
+  --indigo: #4f46e5;
+  --green: #10b981;
+  --red: #e53e3e;
+  --orange: #f59e0b;
+  --border: #222235;
+  --max-width: 820px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.85;
+  overflow-x: hidden;
+}
+
+/* ===== PROGRESS BAR ===== */
+#progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--purple), var(--gold));
+  z-index: 1000;
+  transition: width 0.1s linear;
+}
+
+/* ===== BACK TO TOP ===== */
+#back-top {
+  position: fixed;
+  bottom: 2rem; right: 2rem;
+  background: var(--gold);
+  color: #000;
+  border: none;
+  border-radius: 50%;
+  width: 46px; height: 46px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-weight: 700;
+}
+#back-top.visible { opacity: 1; }
+#back-top:hover { transform: translateY(-3px); }
+
+/* ===== LAYOUT ===== */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+#sidebar {
+  width: 270px;
+  min-width: 270px;
+  background: var(--bg-card);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  flex-shrink: 0;
+  transition: transform 0.3s;
+  z-index: 100;
+}
+
+#sidebar-inner { padding: 1.5rem 1rem; }
+
+.sidebar-brand {
+  font-family: 'Playfair Display', serif;
+  color: var(--gold);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+.sidebar-sub {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+#sidebar h3 {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+#sidebar ul { list-style: none; }
+#sidebar ul li { margin-bottom: 0.1rem; }
+#sidebar ul li a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+  line-height: 1.3;
+}
+#sidebar ul li a:hover { background: rgba(201,168,76,0.08); color: var(--gold); }
+.toc-num {
+  display: inline-block;
+  min-width: 22px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--purple);
+  flex-shrink: 0;
+}
+
+/* ===== MAIN ===== */
+main {
+  flex: 1;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 2rem 5rem;
+  width: 100%;
+  min-width: 0;
+}
+
+/* ===== COVER ===== */
+#cover {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 4rem 2rem;
+  position: relative;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(124,58,237,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(201,168,76,0.06) 0%, transparent 50%);
+  overflow: hidden;
+}
+#cover::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+.cover-badge {
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+  display: block;
+}
+.cover-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 8vw, 4.8rem);
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 60px rgba(201,168,76,0.3);
+}
+.cover-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  max-width: 520px;
+  margin: 0 auto 2.5rem;
+  font-weight: 300;
+  line-height: 1.6;
+}
+.cover-divider {
+  width: 120px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto 2rem;
+}
+.cover-version {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--purple-light);
+  margin-bottom: 0.5rem;
+}
+.cover-meta {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 2.5rem;
+}
+.cover-cta {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.9rem 2.2rem;
+  background: linear-gradient(135deg, var(--purple), var(--indigo));
+  color: #fff;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 20px rgba(124,58,237,0.3);
+}
+.cover-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,58,237,0.4); }
+
+/* ===== CHAPTER SECTIONS ===== */
+.chapter {
+  padding: 5rem 0 3rem;
+  border-bottom: 1px solid var(--border);
+}
+.chapter:last-of-type { border-bottom: none; }
+
+.chapter-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--purple-light);
+  margin-bottom: 0.75rem;
+  display: block;
+}
+.chapter-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+}
+.chapter-intro {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 640px;
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+
+/* ===== CALLOUT BOXES ===== */
+.callout {
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  margin: 1.5rem 0;
+  border-left: 4px solid;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+.callout-tip {
+  background: rgba(16,185,129,0.07);
+  border-color: var(--green);
+  color: #b2f0db;
+}
+.callout-tip strong { color: var(--green); }
+.callout-warn {
+  background: rgba(245,158,11,0.07);
+  border-color: var(--orange);
+  color: #fde8a8;
+}
+.callout-warn strong { color: var(--orange); }
+.callout-danger {
+  background: rgba(229,62,62,0.07);
+  border-color: var(--red);
+  color: #fca5a5;
+}
+.callout-danger strong { color: var(--red); }
+.callout-info {
+  background: rgba(124,58,237,0.07);
+  border-color: var(--purple);
+  color: #c4b5fd;
+}
+.callout-info strong { color: var(--purple-light); }
+.callout-icon { font-size: 1.2rem; margin-right: 0.5rem; }
+
+/* ===== CODE BLOCKS ===== */
+.code-block {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  padding-top: 2.75rem;
+  margin: 1.25rem 0;
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: #a5b4fc;
+  position: relative;
+}
+.code-block .comment { color: #6b7280; }
+.code-block .string { color: #86efac; }
+.code-block .key { color: #f9a8d4; }
+/* ===== COPY BUTTON ===== */
+.copy-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: rgba(129,140,248,0.15);
+  border: 1px solid rgba(129,140,248,0.35);
+  color: #a5b4fc;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  letter-spacing: 0.02em;
+  z-index: 10;
+  user-select: none;
+}
+.copy-btn:hover {
+  background: rgba(129,140,248,0.28);
+  border-color: rgba(129,140,248,0.6);
+  color: #e0e7ff;
+}
+.copy-btn.copied {
+  background: rgba(34,197,94,0.18);
+  border-color: rgba(34,197,94,0.45);
+  color: #86efac;
+}
+.copy-btn svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+.code-filename {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--gold);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  padding: 0.4rem 1rem;
+  border-radius: 8px 8px 0 0;
+  display: inline-block;
+}
+.code-filename + .code-block { border-radius: 0 8px 8px 8px; margin-top: 0; }
+
+/* ===== CHECKLIST ===== */
+.checklist {
+  background: var(--bg-callout);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  margin: 2rem 0;
+}
+.checklist h4 {
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+.checklist ul { list-style: none; }
+.checklist ul li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.5rem 0.4rem;
+  font-size: 0.95rem;
+  color: var(--text);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+  user-select: none;
+}
+.checklist ul li:hover { background: rgba(129,140,248,0.06); }
+.checklist ul li:last-child { border-bottom: none; }
+.checklist ul li.done { color: #6b7280; }
+.checklist ul li.done .check-label { text-decoration: line-through; }
+.check-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px; height: 20px;
+  border: 2px solid var(--purple);
+  border-radius: 5px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  transition: background 0.2s, border-color 0.2s;
+  position: relative;
+  cursor: pointer;
+}
+.check-box.checked {
+  background: #818cf8;
+  border-color: #818cf8;
+}
+.check-box.checked::after {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 9px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+/* ===== TABLE ===== */
+.table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+th {
+  background: rgba(124,58,237,0.15);
+  color: var(--purple-light);
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--purple);
+}
+td {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+}
+tr:hover td { background: rgba(255,255,255,0.02); }
+.badge-free {
+  background: rgba(16,185,129,0.15);
+  color: var(--green);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge-paid {
+  background: rgba(245,158,11,0.15);
+  color: var(--orange);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge-premium {
+  background: rgba(201,168,76,0.15);
+  color: var(--gold);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* ===== STEP BOXES ===== */
+.step {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  margin: 1.5rem 0;
+}
+.step-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--purple), var(--indigo));
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+.step-body h4 { color: var(--gold); font-size: 1rem; margin-bottom: 0.3rem; }
+.step-body p { font-size: 0.95rem; color: var(--text-muted); }
+
+/* ===== BEFORE/AFTER ===== */
+.before-after {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+.ba-card {
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+.ba-before {
+  background: rgba(229,62,62,0.06);
+  border: 1px solid rgba(229,62,62,0.2);
+}
+.ba-after {
+  background: rgba(16,185,129,0.06);
+  border: 1px solid rgba(16,185,129,0.2);
+}
+.ba-card h4 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+.ba-before h4 { color: var(--red); }
+.ba-after h4 { color: var(--green); }
+.ba-card ul { list-style: none; }
+.ba-card ul li {
+  font-size: 0.9rem;
+  padding: 0.3rem 0;
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ===== TIER CARDS ===== */
+.tiers {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin: 2.5rem 0;
+}
+.tier-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.tier-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+.tier-card.featured {
+  border-color: var(--purple);
+  box-shadow: 0 0 30px rgba(124,58,237,0.15);
+}
+.tier-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--purple), var(--indigo));
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 3px 14px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.tier-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.tier-price {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 0.25rem;
+}
+.tier-price span { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
+.tier-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+.tier-features { list-style: none; text-align: left; margin-bottom: 1.5rem; }
+.tier-features li {
+  font-size: 0.85rem;
+  padding: 0.3rem 0;
+  color: var(--text);
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+.tier-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+.tier-btn {
+  display: block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.88rem;
+  transition: transform 0.2s;
+  background: linear-gradient(135deg, var(--purple), var(--indigo));
+  color: #fff;
+}
+.tier-btn:hover { transform: translateY(-2px); }
+
+/* ===== GLOSSARY ===== */
+.glossary-item {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.glossary-term {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.glossary-def {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+.glossary-analogy {
+  font-size: 0.85rem;
+  color: var(--purple-light);
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+/* ===== SECTION DIVIDER ===== */
+.section-divider {
+  width: 60px; height: 3px;
+  background: linear-gradient(90deg, var(--purple), var(--indigo));
+  border-radius: 2px;
+  margin: 1.5rem 0;
+}
+
+/* ===== HIGHLIGHT BOX ===== */
+.highlight-box {
+  background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(79,70,229,0.08));
+  border: 1px solid rgba(124,58,237,0.25);
+  border-radius: 12px;
+  padding: 1.75rem;
+  margin: 2rem 0;
+}
+.highlight-box h3 { color: var(--purple-light); font-size: 1.1rem; margin-bottom: 0.75rem; }
+
+/* ===== HEADING STYLES ===== */
+h2 { font-size: 1.5rem; color: var(--text); margin: 2rem 0 0.75rem; }
+h3 { font-size: 1.15rem; color: var(--gold-light); margin: 1.5rem 0 0.5rem; }
+p { margin-bottom: 1rem; }
+strong { color: var(--gold-light); }
+em { color: var(--purple-light); }
+a { color: var(--purple-light); }
+
+/* ===== TOC ===== */
+#toc-section {
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+.toc-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 0.88rem;
+  transition: all 0.2s;
+}
+.toc-item:hover { border-color: var(--purple); color: var(--gold); }
+.toc-item-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--purple-light);
+  min-width: 28px;
+}
+
+/* ===== PRINT PROTECTION ===== */
+@media print { body { display: none !important; } }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  #sidebar { display: none; }
+  main { padding: 0 1.25rem 4rem; }
+  .before-after { grid-template-columns: 1fr; }
+  .tiers { grid-template-columns: 1fr; }
+  .toc-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== ILLUSTRAÇÕES SVG ===== */
+.illustration {
+  background: #111;
+  border: 1px solid #D4AF37;
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2.5rem 0;
+  text-align: center;
+  overflow: hidden;
+}
+.illustration svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.illustration figcaption {
+  color: #888;
+  font-size: 0.85rem;
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+
+</style>
+
+<section id="cap9" class="chapter">
+  <span class="chapter-label">Capítulo 09</span>
+  <h1 class="chapter-title">Integrações: Gmail, Google Drive e Calendário</h1>
+  <p class="chapter-intro">Seu agente só é verdadeiramente útil quando conectado às ferramentas que você já usa. Neste capítulo, vamos conectar o agente ao Gmail, Google Drive e Google Calendar.</p>
+
+  <div class="section-divider"></div>
+
+  <h2>Por Que Google Workspace?</h2>
+  <p>A maioria das pessoas já usa Gmail e Google Drive. Conectar seu agente a essas ferramentas significa que ele pode:</p>
+  <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li>📧 Ler, resumir e responder e-mails automaticamente</li>
+    <li>📁 Salvar documentos e relatórios no Drive</li>
+    <li>📅 Verificar sua agenda e criar eventos</li>
+    <li>📊 Ler e escrever em planilhas do Sheets</li>
+    <li>📝 Criar e editar documentos no Docs</li>
+  </ul>
+
+  <h2>Usando o GOG CLI (Google Workspace CLI)</h2>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">💡</span>
+    <div><strong>O que é GOG?</strong> GOG (Google Operations Gateway) é uma ferramenta de linha de comando que conecta o OpenClaw ao Google Workspace. É como uma "ponte" entre seu agente e todos os serviços do Google.</div>
+  </div>
+
+  <div class="code-block">
+<span class="comment"># Instalar o GOG CLI</span>
+npm install -g gog-cli
+
+<span class="comment"># Verificar instalação</span>
+gog --version
+  </div>
+
+  <h2>Configurando a Service Account do Google</h2>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">ℹ️</span>
+    <div><strong>O que é Service Account?</strong> É uma "conta de serviço" criada no Google Cloud que permite que programas (como seu agente) acessem os serviços do Google sem precisar digitar sua senha toda vez. É como uma chave mestra para o seu Google Workspace.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <h4>Acessar o Google Cloud Console</h4>
+      <p>Vá em <strong>console.cloud.google.com</strong>, faça login com sua conta Google e crie um novo projeto (ex: "Meu Agente IA").</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <h4>Ativar as APIs necessárias</h4>
+      <p>No menu, vá em <strong>APIs &amp; Services → Enable APIs</strong>. Ative: Gmail API, Google Drive API, Google Calendar API, Google Sheets API.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <h4>Criar Service Account</h4>
+      <p>Em <strong>IAM &amp; Admin → Service Accounts → Create Service Account</strong>. Dê um nome e clique em "Create and Continue".</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <h4>Baixar a chave JSON</h4>
+      <p>Clique na service account criada → <strong>Keys → Add Key → Create New Key → JSON</strong>. Vai baixar um arquivo .json. Faça upload na VPS.</p>
+    </div>
+  </div>
+
+  <div class="code-block">
+<span class="comment"># Copiar o arquivo de chave para a VPS (do seu computador)</span>
+<span class="comment"># Execute esse comando no seu computador local, não na VPS</span>
+scp ~/Downloads/meu-projeto-xxxxx.json root@SEU_IP_VPS:~/.openclaw/workspace/google-sa.json
+
+<span class="comment"># Na VPS: testar a autenticação</span>
+GOG_ACCOUNT=seu@gmail.com gog gmail labels list
+  </div>
+
+  <h2>Exemplos de Comandos com Gmail</h2>
+
+  <div class="code-block">
+<span class="comment"># Ler e-mails não lidos dos últimos 7 dias</span>
+gog gmail search 'is:unread newer_than:7d'
+
+<span class="comment"># Enviar e-mail</span>
+gog gmail send \
+  --to "cliente@email.com" \
+  --subject "Retorno ao seu contato" \
+  --body "Olá! Vi sua mensagem e..."
+
+<span class="comment"># Listar eventos do calendário de hoje</span>
+gog calendar events list --today
+
+<span class="comment"># Criar evento no calendário</span>
+gog calendar events create \
+  --summary "Reunião de Vendas" \
+  --start "2026-04-01T15:00:00-03:00" \
+  --end "2026-04-01T16:00:00-03:00"
+
+<span class="comment"># Fazer upload de arquivo no Drive</span>
+gog drive upload ~/.openclaw/workspace/relatorio.pdf
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">⚠️</span>
+    <div><strong>Delegação de Domínio:</strong> Para o agente acessar Gmail e Calendar em seu nome, você precisa ativar a "Delegação de Domínio" na Service Account. Isso só funciona com Google Workspace (conta paga). Para Gmail pessoal (@gmail.com), use OAuth2 normal.</div>
+  </div>
+
+  <h2>🗄️ Supabase — A Integração Principal para Persistência</h2>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">💡</span>
+    <div><strong>O que é o Supabase?</strong> Supabase é um banco de dados PostgreSQL na nuvem com API automática, autenticação e Realtime integrados. Para seus agentes, é o lugar onde toda atividade fica registrada — tarefas, conhecimento, status, métricas — tudo acessível em tempo real no dashboard.</div>
+  </div>
+
+  <p>Enquanto o Google Workspace serve para comunicação (e-mail, calendário, documentos), o <strong>Supabase é a espinha dorsal de dados do seu time de agentes</strong>: onde tudo é registrado, consultado e sincronizado em tempo real.</p>
+
+  <h3>Tabelas Principais do seu projeto</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Tabela</th>
+          <th>O Que Armazena</th>
+          <th>Quem Usa</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>tasks</code></td>
+          <td>Código, título, status, agente responsável, timestamps</td>
+          <td>Todos os agentes — toda tarefa registrada aqui</td>
+        </tr>
+        <tr>
+          <td><code>knowledge</code></td>
+          <td>Base de conhecimento indexável (código + conteúdo)</td>
+          <td>Busca semântica, consultas frequentes</td>
+        </tr>
+        <tr>
+          <td><code>agent_status</code></td>
+          <td>Estado de cada agente: working/standby/idle/blocked</td>
+          <td>Monitor de agentes (cron 15 min)</td>
+        </tr>
+        <tr>
+          <td><code>daily_metrics</code></td>
+          <td>Custos de LLM, tokens usados, tarefas concluídas por dia</td>
+          <td>Dashboard de custos</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Configuração Básica</h3>
+
+  <div class="code-block">
+<span class="comment"># Registrar tarefa no início (status: in_progress)</span>
+SVC="SUA_SERVICE_ROLE_KEY"
+NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+curl -s -X POST "https://SEU_PROJECT.supabase.co/rest/v1/tasks" \
+  -H "Authorization: Bearer $SVC" \
+  -H "apikey: $SVC" \
+  -H "Content-Type: application/json" \
+  -H "Prefer: return=representation" \
+  -d "{
+    \"title\": \"Minha tarefa\",
+    \"description\": \"O que vou fazer\",
+    \"agent_id\": \"hefesto\",
+    \"status\": \"in_progress\",
+    \"vertical\": \"tecnologia\"
+  }"
+
+<span class="comment"># Marcar como concluída</span>
+curl -s -X PATCH "https://SEU_PROJECT.supabase.co/rest/v1/tasks?code=eq.TSK-001" \
+  -H "Authorization: Bearer $SVC" \
+  -H "apikey: $SVC" \
+  -H "Content-Type: application/json" \
+  -d "{\"status\":\"done\",\"completed_at\":\"$NOW\"}"
+  </div>
+
+  <div class="callout callout-danger">
+    <span class="callout-icon">🚨</span>
+    <div><strong>Regra de segurança RLS:</strong> Use sempre a <strong>service_role key</strong> para escrita (INSERT/UPDATE) nos agentes. A anon key é só para leitura. Nunca exponha a service_role key no frontend ou em repositórios públicos.</div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">ℹ️</span>
+    <div><strong>Supabase Realtime:</strong> Quando um agente faz PATCH no banco (ex: <code>status: done</code>), o dashboard atualiza automaticamente sem reload — graças ao Supabase Realtime via WebSocket. É o que faz o dashboard parecer vivo.</div>
+  </div>
+
+  <div class="checklist">
+    <h4>✅ Checklist — Cap 9</h4>
+    <ul>
+      <li><span class="check-box"></span>Criei projeto no Google Cloud Console</li>
+      <li><span class="check-box"></span>Ativei as APIs do Google (Gmail, Drive, Calendar)</li>
+      <li><span class="check-box"></span>Criei Service Account e baixei o arquivo JSON</li>
+      <li><span class="check-box"></span>Copiei o arquivo JSON para a VPS</li>
+      <li><span class="check-box"></span>Testei <code style="font-family:monospace">gog gmail labels list</code> com sucesso</li>
+      <li><span class="check-box"></span>Criei projeto no Supabase e obtive as chaves (anon + service_role)</li>
+      <li><span class="check-box"></span>Criei as tabelas tasks, knowledge, agent_status no Supabase</li>
+      <li><span class="check-box"></span>Testei inserir uma tarefa via curl</li>
+    </ul>
+  </div>
+</section>

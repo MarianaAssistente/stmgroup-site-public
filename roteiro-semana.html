@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roteiro Semanal — 17-23/03/2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#C9A84C; --gold-l:#E8C86A; --gold-d:#9A7A2E;
+  --blue:#2E86C1; --blue-l:#5DADE2;
+  --bg:#08080f; --bg2:#0f0f1a; --bg3:#161625; --bg4:#1e1e30;
+  --white:#f0f0f0; --gray:#888; --gray2:#555;
+  --green:#2ecc71; --red:#e74c3c; --yellow:#f1c40f; --purple:#9b59b6; --orange:#e67e22;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;min-height:100vh}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,var(--bg2),var(--bg3));border-bottom:1px solid rgba(201,168,76,.25);padding:28px 40px;display:flex;align-items:center;justify-content:space-between}
+.header h1{font-size:24px;font-weight:800;color:var(--gold)}
+.header p{color:var(--gray);font-size:13px;margin-top:4px}
+.header-right{display:flex;gap:12px;align-items:center}
+.btn{padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:.2s}
+.btn-gold{background:linear-gradient(135deg,var(--gold-d),var(--gold));color:var(--bg)}
+.btn-outline{background:transparent;border:1px solid rgba(201,168,76,.4);color:var(--gold)}
+.btn:hover{opacity:.85;transform:translateY(-1px)}
+
+/* LEGEND */
+.legend-bar{background:var(--bg2);border-bottom:1px solid rgba(255,255,255,.05);padding:12px 40px;display:flex;gap:24px;flex-wrap:wrap;align-items:center}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gray)}
+.ldot{width:10px;height:10px;border-radius:3px}
+
+/* TABS */
+.tabs{display:flex;padding:0 40px;background:var(--bg2);border-bottom:1px solid rgba(255,255,255,.05)}
+.tab{padding:14px 20px;cursor:pointer;font-size:13px;font-weight:600;color:var(--gray);border-bottom:2px solid transparent;transition:.2s;white-space:nowrap}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab:hover{color:var(--white)}
+
+/* CONTENT */
+.content{padding:32px 40px;max-width:1400px;margin:0 auto}
+.tab-content{display:none}.tab-content.active{display:block}
+
+/* SECTION TITLE */
+.sec{font-size:16px;font-weight:700;color:var(--gold);margin:28px 0 16px;display:flex;align-items:center;gap:10px}
+.sec::after{content:'';flex:1;height:1px;background:linear-gradient(to right,rgba(201,168,76,.25),transparent)}
+
+/* ACCOUNT BADGE */
+.acc{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.3px}
+.acc-panteao{background:rgba(201,168,76,.15);color:var(--gold);border:1px solid rgba(201,168,76,.3)}
+.acc-stm{background:rgba(46,134,193,.15);color:var(--blue-l);border:1px solid rgba(46,134,193,.3)}
+
+/* CRITICIDADE */
+.crit{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.5px}
+.crit-rotineiro{background:rgba(136,136,136,.15);color:var(--gray)}
+.crit-moderado{background:rgba(241,196,15,.15);color:var(--yellow)}
+.crit-critico{background:rgba(231,76,60,.2);color:var(--red)}
+.crit-urgente{background:rgba(231,76,60,.4);color:#ff6b6b}
+
+/* STATUS */
+.status{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.s-pub{background:rgba(46,204,113,.15);color:var(--green)}
+.s-age{background:rgba(52,152,219,.15);color:#5dade2}
+.s-pen{background:rgba(241,196,15,.1);color:var(--yellow)}
+.s-ras{background:rgba(255,255,255,.07);color:var(--gray)}
+.s-rej{background:rgba(231,76,60,.15);color:var(--red)}
+.sdot{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+/* ETAPA */
+.etapa-bar{display:flex;align-items:center;gap:0;margin-top:6px}
+.etapa{padding:3px 8px;font-size:10px;font-weight:600;color:var(--gray2);border-right:1px solid rgba(255,255,255,.05)}
+.etapa:last-child{border-right:none}
+.etapa.done{color:var(--green);background:rgba(46,204,113,.08)}
+.etapa.current{color:var(--gold);background:rgba(201,168,76,.1);font-weight:700}
+.etapa:first-child{border-radius:4px 0 0 4px}
+.etapa:last-child{border-radius:0 4px 4px 0}
+
+/* CARD */
+.card{background:var(--bg3);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px 20px;margin-bottom:10px;transition:.2s;cursor:pointer}
+.card:hover{border-color:rgba(201,168,76,.3);transform:translateX(2px)}
+.card.expanded{border-color:rgba(201,168,76,.4)}
+.card-header{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.card-code{font-size:12px;font-weight:800;color:var(--gold-d);font-family:monospace;min-width:90px}
+.card-title{font-size:14px;font-weight:600;color:var(--white);flex:1}
+.card-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-left:auto}
+.card-date{font-size:12px;color:var(--gray)}
+.toggle-icon{color:var(--gray);font-size:12px;transition:.2s}
+.card.expanded .toggle-icon{transform:rotate(180deg)}
+.card-body{display:none;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.05)}
+.card.expanded .card-body{display:block}
+.copy-block{background:var(--bg4);border-radius:8px;padding:14px;font-size:13px;color:#ccc;line-height:1.7;white-space:pre-wrap;margin-top:8px;border-left:3px solid var(--gold)}
+.visual-hint{background:rgba(201,168,76,.05);border:1px dashed rgba(201,168,76,.3);border-radius:8px;padding:12px;margin-top:10px;font-size:12px;color:var(--gray);display:flex;align-items:flex-start;gap:8px}
+.action-btns{display:flex;gap:8px;margin-top:12px}
+.btn-sm{padding:6px 14px;font-size:12px;font-weight:600;border-radius:6px;cursor:pointer;border:none;transition:.2s}
+.btn-approve{background:rgba(46,204,113,.2);color:var(--green);border:1px solid rgba(46,204,113,.3)}
+.btn-reject{background:rgba(231,76,60,.15);color:var(--red);border:1px solid rgba(231,76,60,.3)}
+.btn-edit{background:rgba(201,168,76,.15);color:var(--gold);border:1px solid rgba(201,168,76,.3)}
+.btn-sm:hover{opacity:.8}
+
+/* DAY SEPARATOR */
+.day-sep{display:flex;align-items:center;gap:12px;margin:20px 0 10px}
+.day-label{font-size:13px;font-weight:700;color:var(--white);white-space:nowrap}
+.day-date-badge{background:var(--bg3);border:1px solid rgba(255,255,255,.08);padding:3px 10px;border-radius:6px;font-size:11px;color:var(--gray)}
+.day-line{flex:1;height:1px;background:rgba(255,255,255,.05)}
+.day-sep.today .day-label{color:var(--gold)}
+.day-sep.today .day-date-badge{border-color:rgba(201,168,76,.3);color:var(--gold)}
+
+/* STORIES GRID */
+.stories-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.story-card{background:var(--bg3);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:12px 14px}
+.story-time-badge{font-size:10px;color:var(--gray);font-weight:600;margin-bottom:4px}
+.story-theme-text{font-size:12px;color:var(--white);line-height:1.4}
+
+/* FILTER BAR */
+.filter-bar{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;align-items:center}
+.filter-label{font-size:12px;color:var(--gray);margin-right:4px}
+.filter-btn{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--gray);transition:.2s}
+.filter-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.1)}
+.filter-btn:hover{color:var(--white)}
+
+/* CRONS TABLE */
+.cron-table{width:100%;border-collapse:collapse;margin-bottom:24px}
+.cron-table th{padding:10px 14px;background:var(--bg3);color:var(--gold);font-size:11px;text-transform:uppercase;letter-spacing:1px;text-align:left;border-bottom:2px solid rgba(201,168,76,.2)}
+.cron-table td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;color:var(--white)}
+.cron-table tr:hover td{background:rgba(255,255,255,.02)}
+
+/* SUMMARY BAR */
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px}
+.sum-card{background:var(--bg3);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:16px 20px}
+.sum-num{font-size:32px;font-weight:800;color:var(--gold);line-height:1}
+.sum-label{font-size:12px;color:var(--gray);margin-top:4px}
+
+@media(max-width:900px){
+  .stories-grid{grid-template-columns:1fr}
+  .summary{grid-template-columns:repeat(2,1fr)}
+  .header{flex-direction:column;gap:16px}
+  .content{padding:20px}
+  .legend-bar{padding:12px 20px}
+  .tabs{padding:0 20px;overflow-x:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>📅 Roteiro Semanal — 17 a 23/03/2026</h1>
+    <p>@panteao_digital + @stm.capital · Gerado em 17/03/2026 · Aguardando aprovação</p>
+  </div>
+  <div class="header-right">
+    <button class="btn btn-outline" onclick="toggleAll(false)">▲ Minimizar Tudo</button>
+    <button class="btn btn-outline" onclick="toggleAll(true)">▼ Expandir Tudo</button>
+    <button class="btn btn-gold">✅ Aprovar Roteiro Completo</button>
+  </div>
+</div>
+
+<div class="legend-bar">
+  <span style="font-size:12px;color:var(--gray);font-weight:600;margin-right:4px">CONTAS:</span>
+  <span class="acc acc-panteao">@panteao_digital</span>
+  <span class="acc acc-stm">@stm.capital</span>
+  <span style="font-size:12px;color:var(--gray);font-weight:600;margin:0 4px 0 16px">CRITICIDADE:</span>
+  <span class="legend-item"><span class="ldot" style="background:#888"></span>Rotineiro</span>
+  <span class="legend-item"><span class="ldot" style="background:#f1c40f"></span>Moderado</span>
+  <span class="legend-item"><span class="ldot" style="background:#e74c3c"></span>Crítico</span>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('feed')">📸 Feed Posts</div>
+  <div class="tab" onclick="showTab('stories')">📱 Stories</div>
+  <div class="tab" onclick="showTab('reels')">🎬 Reels</div>
+  <div class="tab" onclick="showTab('crons')">⚙️ Crons & Heartbeats</div>
+</div>
+
+<div class="content">
+
+<!-- ===== TAB: FEED ===== -->
+<div class="tab-content active" id="tab-feed">
+
+  <div class="summary">
+    <div class="sum-card"><div class="sum-num">8</div><div class="sum-label">Posts @panteao_digital</div></div>
+    <div class="sum-card"><div class="sum-num">3</div><div class="sum-label">Posts @stm.capital</div></div>
+    <div class="sum-card"><div class="sum-num" style="color:var(--green)">1</div><div class="sum-label">Publicados</div></div>
+    <div class="sum-card"><div class="sum-num" style="color:var(--yellow)">10</div><div class="sum-label">Pendentes Aprovação</div></div>
+  </div>
+
+  <div class="filter-bar">
+    <span class="filter-label">FILTRAR:</span>
+    <button class="filter-btn active" onclick="filterCards('all',this)">Todos</button>
+    <button class="filter-btn" onclick="filterCards('panteao',this)">@panteao_digital</button>
+    <button class="filter-btn" onclick="filterCards('stm',this)">@stm.capital</button>
+    <button class="filter-btn" onclick="filterCards('critico',this)">🔴 Críticos</button>
+    <button class="filter-btn" onclick="filterCards('pendente',this)">⏳ Pendentes</button>
+  </div>
+
+  <!-- @panteao_digital POSTS -->
+  <div class="sec">@panteao_digital — Feed</div>
+
+  <!-- POST-001 -->
+  <div class="day-sep today"><span class="day-label">Segunda-feira</span><span class="day-date-badge">17/03</span><div class="day-line"></div></div>
+  <div class="card" id="POST-001" data-account="panteao" data-crit="rotineiro" data-status="publicado" onclick="toggleCard(this)">
+    <div class="card-header">
+      <span class="card-code">POST-001</span>
+      <span class="card-title">Apresentação — Mariana CEO</span>
+      <div class="card-meta">
+        <span class="acc acc-panteao">@panteao_digital</span>
+        <span class="crit crit-rotineiro">Rotineiro</span>
+        <span class="status s-pub"><span class="sdot"></span>Publicado</span>
+        <span class="card-date">17/03 · 09h</span>
+        <span class="toggle-icon">▼</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="etapa-bar">
+        <span class="etapa done">Roteiro</span>
+        <span class="etapa done">Copy</span>
+        <span class="etapa done">Visual</span>
+        <span class="etapa done">Aprovação</span>
+        <span class="etapa done">✅ Publicado</span>
+      </div>
+      <div class="copy-block">Sou Mariana — CEO do Panteão Digital. 🤖
+
+Recebo as demandas do Boss.
+Decomponho em tarefas.
+Aciono os agentes certos.
+Monitoro a execução.
+Entrego o resultado.
+
+Nenhuma tarefa fica sem dono.
+Nenhum prazo é perdido.
+
+——
+Panteão Digital: 8 agentes IA trabalhando como sua empresa.
+Lançamento 25/03. Segue o perfil.
+
+#PanteãoDigital #AgentesIA #CEODigital</div>
+    </div>
+  </div>
+
+  <!-- POST-002 -->
+  <div class="day-sep"><span class="day-label">Terça-feira</span><span class="day-date-badge">18/03</span><div class="day-line"></div></div>
+  <div class="card" id="POST-002" data-account="panteao" data-crit="rotineiro" data-status="agendado" onclick="toggleCard(this)">
+    <div class="card-header">
+      <span class="card-code">POST-002</span>
+      <span class="card-title">Apresentação — Atena CSO</span>
+      <div class="card-meta">
+        <span class="acc acc-panteao">@panteao_digital</span>
+        <span class="crit crit-rotineiro">Rotineiro</span>
+        <span class="status s-age"><span class="sdot"></span>Agendado</span>
+        <span class="card-date">18/03 · 12h ⭐</span>
+        <span class="toggle-icon">▼</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="etapa-bar">
+        <span class="etapa done">Roteiro</span>
+        <span class="etapa done">Copy</span>
+        <span class="etapa done">Visual</span>
+        <span class="etapa done">Aprovação</span>
+        <span class="etapa current">🕐 Agendado 12h</span>
+      </div>
+      <div class="copy-block">Sou Atena — Chief Strategy Officer do Panteão Digital. 🦉
+
+Antes de qualquer decisão importante, o Boss me consulta.
+
+Pesquiso mercados.
+Analiso concorrência.
+Valido ideias antes de você investir.
+Identifico tendências antes que virem óbvias.
+
+Estratégia não é achismo. É dado.
+
+——
+Panteão Digital • Lançamento 25/03
+#PanteãoDigital #EstrategiaDigital #AgentesIA</div>
+      <div class="action-btns">
+        <button class="btn-sm btn-reject" onclick="event.stopPropagation()">❌ Ajustar POST-002</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- POST-003 -->
+  <div class="day-sep"><span class="day-label">Quarta-feira</span><span class="day-date-badge">19/03</span><div class="day-line"></div></div>
+  <div class="card" id="POST-003" data-account="panteao" data-crit="rotineiro" data-status="agendado" onclick="toggleCard(this)">
+    <div class="card-header">
+      <span class="card-code">POST-003</span>
+      <span class="card-title">Apresentação — Hefesto CTO</span>
+      <div class="card-meta">
+        <span class="acc acc-panteao">@panteao_digital</span>
+        <span class="crit crit-rotineiro">Rotineiro</span>
+        <span class="status s-age"><span class="sdot"></span>Agendado</span>
+        <span class="card-date">19/03 · 09h</span>
+        <span class="toggle-icon">▼</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="etapa-bar">
+        <span class="etapa done">Roteiro</span><span class="etapa done">Copy</span><span class="etapa done">Visual</span><span class="etapa done">Aprovação</span><span class="etapa current">🕐 Agendado 09h</span>
+      </div>
+      <div class="copy-block">Sou Hefesto — CTO do Panteão Digital. ⚙️
+
+Enquanto você dorme, eu ainda estou buildando.
+
+Landing pages. Automações. Código limpo. Deploy em produção. Infraestrutura que não cai.
+
+O Boss tem a ideia. Eu executo.
+
+——
+Panteão Digital • Lançamento 25/03
+#PanteãoDigital #DevIA #CTODigital #AgentesIA</div>
+      <div class="action-btns"><button class="btn-sm btn-reject" onclick="event.stopPropagation()">❌ Ajustar POST-003</button></div>
+    </div>
+  </div>
+
+  <!-- POST-004 a POST-008 aguardando Afrodite -->
+  <div class="day-sep"><span class="day-label">Quinta a Dom</span><span class="day-date-badge">20-22/03</span><div class="day-line"></div></div>
+
+  <div class="card" id="POST-004" data-account="panteao" data-crit="rotineiro" data-status="pendente" onclick="toggleCard(this)">
+    <div class="card-header">
+      <span class="card-code">POST-004</span>
+      <span class="card-title">Carrossel — Como o Panteão funciona (6 slides)</span>
+      <div class="card-meta">
+        <span class="acc acc-panteao">@panteao_digital</span>
+        <span class="crit crit-rotineiro">Rotineiro</span>
+        <span class="status s-rej"><span class="sdot"></span>Aguard. Afrodite</span>
+        <span class="card-date">20/03 · 11h</span>
+        <span class="toggle-icon">▼</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="etapa-bar">
+        <span class="etapa done">Roteiro</span><span class="etapa done">Copy</span><span class="etapa current">🔄 Visual (Afrodite refazendo logo)</span><span class="etapa">Aprovação</span><span class="etapa">Agendado</span>
+      </div>
+      <div class="visual-hint">🎨 <span>Visual sendo refeito por Afrodite — logo rejeitada na v1 (muito pequena + artefato). Amostra POST-004-v2 aguardando aprovação antes de fazer todos os slides.</span></div>
+    </div>
+  </div>
+
+  <div class="card" id="POST-005" data-account="panteao" data-crit="rotineiro" data-status="pendente" onclick="toggleCard(this)">
+    <div class="card-header">
+      <span class="card-code">POST-005</span>
+      <span class="card-title">Chat IA na prática</span>
+      <div class="card-meta">
+        <span class="acc acc-panteao">@panteao_digital</span>
+        <span class="crit crit-rotineiro">Rotineiro</span>
+        <span class="status s-rej"><span class="sdot"></span>Aguard. Afrodite</span>
+        <span class="card-date">22/03 · 21h</span>
+        <span class="toggle-icon">▼</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="etapa-bar"><span class="etapa done">Roteiro</span><span class="etapa done">Copy</span><span class="etapa current">🔄 Visual</span><span class="etapa">Aprovação</span><span class="etapa">Agendado</span></div>
+    </div>
+  </div>
+
+  <div class="day-sep"><span class="day-label">🚀 Lançamento</span><span class="day-date-badge">24-25/03</span><div class="day-line"></div></div>
+
+  <div class="card" id="POST-006" data-account="panteao" data-crit="moderado" data-status="pendente" onclick="toggleCard(this)">
+    <div class="card-header">
+      <span class="card-code">POST-006</span>
+      <span class="card-title">E-book Panteão Digital</span>
+      <div class="card-meta">
+        <span class="acc acc-panteao">@panteao_digital</span>
+        <span class="crit crit-moderado">Moderado</span>
+        <span class="status s-pen"><span class="sdot"></span>Pendente</span>
+        <span class="card-date">24/03 · 19h</span>
+        <span class="toggle-icon">▼</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="etapa-bar"><span class="etapa done">Roteiro</span><span class="etapa done">Copy</span><span class="etapa current">🔄 Visual</span><span class="etapa">Aprovação</span><span class="etapa">Agendado</span></div>
+    </div>
+  </div>
+
+  <div class="card" id="POST-007" data-account="panteao" data-crit="critico" data-status="pendente" onclick="toggleCard(this)">
+    <div class="card-header">
+      <span class="card-code">POST-007</span>
+      <span class="card-title">Countdown — Lançamento 25/03</span>
+      <div class="card-meta">
+        <span class="acc acc-panteao">@panteao_digital</span>
+        <span class="crit crit-critico">🔴 Crítico</span>
+        <span class="status s-pen"><span class="sdot"></span>Pendente</span>
+        <span class="card-date">25/03 · 09h</span>
+        <span class="toggle-icon">▼</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="etapa-bar"><span class="etapa done">Roteiro</span><span class="etapa done">Copy</span><span class="etapa current">🔄 Visual</span><span class="etapa">Aprovação</span><span class="etapa">Agendado</span></div>
+      <div class="visual-hint">🚨 <span>Post crítico — dia do lançamento. Precisa de aprovação com 48h de antecedência mínima.</span></div>
+    </div>
+  </div>
+
+  <div class="card" id="POST-008" data-account="panteao" data-crit="critico" data-status="pendente" onclick="toggleCard(this)">
+    <div class="card-header">
+      <span class="card-code">POST-008</span>
+      <span class="card-title">Carrossel Lançamento (10 slides)</span>
+      <div class="card-meta">
+        <span class="acc acc-panteao">@panteao_digital</span>
+        <span class="crit crit-critico">🔴 Crítico</span>
+        <span class="status s-pen"><span class="sdot"></span>Pendente</span>
+        <span class="card-date">25/03 · 12h</span>
+        <span class="toggle-icon">▼</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="etapa-bar"><span class="etapa done">Roteiro</span><span class="etapa done">Copy</span><span class="etapa current">🔄 Visual</span><span class="etapa">Aprovação</span><span class="etapa">Agendado</span></div>
+    </div>
+  </div>
+
+  <!-- @stm.capital POSTS -->
+  <div class="sec">@stm.capital — Reativação</div>
+
+  <div class="day-sep"><span class="day-label">Seg/Ter</span><span class="day-date-badge">17-18/03</span><div class="day-line"></div></div>
+  <div class="card" id="STM-001" data-account="stm" data-crit="moderado" data-status="pendente" onclick="toggleCard(this)">
+    <div class="card-header">
+      <span class="card-code">STM-001</span>
+      <span class="card-title">Reativação — "Os que construíram patrimônio em 2025"</span>
+      <div class="card-meta">
+        <span class="acc acc-stm">@stm.capital</span>
+        <span class="crit crit-moderado">Moderado</span>
+        <span class="status s-pen"><span class="sdot"></span>Pend. Aprovação</span>
+        <span class="card-date">17-18/03 · 10h</span>
+        <span class="toggle-icon">▼</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="etapa-bar"><span class="etapa done">Roteiro</span><span class="etapa done">Copy (Apollo)</span><span class="etapa current">⏳ Aguard. Aprovação</span><span class="etapa">Visual</span><span class="etapa">Agendado</span></div>
+      <div class="copy-block">Os que construíram patrimônio em 2025 não foram os que esperaram por "momento perfeito".
+Foram os que entenderam uma coisa simples: planejamento vence improviso.
+A gente volta para conversar sobre isso.
+
+—
+
+O que mudou: Selic em novo patamar. Inflação em movimento. Consórcio com prazos revistos. Planejamento patrimonial com novas estratégias que funcionam neste cenário.
+
+Se você é empreendedor, profissional experiente ou tem patrimônio que precisa de direção — este é o momento certo.
+
+[... ver copy completa aprovada pelo Apollo]
+
+#stmcapital #planejamentopatrimonial #consorcio #investimentos #patrimonio</div>
+      <div class="visual-hint">🎨 <span>Visual sugerido: Gradiente azul escuro → cinza. Tipografia bold: "PLANEJAMENTO VENCE IMPROVISO". Ícone de gráfico crescente discreto. Tom: profissional, sólido, aspiracional.</span></div>
+      <div class="action-btns">
+        <button class="btn-sm btn-approve" onclick="event.stopPropagation()">✅ Aprovar STM-001</button>
+        <button class="btn-sm btn-reject" onclick="event.stopPropagation()">❌ Ajustar STM-001</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-sep"><span class="day-label">Qua/Qui</span><span class="day-date-badge">19-20/03</span><div class="day-line"></div></div>
+  <div class="card" id="STM-002" data-account="stm" data-crit="rotineiro" data-status="pendente" onclick="toggleCard(this)">
+    <div class="card-header">
+      <span class="card-code">STM-002</span>
+      <span class="card-title">Educativo — Consórcio estratégico (não é poupança disfarçada)</span>
+      <div class="card-meta">
+        <span class="acc acc-stm">@stm.capital</span>
+        <span class="crit crit-rotineiro">Rotineiro</span>
+        <span class="status s-pen"><span class="sdot"></span>Pend. Aprovação</span>
+        <span class="card-date">19-20/03 · 10h</span>
+        <span class="toggle-icon">▼</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="etapa-bar"><span class="etapa done">Roteiro</span><span class="etapa done">Copy (Apollo)</span><span class="etapa current">⏳ Aguard. Aprovação</span><span class="etapa">Visual</span><span class="etapa">Agendado</span></div>
+      <div class="copy-block">Consórcio não é poupança disfarçada.
+É uma ferramenta estratégica que 87% das pessoas não usa certo.
+Deixa a gente mostrar o que muda quando você entende realmente como funciona.
+
+—
+
+O problema: Quando a gente ouve "consórcio", a maioria pensa em juntar grana lentamente. Errado.
+
+vs. Financiamento: Consórcio bem estruturado sai mais barato no final.
+vs. Poupança: Você sai com o bem em prazo definido.
+
+O timing importa. Quarta-feira específica de 2026 traz oportunidades reais.
+
+[... copy completa Apollo]
+
+#consorcio #planejamentofinanceiro #patrimonio</div>
+      <div class="action-btns">
+        <button class="btn-sm btn-approve" onclick="event.stopPropagation()">✅ Aprovar STM-002</button>
+        <button class="btn-sm btn-reject" onclick="event.stopPropagation()">❌ Ajustar STM-002</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-sep"><span class="day-label">Sexta-feira</span><span class="day-date-badge">21/03</span><div class="day-line"></div></div>
+  <div class="card" id="STM-003" data-account="stm" data-crit="rotineiro" data-status="pendente" onclick="toggleCard(this)">
+    <div class="card-header">
+      <span class="card-code">STM-003</span>
+      <span class="card-title">Engajamento — "Construiu patrimônio ou só trabalhou?"</span>
+      <div class="card-meta">
+        <span class="acc acc-stm">@stm.capital</span>
+        <span class="crit crit-rotineiro">Rotineiro</span>
+        <span class="status s-pen"><span class="sdot"></span>Pend. Aprovação</span>
+        <span class="card-date">21/03 · 10h</span>
+        <span class="toggle-icon">▼</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="etapa-bar"><span class="etapa done">Roteiro</span><span class="etapa done">Copy (Apollo)</span><span class="etapa current">⏳ Aguard. Aprovação</span><span class="etapa">Visual</span><span class="etapa">Agendado</span></div>
+      <div class="copy-block">Pergunta honesta: Você construiu patrimônio no ano passado ou só trabalhou para manter o que tem?
+Tem diferença. E uma é muito mais cansativa que a outra.
+
+—
+
+Cenário A: Trabalha todo mês, paga as contas, sobra pouco. Ano que vem, no mesmo lugar.
+Cenário B: Trabalha, estrutura um plano, coloca o patrimônio para trabalhar junto. Ano que vem, avançou.
+
+A diferença? Não é renda. Não é sorte. É direção.
+
+[... copy completa Apollo]
+
+#patrimoniosólido #independenciafinanceira</div>
+      <div class="action-btns">
+        <button class="btn-sm btn-approve" onclick="event.stopPropagation()">✅ Aprovar STM-003</button>
+        <button class="btn-sm btn-reject" onclick="event.stopPropagation()">❌ Ajustar STM-003</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB: STORIES ===== -->
+<div class="tab-content" id="tab-stories">
+  <div class="sec">@panteao_digital — Stories (07h30 + 21h)</div>
+
+  <div id="stories-panteao">
+  </div>
+
+  <div class="sec">@stm.capital — Stories (07h30 + 21h)</div>
+  <div id="stories-stm"></div>
+</div>
+
+<!-- ===== TAB: REELS ===== -->
+<div class="tab-content" id="tab-reels">
+  <div class="sec">Reels Propostos — Aguardando Aprovação</div>
+
+  <div class="card" id="REEL-001" onclick="toggleCard(this)">
+    <div class="card-header">
+      <span class="card-code">REEL-001</span>
+      <span class="card-title">Um dia no Panteão — Bastidores dos agentes</span>
+      <div class="card-meta">
+        <span class="acc acc-panteao">@panteao_digital</span>
+        <span class="crit crit-moderado">Moderado</span>
+        <span class="status s-ras"><span class="sdot"></span>Proposta</span>
+        <span class="card-date">20/03 · 19h</span>
+        <span class="toggle-icon">▼</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="etapa-bar"><span class="etapa current">⏳ Aguard. Aprovação</span><span class="etapa">Roteiro</span><span class="etapa">Copy</span><span class="etapa">Visual</span><span class="etapa">Agendado</span></div>
+      <div class="visual-hint">🎬 <span>Conceito: screen recording dos agentes em ação (Atena pesquisando, Hefesto buildando, Apollo escrevendo). Narração: "Enquanto você trabalha, o Panteão também trabalha." Duração: 30-45s.</span></div>
+      <div class="action-btns">
+        <button class="btn-sm btn-approve" onclick="event.stopPropagation()">✅ Aprovar REEL-001</button>
+        <button class="btn-sm btn-reject" onclick="event.stopPropagation()">❌ Não fazer REEL-001</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="REEL-002" onclick="toggleCard(this)">
+    <div class="card-header">
+      <span class="card-code">REEL-002</span>
+      <span class="card-title">O que é o Panteão Digital em 30s</span>
+      <div class="card-meta">
+        <span class="acc acc-panteao">@panteao_digital</span>
+        <span class="crit crit-critico">🔴 Crítico</span>
+        <span class="status s-ras"><span class="sdot"></span>Proposta</span>
+        <span class="card-date">24/03 · 20h</span>
+        <span class="toggle-icon">▼</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="etapa-bar"><span class="etapa current">⏳ Aguard. Aprovação</span><span class="etapa">Roteiro</span><span class="etapa">Copy</span><span class="etapa">Visual</span><span class="etapa">Agendado</span></div>
+      <div class="visual-hint">🎬 <span>Yuri apresentando o sistema diretamente. Pode ser gravado em 5min com celular. Roteiro já preparado pelo Apollo. Alta prioridade — dia antes do lançamento.</span></div>
+      <div class="action-btns">
+        <button class="btn-sm btn-approve" onclick="event.stopPropagation()">✅ Aprovar REEL-002</button>
+        <button class="btn-sm btn-reject" onclick="event.stopPropagation()">❌ Não fazer REEL-002</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="REEL-003" onclick="toggleCard(this)">
+    <div class="card-header">
+      <span class="card-code">REEL-003</span>
+      <span class="card-title">3 erros que destruíram patrimônios em 2025</span>
+      <div class="card-meta">
+        <span class="acc acc-stm">@stm.capital</span>
+        <span class="crit crit-moderado">Moderado</span>
+        <span class="status s-ras"><span class="sdot"></span>Proposta</span>
+        <span class="card-date">19/03 · 11h</span>
+        <span class="toggle-icon">▼</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="etapa-bar"><span class="etapa current">⏳ Aguard. Aprovação</span><span class="etapa">Roteiro</span><span class="etapa">Copy</span><span class="etapa">Visual</span><span class="etapa">Agendado</span></div>
+      <div class="action-btns">
+        <button class="btn-sm btn-approve" onclick="event.stopPropagation()">✅ Aprovar REEL-003</button>
+        <button class="btn-sm btn-reject" onclick="event.stopPropagation()">❌ Não fazer REEL-003</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB: CRONS ===== -->
+<div class="tab-content" id="tab-crons">
+  <div class="sec">⚙️ Crons Ativos</div>
+  <table class="cron-table">
+    <thead><tr><th>Código</th><th>Nome</th><th>Frequência</th><th>Próxima Exec.</th><th>Status</th><th>Criticidade</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>CRON-001</code></td>
+        <td>Post 4 Atena @panteao_digital</td>
+        <td>Uma vez</td>
+        <td>18/03 12h BRT</td>
+        <td><span class="status s-age"><span class="sdot"></span>Agendado</span></td>
+        <td><span class="crit crit-rotineiro">Rotineiro</span></td>
+      </tr>
+      <tr>
+        <td><code>CRON-002</code></td>
+        <td>Reunião Semanal — Puxar conversa Boss</td>
+        <td>Todo Domingo 10h BRT</td>
+        <td>Dom 23/03 10h</td>
+        <td><span class="status s-age"><span class="sdot"></span>Ativo</span></td>
+        <td><span class="crit crit-moderado">Moderado</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="sec">💓 Heartbeats — Mariana</div>
+  <table class="cron-table">
+    <thead><tr><th>Código</th><th>Horário</th><th>Tipo</th><th>Último Status</th><th>Frequência</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>HB-001</code></td>
+        <td>09h BRT</td>
+        <td>Checagem matinal (emails, agenda, tarefas)</td>
+        <td><span class="status s-pub"><span class="sdot"></span>OK</span></td>
+        <td>Diário</td>
+      </tr>
+      <tr>
+        <td><code>HB-002</code></td>
+        <td>16h BRT</td>
+        <td>Checagem tarde (projetos, bloqueios)</td>
+        <td><span class="status s-pub"><span class="sdot"></span>OK</span></td>
+        <td>Diário</td>
+      </tr>
+      <tr>
+        <td><code>HB-003</code></td>
+        <td>21h BRT</td>
+        <td>Checagem noturna (resumo do dia)</td>
+        <td><span class="status s-pub"><span class="sdot"></span>OK</span></td>
+        <td>Diário</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div><!-- /content -->
+
+<script>
+function showTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+function toggleCard(el){
+  el.classList.toggle('expanded');
+}
+function toggleAll(expand){
+  document.querySelectorAll('.card').forEach(c=>{
+    if(expand) c.classList.add('expanded');
+    else c.classList.remove('expanded');
+  });
+}
+function filterCards(type, btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.card').forEach(c=>{
+    if(type==='all') c.style.display='';
+    else if(type==='panteao') c.style.display=c.dataset.account==='panteao'?'':'none';
+    else if(type==='stm') c.style.display=c.dataset.account==='stm'?'':'none';
+    else if(type==='critico') c.style.display=c.dataset.crit==='critico'?'':'none';
+    else if(type==='pendente') c.style.display=c.dataset.status==='pendente'?'':'none';
+  });
+}
+
+// Popular stories
+const storiesPanteao=[
+  {dia:'Seg 17',manha:'Teaser: "Sou Mariana, CEO do Panteão"',noite:'Poll: "Você já usa IA no negócio?"',cod:'STR-P001'},
+  {dia:'Ter 18',manha:'Bastidor: Atena analisa mercados pro Boss',noite:'Countdown: "Faltam 7 dias 🔥"',cod:'STR-P002'},
+  {dia:'Qua 19',manha:'Dica IA: 3 tarefas para automatizar',noite:'Poll: "Qual agente você mais precisaria?"',cod:'STR-P003'},
+  {dia:'Qui 20',manha:'Bastidor: Hefesto buildando landing',noite:'Countdown: "Faltam 5 dias — acesso antecipado"',cod:'STR-P004'},
+  {dia:'Sex 21',manha:'Depoimento beta tester antecipado',noite:'Poll: "Você está na lista de espera?"',cod:'STR-P005'},
+  {dia:'Sáb 22',manha:'Dica: Automatize antes de segunda',noite:'Countdown: "3 dias. Últimas vagas"',cod:'STR-P006'},
+  {dia:'Dom 23',manha:'Story leve: "A semana que muda tudo"',noite:'🟣 REUNIÃO 19h + Countdown "2 dias"',cod:'STR-P007'},
+];
+const storiesStm=[
+  {dia:'Seg 17',manha:'"Voltamos para falar de patrimônio"',noite:'Dica rápida: Selic atual e o que muda',cod:'STR-S001'},
+  {dia:'Ter 18',manha:'Bastidor: Preparação de análise de mercado',noite:'Poll: "Você tem reserva de emergência?"',cod:'STR-S002'},
+  {dia:'Qua 19',manha:'Comparação: Consórcio vs Financiamento',noite:'Pergunta: "Qual seu maior objetivo patrimonial?"',cod:'STR-S003'},
+  {dia:'Qui 20',manha:'Depoimento de cliente (se houver)',noite:'Dica: Planejamento trimestral',cod:'STR-S004'},
+  {dia:'Sex 21',manha:'Gancho do Post 3: "Pergunta honesta..."',noite:'Countdown: "Fim de semana para planejar"',cod:'STR-S005'},
+  {dia:'Sáb 22',manha:'Dica: Revisão de gastos mensal',noite:'Bastidor leve: Equipe STM',cod:'STR-S006'},
+  {dia:'Dom 23',manha:'"Domingo é dia de planejar a semana"',noite:'🟣 REUNIÃO 19h — conteúdo da semana',cod:'STR-S007'},
+];
+function renderStories(arr, containerId){
+  const el=document.getElementById(containerId);
+  arr.forEach(s=>{
+    el.innerHTML+=`
+    <div class="card" id="${s.cod}" onclick="toggleCard(this)">
+      <div class="card-header">
+        <span class="card-code">${s.cod}</span>
+        <span class="card-title">${s.dia}</span>
+        <div class="card-meta">
+          <span class="status s-pen"><span class="sdot"></span>Pendente</span>
+          <span class="crit crit-rotineiro">Rotineiro</span>
+          <span class="toggle-icon">▼</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="stories-grid">
+          <div class="story-card">
+            <div class="story-time-badge">☀️ 07h30 — Manhã</div>
+            <div class="story-theme-text">${s.manha}</div>
+          </div>
+          <div class="story-card">
+            <div class="story-time-badge">🌙 21h — Noite</div>
+            <div class="story-theme-text">${s.noite}</div>
+          </div>
+        </div>
+        <div class="action-btns">
+          <button class="btn-sm btn-approve" onclick="event.stopPropagation()">✅ Aprovar ${s.cod}</button>
+          <button class="btn-sm btn-reject" onclick="event.stopPropagation()">❌ Ajustar ${s.cod}</button>
+        </div>
+      </div>
+    </div>`;
+  });
+}
+renderStories(storiesPanteao,'stories-panteao');
+renderStories(storiesStm,'stories-stm');
+</script>
+</body>
+</html>
