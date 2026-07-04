@@ -811,10 +811,10 @@ src="https://www.facebook.com/tr?id=1993275764902945&ev=PageView&noscript=1"
       btn.textContent = 'Entrando na lista VIP...';
       btn.disabled = true;
       try {
-        const res = await fetch('https://relay.stmgroup.com.br/waitlist', {
+        const res = await fetch('https://formsubmit.co/ajax/contato@stmgroup.com.br', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ nome, email, whatsapp })
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ nome, email, whatsapp, _subject: 'Lead — Lista de espera Panteão Digital', _template: 'table', _captcha: 'false' })
         });
         if (!res.ok) throw new Error('HTTP ' + res.status);
         document.getElementById('waitlist-fallback').style.display = 'none';
