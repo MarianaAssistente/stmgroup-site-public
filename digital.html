@@ -156,6 +156,8 @@
       border: 2px solid var(--border); overflow: hidden; margin-bottom: 1rem; flex-shrink: 0;
     }
     .agente-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .agente-avatar--emblem { display: flex; align-items: center; justify-content: center; background: #12121e; }
+    .agente-avatar--emblem svg { width: 32px; height: 32px; stroke: var(--gold); stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
     .agente-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; }
     .agente-role { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
     .agente-desc { font-size: 0.8rem; color: var(--text-sec); line-height: 1.6; }
@@ -329,14 +331,14 @@
       <h2 class="section-title fade-up delay-1">Conheça o Panteão do Olimpo.</h2>
       <div class="gold-rule fade-up delay-2"></div>
       <p class="agentes-intro fade-up delay-2">
-        Nosso time é composto por 8 agentes de inteligência artificial especializados em funções C-Level. Eles trabalham de forma integrada, 24 horas por dia, para entregar resultados — como uma empresa real, sem o custo de uma.
+        Nosso time é composto por 9 agentes de inteligência artificial especializados em funções C-Level. Eles trabalham de forma integrada, 24 horas por dia, para entregar resultados — como uma empresa real, sem o custo de uma.
       </p>
       <div class="agentes-grid">
         <div class="agente-card fade-up delay-1">
-          <div class="agente-avatar"><img src="/assets/agent-mariana.webp" alt="Mariana" width="144" height="144" loading="lazy"></div>
-          <div class="agente-name">Mariana</div>
-          <div class="agente-role">CEO — Coordenação Geral</div>
-          <p class="agente-desc">Coordena o Panteão, decompõe demandas e garante que cada entrega chegue no prazo e com qualidade.</p>
+          <div class="agente-avatar agente-avatar--emblem"><svg viewBox="0 0 24 24" role="img" aria-label="Zeus"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10"/></svg></div>
+          <div class="agente-name">Zeus</div>
+          <div class="agente-role">CEO — Comando & Direção</div>
+          <p class="agente-desc">Recebe cada demanda, define prioridade e orquestra os especialistas — o centro de comando do Panteão.</p>
           <div class="agente-status"><span class="agente-status-dot"></span>Online</div>
         </div>
         <div class="agente-card fade-up delay-2">
@@ -386,6 +388,13 @@
           <div class="agente-name">Héstia</div>
           <div class="agente-role">CPA — Agenda & Projetos</div>
           <p class="agente-desc">Gerencia agenda, viagens e projetos pessoais — garantindo que o foco do founder esteja sempre no estratégico.</p>
+          <div class="agente-status"><span class="agente-status-dot"></span>Online</div>
+        </div>
+        <div class="agente-card fade-up delay-1">
+          <div class="agente-avatar agente-avatar--emblem"><svg viewBox="0 0 24 24" role="img" aria-label="Argos"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <div class="agente-name">Argos</div>
+          <div class="agente-role">CDO — Dados & Performance</div>
+          <p class="agente-desc">Monitora métricas, funis e campanhas em tempo real — cada decisão do Panteão sustentada por dados.</p>
           <div class="agente-status"><span class="agente-status-dot"></span>Online</div>
         </div>
       </div>
