@@ -6,7 +6,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Panteão Digital — Como Criar Seu Panteão de Agentes IA</title>
   <meta name="description" content="O guia completo para montar seu sistema de múltiplos agentes IA do zero ao funcionamento em 7 dias, sem precisar saber programar." />
+  <link rel="canonical" href="https://stmgroup.com.br/panteao.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="STM Group" />
+  <meta property="og:title" content="Panteão Digital — Como Criar Seu Panteão de Agentes IA" />
+  <meta property="og:description" content="O guia completo para montar seu sistema de múltiplos agentes IA do zero ao funcionamento em 7 dias, sem precisar saber programar." />
+  <meta property="og:url" content="https://stmgroup.com.br/panteao.html" />
+  <meta property="og:image" content="https://stmgroup.com.br/assets/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Panteão Digital — Como Criar Seu Panteão de Agentes IA" />
+  <meta name="twitter:description" content="O guia completo para montar seu sistema de múltiplos agentes IA do zero ao funcionamento em 7 dias, sem precisar saber programar." />
+  <meta name="twitter:image" content="https://stmgroup.com.br/assets/og-image.jpg" />
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,11 +58,6 @@
     .nav-left { display: flex; align-items: center; gap: 0.75rem; }
     .nav-brand { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.08em; }
     .nav-brand span { color: var(--gold); }
-    .nav-countdown {
-      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
-      color: var(--text-sec); display: flex; align-items: center; gap: 0.5rem;
-    }
-    .nav-countdown strong { color: var(--gold); font-variant-numeric: tabular-nums; }
     .nav-cta {
       padding: 0.55rem 1.1rem; border: 1px solid var(--gold);
       color: var(--gold); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
@@ -334,11 +348,7 @@
     @media (min-width: 640px) {
       .hero-actions { flex-direction: row; justify-content: center; }
     }
-    @media (min-width: 768px) {
-      .nav-countdown { display: flex; }
-    }
     @media (max-width: 767px) {
-      .nav-countdown { display: none; }
       section { padding: 4rem 0; }
       #hero { padding: 6rem 1.25rem 4rem; }
       .preco-box { padding: 2rem 1.25rem; }
@@ -376,10 +386,6 @@ src="https://www.facebook.com/tr?id=1993275764902945&ev=PageView&noscript=1"
   <div class="nav-left">
     <div class="nav-brand">STM <span>Digital</span></div>
   </div>
-  <div class="nav-countdown">
-    <span>Lançamento em:</span>
-    <strong id="nav-countdown">--d --h --m --s</strong>
-  </div>
   <a href="#lista-espera" onclick="document.getElementById('lista-espera').scrollIntoView({behavior:'smooth'});return false;" class="nav-cta">Entrar na Lista de Espera</a>
 </nav>
 
@@ -390,7 +396,7 @@ src="https://www.facebook.com/tr?id=1993275764902945&ev=PageView&noscript=1"
   <div class="hero-content">
     <div class="hero-badge fade-up">
       <span class="hero-badge-dot"></span>
-      Lançamento · 25 de Março de 2026
+      Em breve · Lista de espera aberta
     </div>
     <h1 class="hero-title fade-up delay-1">
       Uma Pessoa. Oito Agentes de IA.<br/><span>Uma Empresa Inteira.</span>
@@ -399,7 +405,7 @@ src="https://www.facebook.com/tr?id=1993275764902945&ev=PageView&noscript=1"
       O guia completo para montar seu Panteão do Olimpo — do zero ao funcionamento em 7 dias, sem precisar saber programar.
     </p>
     <div class="hero-price fade-up delay-3">
-      <span class="price-badge" style="font-size:1rem;padding:0.4rem 1.2rem;">🗓️ Lançamento: 25 de Março de 2026</span>
+      <span class="price-badge" style="font-size:1rem;padding:0.4rem 1.2rem;">🏛️ Em fase final de produção — entre na lista de espera</span>
     </div>
     <div class="hero-actions fade-up delay-4">
       <a href="#lista-espera" onclick="document.getElementById('lista-espera').scrollIntoView({behavior:'smooth'});return false;" class="btn-primary">Entrar na Lista VIP 🚀</a>
@@ -414,7 +420,7 @@ src="https://www.facebook.com/tr?id=1993275764902945&ev=PageView&noscript=1"
     <div class="video-wrap fade-up">
       <p class="video-label">Assista: Como o Panteão do Olimpo funciona na prática (2 min)</p>
       <div class="video-thumb" style="padding:0;overflow:hidden;border-radius:12px;position:relative;">
-        <video controls poster="" style="width:100%;display:block;border-radius:12px;" preload="metadata">
+        <video controls poster="/assets/video-poster.jpg" style="width:100%;display:block;border-radius:12px;" preload="none">
           <source src="/video-panteao.mp4"
           onerror="this.src='https://files.catbox.moe/v2qx96.mp4'" type="video/mp4">
           Seu navegador não suporta vídeo HTML5.
@@ -541,9 +547,9 @@ src="https://www.facebook.com/tr?id=1993275764902945&ev=PageView&noscript=1"
     <span class="section-label fade-up">Lista de Espera</span>
     <h2 class="section-title fade-up delay-1">Seja o <span>primeiro a saber</span></h2>
     <div class="gold-rule fade-up delay-2"></div>
-    <p class="section-intro fade-up delay-3">O Panteão Digital abre no dia <strong>25/03/2026</strong>. Inscreva-se na lista exclusiva de fundadores e seja notificado assim que as portas abrirem.</p>
+    <p class="section-intro fade-up delay-3">O Panteão Digital está <strong>em fase final de produção</strong>. Inscreva-se na lista exclusiva de fundadores e seja notificado em primeira mão assim que as portas abrirem.</p>
     <div class="preco-box fade-up delay-4" style="max-width:480px;margin:0 auto;text-align:left;">
-      <div class="preco-label">🏛️ Lista VIP — Lançamento 25/03/2026</div>
+      <div class="preco-label">🏛️ Lista VIP — Acesso antecipado</div>
       <form id="waitlist-form" style="display:flex;flex-direction:column;gap:0.85rem;margin-top:1rem;">
         <input type="text" name="nome" id="wl-nome" placeholder="Seu nome *" required style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.3);border-radius:6px;padding:0.75rem 1rem;color:var(--text);font-size:0.9rem;outline:none;" />
         <input type="email" name="email" id="wl-email" placeholder="Seu melhor e-mail *" required style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.5);border-radius:6px;padding:0.75rem 1rem;color:var(--text);font-size:0.9rem;outline:none;" />
@@ -555,7 +561,15 @@ src="https://www.facebook.com/tr?id=1993275764902945&ev=PageView&noscript=1"
       <div id="waitlist-success" style="display:none;text-align:center;padding:1.5rem;color:var(--gold);">
         <div style="font-size:2rem;margin-bottom:0.5rem;">🚀</div>
         <strong>Você está na lista VIP!</strong><br/>
-        <span style="font-size:0.9rem;color:var(--text-sec);">Te avisamos no dia 25/03. 🚀</span>
+        <span style="font-size:0.9rem;color:var(--text-sec);">Você será avisado em primeira mão quando as portas abrirem. 🚀</span>
+      </div>
+      <div id="waitlist-fallback" style="display:none;margin-top:1rem;padding:1.1rem 1.25rem;border:1px solid rgba(192,57,43,0.35);background:rgba(192,57,43,0.06);text-align:center;">
+        <p style="font-size:0.875rem;color:var(--text);margin-bottom:0.85rem;"><strong>Não conseguimos registrar sua inscrição agora.</strong><br/>
+        <span style="font-size:0.8rem;color:var(--text-sec);">Nosso servidor não respondeu — mas você não precisa ficar de fora. Entre na lista por um destes canais:</span></p>
+        <div style="display:flex;flex-direction:column;gap:0.6rem;">
+          <a id="wl-whats" href="https://wa.me/5581987859731?text=Ol%C3%A1!%20Quero%20entrar%20na%20lista%20de%20espera%20do%20Pante%C3%A3o%20Digital." target="_blank" rel="noopener noreferrer" style="display:block;padding:0.8rem 1.25rem;background:var(--gold);color:var(--bg);font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Entrar na lista pelo WhatsApp</a>
+          <a id="wl-mailto" href="mailto:contato@stmgroup.com.br?subject=Lista%20de%20espera%20Pante%C3%A3o" style="display:block;padding:0.8rem 1.25rem;border:1px solid rgba(201,168,76,0.45);color:var(--gold);font-size:0.75rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;">Enviar e-mail para contato@stmgroup.com.br</a>
+        </div>
       </div>
       <!-- WhatsApp Group Button -->
       <div style="margin-top:1.25rem;text-align:center;">
@@ -647,7 +661,7 @@ src="https://www.facebook.com/tr?id=1993275764902945&ev=PageView&noscript=1"
   <div class="container">
     <div class="garantia-box fade-up">
       <div class="garantia-icon">🏛️</div>
-      <div class="garantia-title">Lançamento oficial: 25 de Março de 2026</div>
+      <div class="garantia-title">Em breve — em fase final de produção</div>
       <p class="garantia-text">O e-book está em fase final de produção. Inscreva-se na lista de espera e seja avisado assim que as portas abrirem. Os primeiros a se inscrever terão acesso prioritário.</p>
     </div>
   </div>
@@ -670,7 +684,7 @@ src="https://www.facebook.com/tr?id=1993275764902945&ev=PageView&noscript=1"
       </details>
       <details>
         <summary>Como faço para comprar no lançamento?</summary>
-        <div class="faq-answer">Inscreva-se na lista de espera acima. No dia 25/03/2026 você receberá um e-mail com o link de acesso e as instruções de compra. Quem estiver na lista terá prioridade.</div>
+        <div class="faq-answer">Inscreva-se na lista de espera acima. Assim que o e-book for lançado, você receberá um e-mail com o link de acesso e as instruções de compra. Quem estiver na lista terá prioridade.</div>
       </details>
       <details>
         <summary>E se eu tiver dúvidas durante a implementação?</summary>
@@ -678,7 +692,7 @@ src="https://www.facebook.com/tr?id=1993275764902945&ev=PageView&noscript=1"
       </details>
       <details>
         <summary>Por que ter lista de espera?</summary>
-        <div class="faq-answer">O e-book está em fase final de produção e abre oficialmente no dia 25/03/2026. A lista de espera garante que você seja notificado assim que as portas abrirem — além de ter acesso antecipado aos planos de fundadores.</div>
+        <div class="faq-answer">O e-book está em fase final de produção. A lista de espera garante que você seja notificado assim que as portas abrirem — além de ter acesso antecipado aos planos de fundadores.</div>
       </details>
       <details>
         <summary>O conteúdo fica desatualizado?</summary>
@@ -702,7 +716,7 @@ src="https://www.facebook.com/tr?id=1993275764902945&ev=PageView&noscript=1"
     <span class="section-label fade-up">O que você vai receber</span>
     <h2 class="section-title fade-up delay-1">Tudo incluído no <span>lançamento</span></h2>
     <div class="gold-rule fade-up delay-2"></div>
-    <p class="section-intro fade-up delay-3">Quem entrar na lista de espera será o primeiro a acessar quando abrirmos no dia 25/03.</p>
+    <p class="section-intro fade-up delay-3">Quem entrar na lista de espera será o primeiro a acessar quando as portas abrirem.</p>
     <div class="plans-grid" style="grid-template-columns: repeat(auto-fit,minmax(220px,1fr));">
 
       <!-- STARTER -->
@@ -761,10 +775,10 @@ src="https://www.facebook.com/tr?id=1993275764902945&ev=PageView&noscript=1"
 <section id="cta-final">
   <div class="container">
     <span class="section-label fade-up">Não fique de fora</span>
-    <p class="urgency-text fade-up delay-1" id="urgency-days">🗓️ Lançamento em 25/03/2026</p>
+    <p class="urgency-text fade-up delay-1">🏛️ Lista de espera aberta</p>
     <h2 class="section-title fade-up delay-2">Garanta seu lugar na<br/><span>lista de fundadores</span></h2>
     <a href="#lista-espera" onclick="document.getElementById('lista-espera').scrollIntoView({behavior:'smooth'});return false;" class="btn-primary fade-up delay-4" style="font-size:0.8rem;padding:1.1rem 2.5rem;letter-spacing:0.12em;">Entrar na Lista VIP 🚀</a>
-    <p class="trust-note fade-up delay-5" style="margin-top:1rem;">✨ Gratuito entrar na lista &nbsp;·&nbsp; Sem spam &nbsp;·&nbsp; Aviso apenas no dia 25/03</p>
+    <p class="trust-note fade-up delay-5" style="margin-top:1rem;">✨ Gratuito entrar na lista &nbsp;·&nbsp; Sem spam &nbsp;·&nbsp; Aviso apenas no lançamento</p>
   </div>
 </section>
 
@@ -776,39 +790,6 @@ src="https://www.facebook.com/tr?id=1993275764902945&ev=PageView&noscript=1"
 </footer>
 
 <script>
-  // ─── Countdown ────────────────────────────────────────────────
-  const target = new Date('2026-03-25T13:00:00Z'); // 10h BRT = 13h UTC
-  function pad(n) { return String(n).padStart(2, '0'); }
-
-  function updateCountdown() {
-    const now = new Date();
-    const diff = target - now;
-    const navEl = document.getElementById('nav-countdown');
-    const urgencyEl = document.getElementById('urgency-days');
-
-    if (diff <= 0) {
-      if (navEl) navEl.textContent = 'Disponível agora!';
-      if (urgencyEl) urgencyEl.textContent = '🏛️ O Panteão Digital já está no ar!';
-      return;
-    }
-
-    const days  = Math.floor(diff / 86400000);
-    const hours = Math.floor((diff % 86400000) / 3600000);
-    const mins  = Math.floor((diff % 3600000) / 60000);
-    const secs  = Math.floor((diff % 60000) / 1000);
-    const str   = `${pad(days)}d ${pad(hours)}h ${pad(mins)}m ${pad(secs)}s`;
-
-    if (navEl) navEl.textContent = str;
-    if (urgencyEl) {
-      urgencyEl.textContent = days === 0
-        ? '🗓️ Lançamento hoje — inscreva-se na lista!'
-        : `🗓️ Lançamento em ${days} dia${days > 1 ? 's' : ''}`;
-    }
-  }
-
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
-
   // ─── Fade-up Observer ─────────────────────────────────────────
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
@@ -826,17 +807,29 @@ src="https://www.facebook.com/tr?id=1993275764902945&ev=PageView&noscript=1"
       const whatsapp = document.getElementById('wl-whatsapp').value.trim();
       if (!email || !nome) return;
       const btn = wlForm.querySelector('button[type="submit"]');
+      const btnLabel = btn.textContent;
       btn.textContent = 'Entrando na lista VIP...';
       btn.disabled = true;
       try {
-        await fetch('https://relay.stmgroup.com.br/waitlist', {
+        const res = await fetch('https://relay.stmgroup.com.br/waitlist', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ nome, email, whatsapp })
         });
-      } catch(err) { /* silently ignore network errors, UX still confirms */ }
-      wlForm.style.display = 'none';
-      document.getElementById('waitlist-success').style.display = 'block';
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        document.getElementById('waitlist-fallback').style.display = 'none';
+        wlForm.style.display = 'none';
+        document.getElementById('waitlist-success').style.display = 'block';
+      } catch (err) {
+        // Nunca mostrar sucesso falso: oferecer canais reais de fallback.
+        btn.textContent = btnLabel;
+        btn.disabled = false;
+        const waText = encodeURIComponent('Olá! Quero entrar na lista de espera do Panteão Digital. Nome: ' + nome + ' | E-mail: ' + email + (whatsapp ? ' | WhatsApp: ' + whatsapp : ''));
+        document.getElementById('wl-whats').href = 'https://wa.me/5581987859731?text=' + waText;
+        const mailBody = encodeURIComponent('Olá! Quero entrar na lista de espera do Panteão Digital.\n\nNome: ' + nome + '\nE-mail: ' + email + (whatsapp ? '\nWhatsApp: ' + whatsapp : ''));
+        document.getElementById('wl-mailto').href = 'mailto:contato@stmgroup.com.br?subject=' + encodeURIComponent('Lista de espera Panteão') + '&body=' + mailBody;
+        document.getElementById('waitlist-fallback').style.display = 'block';
+      }
     });
   }
 </script>
