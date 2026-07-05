@@ -568,7 +568,7 @@ src="https://www.facebook.com/tr?id=1993275764902945&ev=PageView&noscript=1"
         <span style="font-size:0.8rem;color:var(--text-sec);">Nosso servidor não respondeu — mas você não precisa ficar de fora. Entre na lista por um destes canais:</span></p>
         <div style="display:flex;flex-direction:column;gap:0.6rem;">
           <a id="wl-whats" href="https://wa.me/5581987859731?text=Ol%C3%A1!%20Quero%20entrar%20na%20lista%20de%20espera%20do%20Pante%C3%A3o%20Digital." target="_blank" rel="noopener noreferrer" style="display:block;padding:0.8rem 1.25rem;background:var(--gold);color:var(--bg);font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Entrar na lista pelo WhatsApp</a>
-          <a id="wl-mailto" href="mailto:contato@stmgroup.com.br?subject=Lista%20de%20espera%20Pante%C3%A3o" style="display:block;padding:0.8rem 1.25rem;border:1px solid rgba(201,168,76,0.45);color:var(--gold);font-size:0.75rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;">Enviar e-mail para contato@stmgroup.com.br</a>
+          <a id="wl-mailto" href="mailto:yuri.moraes@stmgroup.com.br?subject=Lista%20de%20espera%20Pante%C3%A3o" style="display:block;padding:0.8rem 1.25rem;border:1px solid rgba(201,168,76,0.45);color:var(--gold);font-size:0.75rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;">Enviar e-mail para yuri.moraes@stmgroup.com.br</a>
         </div>
       </div>
       <!-- WhatsApp Group Button -->
@@ -811,7 +811,7 @@ src="https://www.facebook.com/tr?id=1993275764902945&ev=PageView&noscript=1"
       btn.textContent = 'Entrando na lista VIP...';
       btn.disabled = true;
       try {
-        const res = await fetch('https://formsubmit.co/ajax/contato@stmgroup.com.br', {
+        const res = await fetch('https://formsubmit.co/ajax/yuri.moraes@stmgroup.com.br', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
           body: JSON.stringify({ nome, email, whatsapp, _subject: 'Lead — Lista de espera Panteão Digital', _template: 'table', _captcha: 'false' })
@@ -827,7 +827,7 @@ src="https://www.facebook.com/tr?id=1993275764902945&ev=PageView&noscript=1"
         const waText = encodeURIComponent('Olá! Quero entrar na lista de espera do Panteão Digital. Nome: ' + nome + ' | E-mail: ' + email + (whatsapp ? ' | WhatsApp: ' + whatsapp : ''));
         document.getElementById('wl-whats').href = 'https://wa.me/5581987859731?text=' + waText;
         const mailBody = encodeURIComponent('Olá! Quero entrar na lista de espera do Panteão Digital.\n\nNome: ' + nome + '\nE-mail: ' + email + (whatsapp ? '\nWhatsApp: ' + whatsapp : ''));
-        document.getElementById('wl-mailto').href = 'mailto:contato@stmgroup.com.br?subject=' + encodeURIComponent('Lista de espera Panteão') + '&body=' + mailBody;
+        document.getElementById('wl-mailto').href = 'mailto:yuri.moraes@stmgroup.com.br?subject=' + encodeURIComponent('Lista de espera Panteão') + '&body=' + mailBody;
         document.getElementById('waitlist-fallback').style.display = 'block';
       }
     });
