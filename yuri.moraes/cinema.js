@@ -27,6 +27,7 @@
   let lastSeekAt = 0;
   let raf = 0;
   let mobile = mobileQuery.matches;
+  let activeMobileVideo = -1;
 
   const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
   const ease = value => 1 - Math.pow(1 - clamp(value), 3);
@@ -46,10 +47,41 @@
       };
       video.addEventListener('loadedmetadata', done, { once: true });
       video.addEventListener('error', done, { once: true });
+      video.muted = true;
+      video.playsInline = true;
+      video.setAttribute('playsinline', '');
+      video.setAttribute('webkit-playsinline', '');
+      if (mobile) video.loop = true;
       video.src = sourceFor(video);
       video.dataset.loaded = 'true';
       video.load();
     });
+  }
+
+  function activateMobileVideo(index, restart = false) {
+    if (!mobile || reducedMotion || index < 0 || index >= videos.length) return;
+    videos.forEach((video, videoIndex) => {
+      if (videoIndex !== index && !video.paused) video.pause();
+    });
+    ensureSource(index).then(video => {
+      if (!video || activeScene !== index) return;
+      video.loop = true;
+      video.muted = true;
+      video.playsInline = true;
+      if (restart && Number.isFinite(video.duration)) video.currentTime = 0;
+      activeMobileVideo = index;
+      video.play().then(() => {
+        document.body.classList.add('mobile-motion-active');
+      }).catch(() => {
+        document.body.classList.add('mobile-motion-pending');
+      });
+    });
+  }
+
+  function unlockMobileVideo() {
+    if (!mobile || reducedMotion) return;
+    document.body.classList.remove('mobile-motion-pending');
+    activateMobileVideo(activeScene, false);
   }
 
   function preloadAround(index) {
@@ -71,6 +103,12 @@
       if (Math.abs(video.currentTime - .2) > .1) video.currentTime = .2;
       return;
     }
+    // Mobile Safari may remain frozen on the poster when only currentTime changes.
+    // On phones, the active chapter plays natively while scrolling selects chapters.
+    if (mobile) {
+      if (video.paused && activeMobileVideo !== scene) activateMobileVideo(scene, false);
+      return;
+    }
     if (now - lastSeekAt < 70) return;
     const desired = clamp(local, 0, .98) * Math.max(.1, video.duration - .06);
     if (Math.abs(video.currentTime - desired) > .065) {
@@ -88,6 +126,7 @@
     if (scene !== activeScene) {
       activeScene = scene;
       preloadAround(scene);
+      activateMobileVideo(scene, true);
     }
 
     media.forEach((item, index) => {
@@ -173,6 +212,7 @@
     updateProgress();
     cancelAnimationFrame(raf);
     raf = requestAnimationFrame(tick);
+    activateMobileVideo(0, true);
   }
 
   if (hicVideo) {
@@ -193,6 +233,8 @@
     }
   }
   addEventListener('scroll', updateProgress, { passive: true });
+  addEventListener('touchstart', unlockMobileVideo, { passive: true });
+  addEventListener('pointerdown', unlockMobileVideo, { passive: true });
   addEventListener('resize', () => {
     const nextMobile = mobileQuery.matches;
     if (nextMobile !== mobile) location.reload();
