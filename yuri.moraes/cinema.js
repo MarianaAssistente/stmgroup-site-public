@@ -9,7 +9,7 @@
     desktop: {
       '720': { path: 'desktop-720', width: 1280, height: 720, frames: 40, label: '720p' },
       '1080': { path: 'desktop', width: 1920, height: 1080, frames: 40, label: '1080p' },
-      full: { path: 'desktop-max', width: 1920, height: 1080, frames: 80, label: 'Full HQ' }
+      full: { path: 'desktop-max', width: 1920, height: 1080, frames: 80, label: 'Full HQ+' }
     },
     mobile: {
       '720': { path: 'mobile', width: 720, height: 1280, frames: 40, label: '720p vertical' }
@@ -110,7 +110,7 @@
       qualityNote.textContent = variant === 'mobile'
         ? 'Mobile usa o master vertical 720p nativo. 1080p e Full ficam bloqueados para evitar upscale artificial.'
         : activeQuality === 'full'
-          ? 'Full HQ · 1080p nativo com 80 quadros por ato.'
+          ? 'Full HQ+ · 1080p nativo, compressão premium e 80 quadros por ato.'
           : `${profile.label} · ${profile.frames} quadros por ato.`;
     }
     document.documentElement.dataset.qualityMode = selectedQuality;

@@ -507,6 +507,22 @@ footer { display: flex; justify-content: space-between; gap: 20px; padding-top: 
 .final-agent-roster b { font-size: 22px; line-height: 1; }
 .final-agent-roster span { font-size: 7px; }
 
+@media (min-width: 901px) {
+  .final-agent-roster {
+    left: auto;
+    right: calc(clamp(24px, 3vw, 52px) + 228px);
+    bottom: clamp(18px, calc(12vh - 62px), 38px);
+    width: min(250px, 22vw);
+    padding: 10px 17px 11px 14px;
+    border-left: 0;
+    border-right: 2px solid var(--gold);
+    border-radius: 16px 0 0 16px;
+    background: linear-gradient(270deg, rgba(5,8,13,.84), rgba(5,8,13,.14));
+    text-align: right;
+  }
+  .final-agent-roster li { justify-items: end; }
+}
+
 @media (max-width: 900px) {
   .site-header nav { gap: 10px; }
   .site-header .quality-control { top: auto; right: auto; left: auto; width: auto; }
