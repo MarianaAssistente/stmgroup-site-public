@@ -18,7 +18,8 @@
   const loaderLabel = document.querySelector('[data-loader-label]');
   const header = document.querySelector('[data-header]');
   const cue = document.querySelector('.scroll-cue');
-  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const motionToggle = document.querySelector('[data-motion-toggle]');
+  const systemReducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mobileQuery = matchMedia('(max-width: 900px)');
 
   let targetProgress = 0;
@@ -28,9 +29,17 @@
   let raf = 0;
   let mobile = mobileQuery.matches;
   let activeMobileVideo = -1;
+  let motionOverride = false;
 
   const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
   const ease = value => 1 - Math.pow(1 - clamp(value), 3);
+  const prefersReducedMotion = () => systemReducedMotion && !motionOverride;
+
+  function showMotionToggle(show) {
+    if (!motionToggle || !mobile) return;
+    motionToggle.hidden = !show;
+    motionToggle.setAttribute('aria-hidden', show ? 'false' : 'true');
+  }
 
   function sourceFor(video) {
     return mobile ? video.dataset.mobile : video.dataset.desktop;
@@ -47,11 +56,19 @@
       };
       video.addEventListener('loadedmetadata', done, { once: true });
       video.addEventListener('error', done, { once: true });
+      video.defaultMuted = true;
       video.muted = true;
       video.playsInline = true;
       video.setAttribute('playsinline', '');
       video.setAttribute('webkit-playsinline', '');
-      if (mobile) video.loop = true;
+      if (mobile) {
+        video.loop = true;
+        video.setAttribute('loop', '');
+        if (!prefersReducedMotion() && index === activeScene) {
+          video.autoplay = true;
+          video.setAttribute('autoplay', '');
+        }
+      }
       video.src = sourceFor(video);
       video.dataset.loaded = 'true';
       video.load();
@@ -59,7 +76,13 @@
   }
 
   function activateMobileVideo(index, restart = false) {
-    if (!mobile || reducedMotion || index < 0 || index >= videos.length) return;
+    if (!mobile || index < 0 || index >= videos.length) return;
+    if (prefersReducedMotion()) {
+      showMotionToggle(true);
+      return;
+    }
+    videos[index].autoplay = true;
+    videos[index].setAttribute('autoplay', '');
     videos.forEach((video, videoIndex) => {
       if (videoIndex !== index && !video.paused) video.pause();
     });
@@ -69,18 +92,45 @@
       video.muted = true;
       video.playsInline = true;
       if (restart && Number.isFinite(video.duration)) video.currentTime = 0;
-      activeMobileVideo = index;
       video.play().then(() => {
+        if (activeScene !== index) {
+          video.pause();
+          return;
+        }
+        videos.forEach((other, otherIndex) => {
+          if (otherIndex !== index && !other.paused) other.pause();
+        });
+        activeMobileVideo = index;
         document.body.classList.add('mobile-motion-active');
+        document.body.classList.remove('mobile-motion-pending');
+        showMotionToggle(false);
       }).catch(() => {
         document.body.classList.add('mobile-motion-pending');
+        showMotionToggle(true);
       });
     });
   }
 
   function unlockMobileVideo() {
-    if (!mobile || reducedMotion) return;
+    if (!mobile || prefersReducedMotion()) return;
     document.body.classList.remove('mobile-motion-pending');
+    activateMobileVideo(activeScene, false);
+  }
+
+  function enableMobileMotion() {
+    if (!mobile) return;
+    motionOverride = true;
+    document.body.classList.add('mobile-motion-consented');
+    document.body.classList.remove('mobile-motion-pending');
+    showMotionToggle(false);
+    videos.forEach(video => {
+      video.defaultMuted = true;
+      video.muted = true;
+      video.playsInline = true;
+      video.autoplay = true;
+      video.loop = true;
+    });
+    if (hicVideo) hicVideo.hidden = false;
     activateMobileVideo(activeScene, false);
   }
 
@@ -99,7 +149,7 @@
   function updateVideoTime(scene, local, now) {
     const video = videos[scene];
     if (!video || video.readyState < 1 || !Number.isFinite(video.duration)) return;
-    if (reducedMotion) {
+    if (prefersReducedMotion()) {
       if (Math.abs(video.currentTime - .2) > .1) video.currentTime = .2;
       return;
     }
@@ -172,11 +222,16 @@
     sceneProgress.style.width = `${local * 100}%`;
     journeyProgress.style.height = `${smoothProgress * 100}%`;
     cue.style.opacity = smoothProgress < .025 ? '1' : '0';
+    if (mobile) {
+      videos.forEach((video, index) => {
+        if (index !== scene && !video.paused) video.pause();
+      });
+    }
     updateVideoTime(scene, local, now);
   }
 
   function tick(now) {
-    smoothProgress += (targetProgress - smoothProgress) * (reducedMotion ? 1 : .11);
+    smoothProgress += (targetProgress - smoothProgress) * (prefersReducedMotion() ? 1 : .11);
     if (Math.abs(targetProgress - smoothProgress) < .00008) smoothProgress = targetProgress;
     render(now);
     raf = requestAnimationFrame(tick);
@@ -193,7 +248,7 @@
     const start = film.offsetTop;
     const travel = Math.max(1, film.offsetHeight - innerHeight);
     const progress = index / videos.length + .006;
-    scrollTo({ top: start + travel * progress, behavior: reducedMotion ? 'auto' : 'smooth' });
+    scrollTo({ top: start + travel * progress, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
   }
 
   async function start() {
@@ -212,29 +267,32 @@
     updateProgress();
     cancelAnimationFrame(raf);
     raf = requestAnimationFrame(tick);
+    if (mobile && systemReducedMotion) showMotionToggle(true);
     activateMobileVideo(0, true);
   }
 
   if (hicVideo) {
-    if (reducedMotion) {
-      hicVideo.hidden = true;
-      hicVideo.pause();
-    } else {
-      const hicObserver = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && entry.intersectionRatio >= .35) {
-            hicVideo.play().catch(() => {});
-          } else {
-            hicVideo.pause();
-          }
-        });
-      }, { threshold: [0, .35, .7] });
-      hicObserver.observe(hicVideo);
-    }
+    hicVideo.hidden = prefersReducedMotion();
+    if (prefersReducedMotion()) hicVideo.pause();
+    const hicObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (prefersReducedMotion()) {
+          hicVideo.hidden = true;
+          hicVideo.pause();
+        } else if (entry.isIntersecting && entry.intersectionRatio >= .35) {
+          hicVideo.hidden = false;
+          hicVideo.play().catch(() => {});
+        } else {
+          hicVideo.pause();
+        }
+      });
+    }, { threshold: [0, .35, .7] });
+    hicObserver.observe(hicVideo);
   }
   addEventListener('scroll', updateProgress, { passive: true });
   addEventListener('touchstart', unlockMobileVideo, { passive: true });
   addEventListener('pointerdown', unlockMobileVideo, { passive: true });
+  if (motionToggle) motionToggle.addEventListener('click', enableMobileMotion);
   addEventListener('resize', () => {
     const nextMobile = mobileQuery.matches;
     if (nextMobile !== mobile) location.reload();
@@ -248,7 +306,7 @@
       const target = document.querySelector(link.getAttribute('href'));
       if (!target) return;
       event.preventDefault();
-      target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
+      target.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
     });
   });
 
