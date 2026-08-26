@@ -1,15 +1,16 @@
 <!doctype html>
-<html lang="pt-BR" data-build="manifesto-yuri-v11-mobile-control">
+<html lang="pt-BR" data-build="manifesto-yuri-v12-2-adaptive-quality">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#06080d">
   <meta name="description" content="Yuri Moraes — Head Comercial com foco em organização de processos e inteligência artificial aplicada à execução.">
   <title>Yuri Moraes — A Superfície do Impacto</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='32' fill='%2306080d'/><text x='32' y='40' text-anchor='middle' fill='%23f0c26d' font-size='24' font-family='Georgia'>YM</text></svg>">
   <link rel="canonical" href="https://stmgroup.com.br/yuri.moraes/">
   <link rel="preload" href="assets/posters/01.webp" as="image">
   <link rel="stylesheet" href="styles.css">
-  <script src="cinema.js?v=mobile-motion-v11" defer></script>
+  <script src="cinema.js?v=animano-canvas-v12-2-adaptive" defer></script>
 </head>
 <body class="is-loading">
   <a class="skip-link" href="#trajetoria">Pular para o conteúdo</a>
@@ -20,11 +21,6 @@
     <div class="loader-track"><b data-loader-bar></b></div>
     <small data-loader-label>Carregando o primeiro ato</small>
   </div>
-
-  <button class="motion-toggle" type="button" data-motion-toggle hidden aria-label="Ativar animação do manifesto">
-    <span aria-hidden="true">▶</span>
-    <b>Ativar animação</b>
-  </button>
 
   <header class="site-header" data-header>
     <a class="brand" href="#manifesto" aria-label="Yuri Moraes — início">
@@ -43,18 +39,21 @@
   <main>
     <section id="manifesto" class="film" data-film aria-label="Linha do tempo cinematográfica em dez atos">
       <div class="film-stage">
-        <div class="media-stack" aria-hidden="true">
-          <div class="scene-media is-active" data-scene-media="0" style="--poster:url('assets/posters/01.webp')"><video muted playsinline preload="metadata" poster="assets/posters/01.webp" data-desktop="assets/videos/desktop/01.mp4" data-mobile="assets/videos/mobile/01.mp4"></video></div>
-          <div class="scene-media" data-scene-media="1" style="--poster:url('assets/posters/02.webp')"><video muted playsinline preload="none" poster="assets/posters/02.webp" data-desktop="assets/videos/desktop/02.mp4" data-mobile="assets/videos/mobile/02.mp4"></video></div>
-          <div class="scene-media" data-scene-media="2" style="--poster:url('assets/posters/03.webp')"><video muted playsinline preload="none" poster="assets/posters/03.webp" data-desktop="assets/videos/desktop/03.mp4" data-mobile="assets/videos/mobile/03.mp4"></video></div>
-          <div class="scene-media" data-scene-media="3" style="--poster:url('assets/posters/04.webp')"><video muted playsinline preload="none" poster="assets/posters/04.webp" data-desktop="assets/videos/desktop/04.mp4" data-mobile="assets/videos/mobile/04.mp4"></video></div>
-          <div class="scene-media" data-scene-media="4" style="--poster:url('assets/posters/05.webp')"><video muted playsinline preload="none" poster="assets/posters/05.webp" data-desktop="assets/videos/desktop/05.mp4" data-mobile="assets/videos/mobile/05.mp4"></video></div>
-          <div class="scene-media" data-scene-media="5" style="--poster:url('assets/posters/06.webp')"><video muted playsinline preload="none" poster="assets/posters/06.webp" data-desktop="assets/videos/desktop/06.mp4" data-mobile="assets/videos/mobile/06.mp4"></video></div>
-          <div class="scene-media" data-scene-media="6" style="--poster:url('assets/posters/07.webp')"><video muted playsinline preload="none" poster="assets/posters/07.webp" data-desktop="assets/videos/desktop/07.mp4" data-mobile="assets/videos/mobile/07.mp4"></video></div>
-          <div class="scene-media" data-scene-media="7" style="--poster:url('assets/posters/08.webp')"><video muted playsinline preload="none" poster="assets/posters/08.webp" data-desktop="assets/videos/desktop/08.mp4" data-mobile="assets/videos/mobile/08.mp4"></video></div>
-          <div class="scene-media" data-scene-media="8" style="--poster:url('assets/posters/09.webp')"><video muted playsinline preload="none" poster="assets/posters/09.webp" data-desktop="assets/videos/desktop/09.mp4" data-mobile="assets/videos/mobile/09.mp4"></video></div>
-          <div class="scene-media" data-scene-media="9" style="--poster:url('assets/posters/10.webp')"><video muted playsinline preload="none" poster="assets/posters/10.webp" data-desktop="assets/videos/desktop/10.mp4" data-mobile="assets/videos/mobile/10.mp4"></video></div>
-        </div>
+        <canvas class="cinema-canvas" data-cinema-canvas aria-hidden="true"></canvas>
+
+        <details class="quality-control" data-quality-control>
+          <summary aria-label="Selecionar qualidade da experiência">
+            <span>Qualidade</span>
+            <b data-quality-label>Automático</b>
+          </summary>
+          <div class="quality-panel" role="group" aria-label="Qualidade da animação">
+            <button type="button" data-quality-option="auto" aria-pressed="true"><span>Auto</span><small>recomendado</small></button>
+            <button type="button" data-quality-option="720" aria-pressed="false"><span>720p</span><small>mais leve</small></button>
+            <button type="button" data-quality-option="1080" aria-pressed="false"><span>1080p</span><small>alta definição</small></button>
+            <button type="button" data-quality-option="full" aria-pressed="false"><span>Full HQ</span><small>80 quadros/ato</small></button>
+            <p data-quality-note>Detectando tela e conexão.</p>
+          </div>
+        </details>
 
         <div class="film-grade" aria-hidden="true"></div>
         <div class="film-vignette" aria-hidden="true"></div>
@@ -249,6 +248,6 @@
     </section>
   </main>
 
-  <footer><span>© 2026 Yuri Moraes</span><span>Manifesto cinematográfico · Timeline V6 · HIC em movimento</span></footer>
+  <footer><span>© 2026 Yuri Moraes</span><span>Manifesto cinematográfico · Timeline V12.2 · qualidade adaptativa</span></footer>
 </body>
 </html>
