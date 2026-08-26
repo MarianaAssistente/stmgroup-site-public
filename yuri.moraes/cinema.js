@@ -12,7 +12,8 @@
       full: { path: 'desktop-max', width: 1920, height: 1080, frames: 80, label: 'Full HQ+' }
     },
     mobile: {
-      '720': { path: 'mobile', width: 720, height: 1280, frames: 40, label: '720p vertical' }
+      '720': { path: 'mobile', width: 720, height: 1280, frames: 40, label: '720p vertical' },
+      '1080': { path: 'mobile-hq', width: 1080, height: 1920, frames: 40, label: '1080p HQ aprimorado' }
     }
   };
 
@@ -68,12 +69,15 @@
   const frameUrl = (scene, frame, profile = currentProfile()) => `assets/frames/${profile.path}/${sceneName(scene)}/frame-${frameName(frame)}.webp`;
 
   function automaticQuality() {
-    if (variant === 'mobile') return '720';
     const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-    const slowNetwork = connection?.saveData || /(^|-)2g$|3g/.test(connection?.effectiveType || '');
-    if (slowNetwork || innerWidth <= 1180) return '720';
+    const slowNetwork = connection?.saveData || /(^|-)2g$|3g/.test(connection?.effectiveType || "");
+    if (variant === "mobile") {
+      const displayWidth = innerWidth * Math.max(1, devicePixelRatio || 1);
+      return !slowNetwork && displayWidth >= 780 ? "1080" : "720";
+    }
+    if (slowNetwork || innerWidth <= 1180) return "720";
     const displayWidth = innerWidth * Math.max(1, devicePixelRatio || 1);
-    return displayWidth >= 1800 ? 'full' : '1080';
+    return displayWidth >= 1800 ? "full" : "1080";
   }
 
   function resolveQuality(mode) {
@@ -101,14 +105,16 @@
       button.setAttribute('aria-pressed', selectedQuality === mode ? 'true' : 'false');
       button.classList.toggle('is-active', selectedQuality === mode);
     });
-    if (qualityLabel) qualityLabel.textContent = selectedQuality === 'auto' ? 'Auto' : profile.label.replace(' vertical', '');
+    if (qualityLabel) qualityLabel.textContent = selectedQuality === 'auto' ? 'Auto' : variant === 'mobile' && activeQuality === '1080' ? 'HQ' : profile.label.replace(' vertical', '');
     const qualitySummary = qualityControl?.querySelector('summary');
     if (qualitySummary) {
       qualitySummary.setAttribute('aria-label', `Selecionar qualidade da experiência. Atual: ${selectedQuality === 'auto' ? `Automático · ${profile.label}` : profile.label}`);
     }
     if (qualityNote) {
       qualityNote.textContent = variant === 'mobile'
-        ? 'Mobile usa o master vertical 720p nativo. 1080p e Full ficam bloqueados para evitar upscale artificial.'
+        ? activeQuality === '1080'
+          ? 'Mobile HQ aprimorado · 1080×1920, compressão premium e carregamento sob demanda.'
+          : 'Mobile 720p nativo · mais leve. O modo 1080p HQ aprimorado pode ser selecionado manualmente.'
         : activeQuality === 'full'
           ? 'Full HQ+ · 1080p nativo, compressão premium e 80 quadros por ato.'
           : `${profile.label} · ${profile.frames} quadros por ato.`;
