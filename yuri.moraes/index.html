@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR" data-build="manifesto-yuri-v12-2-adaptive-quality">
+<html lang="pt-BR" data-build="manifesto-yuri-v12-3-layout-hic">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -10,7 +10,7 @@
   <link rel="canonical" href="https://stmgroup.com.br/yuri.moraes/">
   <link rel="preload" href="assets/posters/01.webp" as="image">
   <link rel="stylesheet" href="styles.css">
-  <script src="cinema.js?v=animano-canvas-v12-2-adaptive" defer></script>
+  <script src="cinema.js?v=animano-canvas-v12-3-layout-hic" defer></script>
 </head>
 <body class="is-loading">
   <a class="skip-link" href="#trajetoria">Pular para o conteúdo</a>
@@ -33,6 +33,19 @@
       <a href="#panteao">Panteão</a>
       <a href="#projetos">Projetos</a>
       <a class="nav-cta" href="#contato">Contato</a>
+      <details class="quality-control" data-quality-control>
+        <summary aria-label="Selecionar qualidade da experiência">
+          <span>Qualidade</span>
+          <b data-quality-label>Automático</b>
+        </summary>
+        <div class="quality-panel" role="group" aria-label="Qualidade da animação">
+          <button type="button" data-quality-option="auto" aria-pressed="true"><span>Auto</span><small>recomendado</small></button>
+          <button type="button" data-quality-option="720" aria-pressed="false"><span>720p</span><small>mais leve</small></button>
+          <button type="button" data-quality-option="1080" aria-pressed="false"><span>1080p</span><small>alta definição</small></button>
+          <button type="button" data-quality-option="full" aria-pressed="false"><span>Full HQ</span><small>80 quadros/ato</small></button>
+          <p data-quality-note>Detectando tela e conexão.</p>
+        </div>
+      </details>
     </nav>
   </header>
 
@@ -41,19 +54,6 @@
       <div class="film-stage">
         <canvas class="cinema-canvas" data-cinema-canvas aria-hidden="true"></canvas>
 
-        <details class="quality-control" data-quality-control>
-          <summary aria-label="Selecionar qualidade da experiência">
-            <span>Qualidade</span>
-            <b data-quality-label>Automático</b>
-          </summary>
-          <div class="quality-panel" role="group" aria-label="Qualidade da animação">
-            <button type="button" data-quality-option="auto" aria-pressed="true"><span>Auto</span><small>recomendado</small></button>
-            <button type="button" data-quality-option="720" aria-pressed="false"><span>720p</span><small>mais leve</small></button>
-            <button type="button" data-quality-option="1080" aria-pressed="false"><span>1080p</span><small>alta definição</small></button>
-            <button type="button" data-quality-option="full" aria-pressed="false"><span>Full HQ</span><small>80 quadros/ato</small></button>
-            <p data-quality-note>Detectando tela e conexão.</p>
-          </div>
-        </details>
 
         <div class="film-grade" aria-hidden="true"></div>
         <div class="film-vignette" aria-hidden="true"></div>
@@ -71,8 +71,8 @@
           </div>
         </div>
 
-        <aside class="final-agent-roster" data-final-agent-roster aria-label="Especialidades do Panteão">
-          <p>O Panteão em movimento</p>
+        <aside class="final-agent-roster" data-final-agent-roster aria-label="Especialidades do Panteão" aria-live="polite">
+          <p><span data-final-agent-index>01</span> · O Panteão em movimento</p>
           <ol>
             <li data-final-agent><b>Zeus</b><span>Estratégia</span></li>
             <li data-final-agent><b>Atena</b><span>Pesquisa</span></li>
@@ -185,7 +185,7 @@
         <div class="hic-monogram" aria-hidden="true">HIC</div>
         <figure>
           <img src="assets/portrait/yuri-hic-executive-v2.webp" alt="Yuri Moraes sorrindo, com blazer azul-marinho, em um estúdio executivo contemporâneo" loading="lazy" width="1086" height="1448">
-          <video data-hic-video muted loop playsinline preload="none" poster="assets/portrait/yuri-hic-executive-v2.webp" aria-label="Yuri Moraes em retrato executivo animado">
+          <video data-hic-video autoplay muted loop playsinline preload="metadata" poster="assets/portrait/yuri-hic-executive-v2.webp" aria-label="Yuri Moraes sorrindo em retrato executivo animado">
             <source src="assets/hic-video/yuri-hic-executive-mobile.mp4" media="(max-width: 600px)" type="video/mp4">
             <source src="assets/hic-video/yuri-hic-executive-web.mp4" type="video/mp4">
           </video>

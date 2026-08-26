@@ -28,6 +28,7 @@
   const finalAgentRoster = document.querySelector('[data-final-agent-roster]');
   const finalAgents = [...document.querySelectorAll('[data-final-agent]')];
   const hicVideo = document.querySelector('[data-hic-video]');
+  const finalAgentIndex = document.querySelector('[data-final-agent-index]');
   const loader = document.querySelector('[data-loader]');
   const loaderBar = document.querySelector('[data-loader-bar]');
   const loaderLabel = document.querySelector('[data-loader-label]');
@@ -100,7 +101,11 @@
       button.setAttribute('aria-pressed', selectedQuality === mode ? 'true' : 'false');
       button.classList.toggle('is-active', selectedQuality === mode);
     });
-    if (qualityLabel) qualityLabel.textContent = selectedQuality === 'auto' ? `Auto · ${profile.label}` : profile.label;
+    if (qualityLabel) qualityLabel.textContent = selectedQuality === 'auto' ? 'Auto' : profile.label.replace(' vertical', '');
+    const qualitySummary = qualityControl?.querySelector('summary');
+    if (qualitySummary) {
+      qualitySummary.setAttribute('aria-label', `Selecionar qualidade da experiência. Atual: ${selectedQuality === 'auto' ? `Automático · ${profile.label}` : profile.label}`);
+    }
     if (qualityNote) {
       qualityNote.textContent = variant === 'mobile'
         ? 'Mobile usa o master vertical 720p nativo. 1080p e Full ficam bloqueados para evitar upscale artificial.'
@@ -292,14 +297,19 @@
     }
 
     if (finalAgentRoster) {
-      const opacity = scene === 9 ? ease((local - .08) / .18) : 0;
-      finalAgentRoster.style.opacity = opacity.toFixed(3);
-      finalAgentRoster.style.transform = `translate3d(${(1 - opacity) * 20}px, 0, 0)`;
-      finalAgentRoster.classList.toggle('is-active', opacity > .02);
+      const rosterOpacity = scene === 6
+        ? ease((local - .06) / .14) * ease((.98 - local) / .12)
+        : 0;
+      const agentPosition = clamp((local - .1) / .72) * (finalAgents.length - 1);
+      const activeAgent = Math.min(finalAgents.length - 1, Math.round(agentPosition));
+      finalAgentRoster.style.opacity = rosterOpacity.toFixed(3);
+      finalAgentRoster.style.transform = `translate3d(${(1 - rosterOpacity) * -18}px, 0, 0)`;
+      finalAgentRoster.classList.toggle('is-active', rosterOpacity > .02);
+      if (finalAgentIndex) finalAgentIndex.textContent = String(activeAgent + 1).padStart(2, '0');
       finalAgents.forEach((agent, index) => {
-        const reveal = scene === 9 ? ease((local - (.16 + index * .045)) / .12) : 0;
+        const reveal = scene === 6 ? clamp(1 - Math.abs(index - agentPosition)) * rosterOpacity : 0;
         agent.style.opacity = reveal.toFixed(3);
-        agent.style.transform = `translate3d(${(1 - reveal) * 14}px, 0, 0)`;
+        agent.style.transform = `translate3d(${(1 - reveal) * -12}px, 0, 0)`;
       });
     }
 
@@ -368,14 +378,14 @@
         if (reducedMotion) {
           hicVideo.hidden = true;
           hicVideo.pause();
-        } else if (entry.isIntersecting && entry.intersectionRatio >= .35) {
+        } else if (entry.isIntersecting && entry.intersectionRatio >= .18) {
           hicVideo.hidden = false;
           hicVideo.play().catch(() => {});
         } else {
           hicVideo.pause();
         }
       });
-    }, { threshold: [0, .35, .7] });
+    }, { threshold: [0, .18, .6] });
     observer.observe(hicVideo);
   }
 
