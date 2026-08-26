@@ -439,3 +439,101 @@ footer { display: flex; justify-content: space-between; gap: 20px; padding-top: 
   .agent-card-copy { padding: 18px; }
   .agent-grid .agent-card-copy h3 { margin-top: 8px; font-size: 27px; }
 }
+
+/* V12.3 — controles fora do palco, Panteão legível e HIC em movimento */
+.site-header nav { position: relative; }
+.site-header .quality-control {
+  position: relative;
+  inset: auto;
+  z-index: 2;
+  width: auto;
+  flex: 0 0 auto;
+  color: currentColor;
+}
+.site-header .quality-control summary {
+  min-width: 128px;
+  padding: 9px 12px;
+  border-color: rgba(255,255,255,.24);
+  background: rgba(6,8,13,.52);
+  color: white;
+}
+.site-header.is-light .quality-control summary {
+  border-color: rgba(6,8,13,.18);
+  background: rgba(242,239,233,.92);
+  color: var(--ink);
+}
+.site-header .quality-panel {
+  position: absolute;
+  top: calc(100% + 11px);
+  right: 0;
+  width: min(290px, calc(100vw - 32px));
+  color: white;
+}
+.final-agent-roster {
+  top: auto;
+  right: auto;
+  left: clamp(24px, 7vw, 112px);
+  bottom: clamp(360px, 42vh, 430px);
+  width: min(270px, 46vw);
+  min-height: 78px;
+  padding: 10px 14px 11px 17px;
+  overflow: hidden;
+  border: 0;
+  border-left: 2px solid var(--gold);
+  border-radius: 0 16px 16px 0;
+  background: linear-gradient(90deg, rgba(5,8,13,.82), rgba(5,8,13,.16));
+  box-shadow: none;
+  backdrop-filter: blur(8px);
+  transform: translate3d(-18px,0,0);
+}
+.final-agent-roster > p {
+  margin: 0 0 5px;
+  color: rgba(255,255,255,.54);
+  font-size: 6px;
+}
+.final-agent-roster > p span { color: var(--gold); }
+.final-agent-roster ol { position: relative; height: 42px; display: block; }
+.final-agent-roster li {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  display: grid;
+  align-content: center;
+  gap: 3px;
+  border: 0 !important;
+  opacity: 0;
+  transform: translate3d(-12px,0,0);
+}
+.final-agent-roster b { font-size: 22px; line-height: 1; }
+.final-agent-roster span { font-size: 7px; }
+
+@media (max-width: 900px) {
+  .site-header nav { gap: 10px; }
+  .site-header .quality-control { top: auto; right: auto; left: auto; width: auto; }
+  .site-header .quality-control summary { min-width: 92px; margin: 0; padding: 8px 10px; }
+  .site-header .quality-panel { right: -74px; grid-template-columns: repeat(2, 1fr); }
+  .hic-copy { order: 1; }
+  .hic-portrait { order: 2; width: min(100%, 500px); }
+  .final-agent-roster {
+    top: auto;
+    right: auto;
+    left: 42px;
+    bottom: max(348px, 42svh);
+    width: min(210px, 62vw);
+    padding: 9px 12px 10px 14px;
+    border-radius: 0 14px 14px 0;
+  }
+  .final-agent-roster > p { margin-bottom: 4px; font-size: 5px; }
+  .final-agent-roster ol { height: 36px; }
+  .final-agent-roster li { padding: 0; }
+  .final-agent-roster b { font-size: 19px; }
+  .final-agent-roster span { display: block; font-size: 6px; }
+}
+
+@media (max-width: 600px) {
+  .site-header nav { gap: 7px; }
+  .site-header .quality-control summary { min-width: 58px; max-width: 72px; padding: 8px 9px; gap: 6px; }
+  .site-header .quality-control summary span { display: none; }
+  .site-header .quality-control summary b { max-width: 48px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 8px; }
+  .site-header .quality-panel { right: -74px; }
+}
