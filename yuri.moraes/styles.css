@@ -553,3 +553,90 @@ footer { display: flex; justify-content: space-between; gap: 20px; padding-top: 
   .site-header .quality-control summary b { max-width: 48px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 8px; }
   .site-header .quality-panel { right: -74px; }
 }
+
+/* V12.6 — analytics transparente, consentimento e Preview fail-closed */
+html[data-analytics-preview="true"]::before {
+  content: "ANALYTICS PREVIEW · SEM TRANSMISSÃO";
+  position: fixed;
+  z-index: 115;
+  right: 14px;
+  bottom: 14px;
+  padding: 7px 10px;
+  border: 1px solid rgba(215,170,87,.45);
+  border-radius: 999px;
+  background: rgba(6,8,13,.86);
+  color: var(--gold);
+  font: 750 7px/1 system-ui, sans-serif;
+  letter-spacing: .12em;
+  pointer-events: none;
+}
+.analytics-consent {
+  position: fixed;
+  z-index: 110;
+  right: clamp(14px, 3vw, 42px);
+  bottom: clamp(14px, 3vw, 34px);
+  left: clamp(14px, 3vw, 42px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 28px;
+  align-items: end;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: clamp(22px, 3vw, 34px);
+  border: 1px solid rgba(215,170,87,.28);
+  border-radius: 4px 30px 4px 4px;
+  background: rgba(6,8,13,.96);
+  color: white;
+  box-shadow: 0 24px 80px rgba(0,0,0,.46);
+  backdrop-filter: blur(20px);
+}
+.analytics-consent-kicker {
+  margin: 0 0 10px;
+  color: var(--gold);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .18em;
+}
+.analytics-consent h2 { max-width: 680px; margin: 0 0 10px; font: 400 clamp(24px,3vw,38px)/1.05 Georgia,serif; }
+.analytics-consent p:not(.analytics-consent-kicker) { max-width: 720px; margin: 0 0 12px; color: rgba(255,255,255,.7); font-size: 12px; line-height: 1.65; }
+.analytics-consent a { color: white; font-size: 10px; text-underline-offset: 4px; }
+.analytics-consent-actions { display: grid; gap: 9px; min-width: 190px; }
+.analytics-consent-actions button,
+.footer-privacy button {
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 999px;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+}
+.analytics-consent-actions button { min-height: 44px; padding: 10px 18px; font-size: 10px; font-weight: 750; }
+.analytics-consent-actions button:last-child { border-color: var(--gold); background: var(--gold); color: var(--ink); }
+.analytics-consent-actions button:focus-visible,
+.footer-privacy button:focus-visible { outline: 2px solid white; outline-offset: 3px; }
+.footer-privacy { display: flex; gap: 12px; align-items: center; }
+.footer-privacy a { color: inherit; }
+.footer-privacy button { padding: 4px 8px; color: inherit; font-size: inherit; letter-spacing: inherit; }
+
+.privacy-page { min-height: 100vh; background: var(--ink); color: white; }
+.privacy-shell { width: min(780px, calc(100% - 48px)); margin: 0 auto; padding: clamp(48px,8vw,110px) 0; }
+.privacy-shell > a { color: rgba(255,255,255,.62); font-size: 11px; text-underline-offset: 4px; }
+.privacy-shell .section-label { margin-top: clamp(56px,8vw,96px); color: var(--gold); }
+.privacy-shell h1 { max-width: 660px; margin: 14px 0 22px; font: 400 clamp(42px,8vw,82px)/.95 Georgia,serif; }
+.privacy-shell > p { max-width: 620px; color: rgba(255,255,255,.72); font-size: 16px; line-height: 1.7; }
+.privacy-shell section { padding: 28px 0; border-top: 1px solid rgba(255,255,255,.13); }
+.privacy-shell section:first-of-type { margin-top: 58px; }
+.privacy-shell h2 { margin: 0 0 10px; font: 400 24px/1.15 Georgia,serif; }
+.privacy-shell section p { max-width: 640px; margin: 0; color: rgba(255,255,255,.62); font-size: 13px; line-height: 1.7; }
+
+@media (max-width: 720px) {
+  .analytics-consent { grid-template-columns: 1fr; gap: 18px; padding: 22px; border-radius: 3px 22px 3px 3px; }
+  .analytics-consent-actions { grid-template-columns: 1fr 1fr; min-width: 0; }
+  html[data-analytics-preview="true"]::before { display: none; }
+  .footer-privacy { align-items: start; flex-direction: column; }
+}
+
+@media (max-width: 430px) {
+  .analytics-consent { max-height: calc(100svh - 28px); overflow: auto; }
+  .analytics-consent-actions { grid-template-columns: 1fr; }
+  .analytics-consent p:not(.analytics-consent-kicker) { font-size: 11px; }
+}
