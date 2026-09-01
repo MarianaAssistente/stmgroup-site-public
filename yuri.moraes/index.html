@@ -1,7 +1,7 @@
 <!doctype html>
-<html lang="pt-BR" data-build="manifesto-yuri-v12-5-mobile-hq">
+<html lang="pt-BR" data-build="manifesto-yuri-analytics-preview-20260827">
 <head>
-  <meta name="manifesto-version" content="12.5-mobile-hq">
+  <meta name="manifesto-version" content="12.6-analytics-preview">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#06080d">
@@ -11,7 +11,9 @@
   <link rel="canonical" href="https://stmgroup.com.br/yuri.moraes/">
   <link rel="preload" href="assets/posters/01.webp" as="image">
   <link rel="stylesheet" href="styles.css">
-  <script src="cinema.js?v=animano-canvas-v12-3-layout-hic" defer></script>
+  <script src="analytics-config.js?v=20260827" defer></script>
+  <script src="analytics.js?v=20260827" defer></script>
+  <script src="cinema.js?v=manifesto-v12-6-analytics-preview" defer></script>
 </head>
 <body class="is-loading">
   <a class="skip-link" href="#trajetoria">Pular para o conteúdo</a>
@@ -244,11 +246,15 @@
       <div class="closing-actions">
         <a href="#projetos">Explorar projetos <span>→</span></a>
         <a href="#trajetoria">Conhecer a trajetória <span>→</span></a>
-        <a href="https://www.linkedin.com/in/yuri-moraes-b3793038/" target="_blank" rel="noopener noreferrer">Falar comigo <span>↗</span></a>
+        <a href="https://www.linkedin.com/in/yuri-moraes-b3793038/" target="_blank" rel="noopener noreferrer" data-conversion="linkedin-contact">Falar comigo <span>↗</span></a>
       </div>
     </section>
   </main>
 
-  <footer><span>© 2026 Yuri Moraes</span><span>Manifesto cinematográfico · Timeline V12.2 · qualidade adaptativa</span></footer>
+  <footer>
+    <span>© 2026 Yuri Moraes</span>
+    <span>Manifesto cinematográfico · Timeline V12.6 · qualidade adaptativa</span>
+    <span class="footer-privacy"><a href="privacidade.html">Privacidade</a><button type="button" data-analytics-preferences>Preferências de métricas</button></span>
+  </footer>
 </body>
 </html>

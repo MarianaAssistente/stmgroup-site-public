@@ -39,6 +39,7 @@
   const qualityLabel = document.querySelector('[data-quality-label]');
   const qualityNote = document.querySelector('[data-quality-note]');
   const qualityButtons = [...document.querySelectorAll('[data-quality-option]')];
+  const track = (event, properties = {}) => window.manifestoAnalytics?.track(event, properties);
 
   if (!film || !canvas || !context || copies.length !== SCENE_COUNT) return;
 
@@ -54,9 +55,16 @@
   let cacheEpoch = 0;
   let targetProgress = 0;
   let smoothProgress = 0;
-  let activeScene = 0;
+  let activeScene = -1;
   let lastDrawKey = '';
   let raf = 0;
+  let chapterEntrySource = 'initial';
+  let maxProgress = 0;
+  const milestones = new Set();
+  const visitedChapters = new Set();
+  const frameErrors = new Set();
+  const viewedSections = new Set();
+  const sessionStartedAt = performance.now();
 
   document.documentElement.dataset.canvasVariant = variant;
 
@@ -173,6 +181,16 @@
       };
       image.onerror = () => {
         requestPending.delete(key);
+        const errorKey = `${requestProfile.path}:${scene}`;
+        if (!frameErrors.has(errorKey)) {
+          frameErrors.add(errorKey);
+          track('media_error', {
+            media_type: 'cinema_frame',
+            chapter: scene + 1,
+            quality: activeQuality,
+            variant
+          });
+        }
         resolve(null);
       };
       image.src = frameUrl(scene, frame, requestProfile);
@@ -284,6 +302,15 @@
     if (scene !== activeScene) {
       activeScene = scene;
       warmAround(scene);
+      visitedChapters.add(scene + 1);
+      track('chapter_view', {
+        chapter: scene + 1,
+        chapter_label: chapters[scene]?.getAttribute('aria-label') || `Capítulo ${scene + 1}`,
+        entry_source: chapterEntrySource,
+        quality: activeQuality,
+        variant
+      });
+      chapterEntrySource = 'scroll';
     }
 
     drawFrame(scene, frame);
@@ -342,10 +369,28 @@
     const start = film.offsetTop;
     const travel = Math.max(1, film.offsetHeight - innerHeight);
     targetProgress = clamp((scrollY - start) / travel);
+    maxProgress = Math.max(maxProgress, targetProgress);
+    [25, 50, 75, 100].forEach(milestone => {
+      if (targetProgress * 100 < milestone || milestones.has(milestone)) return;
+      milestones.add(milestone);
+      track('progress_milestone', { percent: milestone, variant, quality: activeQuality });
+      if (milestone === 100) {
+        track('manifesto_complete', {
+          chapters_seen: visitedChapters.size,
+          elapsed_seconds: Math.round((performance.now() - sessionStartedAt) / 1000)
+        });
+      }
+    });
     header?.classList.toggle('is-light', scrollY > start + travel + 12);
   }
 
-  function goToChapter(index) {
+  function goToChapter(index, source = 'timeline') {
+    chapterEntrySource = source;
+    track('chapter_jump', {
+      chapter: index + 1,
+      source,
+      from_chapter: activeScene + 1
+    });
     const start = film.offsetTop;
     const travel = Math.max(1, film.offsetHeight - innerHeight);
     const progress = index / SCENE_COUNT + .006;
@@ -370,6 +415,12 @@
     setTimeout(() => {
       loader.classList.add('is-done');
       document.body.classList.remove('is-loading');
+      track('manifesto_loaded', {
+        load_ms: Math.round(performance.now()),
+        quality: activeQuality,
+        variant,
+        reduced_motion: reducedMotion
+      });
     }, 180);
 
     updateProgress();
@@ -410,20 +461,59 @@
   qualityButtons.forEach(button => {
     button.addEventListener('click', async () => {
       if (button.disabled) return;
+      const previousQuality = activeQuality;
       await setQuality(button.dataset.qualityOption);
+      track('quality_changed', {
+        selected: button.dataset.qualityOption,
+        previous: previousQuality,
+        active: activeQuality,
+        variant
+      });
       if (qualityControl?.open) qualityControl.open = false;
     });
   });
 
-  chapters.forEach(button => button.addEventListener('click', () => goToChapter(Number(button.dataset.chapter))));
+  chapters.forEach(button => button.addEventListener('click', () => goToChapter(Number(button.dataset.chapter), 'timeline')));
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', event => {
       const target = document.querySelector(link.getAttribute('href'));
       if (!target) return;
       event.preventDefault();
+      track('navigation_click', {
+        target: link.getAttribute('href').slice(1),
+        placement: link.closest('.closing-actions') ? 'closing' : link.closest('header') ? 'header' : 'content'
+      });
       target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
     });
   });
+  document.querySelectorAll('[data-conversion]').forEach(link => {
+    link.addEventListener('click', () => {
+      track('contact_click', {
+        destination: link.dataset.conversion,
+        placement: link.closest('.closing-actions') ? 'closing' : 'content'
+      });
+    });
+  });
+
+  const sectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting || entry.intersectionRatio < .35 || viewedSections.has(entry.target.id)) return;
+      viewedSections.add(entry.target.id);
+      track('section_view', { section: entry.target.id });
+    });
+  }, { threshold: [.35] });
+  document.querySelectorAll('#trajetoria, #hic, #panteao, #projetos, #contato').forEach(section => sectionObserver.observe(section));
+
+  addEventListener('pagehide', () => {
+    track('session_summary', {
+      elapsed_seconds: Math.round((performance.now() - sessionStartedAt) / 1000),
+      max_progress_percent: Math.round(maxProgress * 100),
+      chapters_seen: visitedChapters.size,
+      sections_seen: viewedSections.size,
+      quality: activeQuality,
+      variant
+    });
+  }, { once: true });
 
   start();
 })();
