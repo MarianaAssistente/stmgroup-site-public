@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sua História em Filme — curso rápido</title>
+<meta name="description" content="Curso rápido para transformar a sua história em filmes curtos para o Instagram e o LinkedIn, do desenho animado ao realista, usando inteligência artificial.">
+<meta property="og:title" content="Sua História em Filme">
+<meta property="og:description" content="Conte histórias. Faça filmes. Do desenho animado ao realista.">
+<meta property="og:image" content="https://stmgroup.com.br/contesuahistoria/assets/capa.jpg">
+<meta property="og:url" content="https://stmgroup.com.br/contesuahistoria/">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://stmgroup.com.br/contesuahistoria/">
+<style>
+:root{
+  --noite:#0d0b1e; --noite2:#151233; --egeu:#1d2a5c; --lilas:#6d5aa8;
+  --ouro:#f3c454; --ouro-e:#c48e30; --creme:#f8eeda; --creme2:#d9cdb4; --terra:#c8623a;
+  --linha:rgba(243,196,84,.28);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--noite);color:var(--creme);font-family:var(--sans);font-size:17px;line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img,video{max-width:100%;display:block}
+a{color:var(--ouro)}
+h1,h2,h3{font-family:var(--serif);font-weight:700;line-height:1.12;margin:0;text-wrap:balance}
+h2{font-size:clamp(30px,5vw,48px)}
+h3{font-size:22px}
+p{margin:0 0 14px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+section{padding:72px 0;position:relative}
+.eyebrow{font-family:var(--serif);letter-spacing:.28em;text-transform:uppercase;font-size:13px;color:var(--ouro);display:block;margin-bottom:14px}
+.sub{color:var(--creme2);max-width:60ch}
+.orn{display:flex;align-items:center;gap:12px;margin:18px 0 26px;color:var(--ouro)}
+.orn::before,.orn::after{content:"";height:2px;width:70px;background:var(--ouro)}
+.orn i{width:11px;height:11px;background:var(--ouro);transform:rotate(45deg);display:block}
+.centro{text-align:center}.centro .orn{justify-content:center}.centro .sub{margin-left:auto;margin-right:auto}
+
+/* céu */
+#ceu{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+main,header,footer,.faixa{position:relative;z-index:1}
+
+/* faixa */
+.faixa{background:linear-gradient(90deg,var(--terra),#a8472a);color:#fff;font-size:14.5px;text-align:center;padding:9px 14px;font-weight:600}
+.faixa b{font-variant-numeric:tabular-nums}
+
+/* botão */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(180deg,#ffd873,var(--ouro) 45%,var(--ouro-e));color:#1b1206;font-weight:800;font-size:18px;padding:16px 28px;border-radius:999px;border:0;cursor:pointer;text-decoration:none;text-align:center;box-shadow:0 10px 30px rgba(243,196,84,.28),inset 0 1px 0 rgba(255,255,255,.6);transition:transform .18s,box-shadow .18s;font-family:var(--sans)}
+.btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 16px 40px rgba(243,196,84,.42),inset 0 1px 0 rgba(255,255,255,.6)}
+.btn:focus-visible,.chip:focus-visible,.passo-tab:focus-visible,summary:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.btn small{font-weight:600;font-size:13px;opacity:.75}
+
+/* herói */
+.heroi{padding:48px 0 64px}
+.heroi .grade{display:grid;gap:40px;align-items:center}
+.heroi h1{font-size:clamp(46px,11.5vw,84px);letter-spacing:-.01em}
+.heroi h1 em{font-style:italic;color:var(--ouro);display:block}
+.heroi .lead{font-size:19px;color:var(--creme2);max-width:46ch;margin:20px 0 26px}
+.preco-linha{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px}
+.preco-mini{font-size:14.5px;color:var(--creme2)}
+.preco-mini s{opacity:.7}
+.preco-mini b{color:var(--ouro);font-size:17px}
+.selos{display:flex;flex-wrap:wrap;gap:8px 10px;margin-top:26px;padding:0;list-style:none}
+.selos li{border:1px solid var(--linha);border-radius:999px;padding:6px 13px;font-size:13.5px;color:var(--creme2);background:rgba(13,11,30,.5)}
+
+.fone{position:relative;width:min(300px,74vw);margin:0 auto;aspect-ratio:9/16;border-radius:34px;padding:9px;background:linear-gradient(160deg,#3a3050,#0b0916);box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 2px var(--linha),0 0 90px rgba(109,90,168,.35);transform-style:preserve-3d;transition:transform .25s ease-out;will-change:transform}
+.fone video{width:100%;height:100%;object-fit:cover;border-radius:26px;background:#000}
+.tocar{position:absolute;inset:9px;border-radius:26px;border:0;background:linear-gradient(180deg,rgba(13,11,30,0) 40%,rgba(13,11,30,.75));cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:10px;padding-bottom:26px;color:#fff;font:600 14.5px var(--sans)}
+.tocar span{width:74px;height:74px;border-radius:50%;background:var(--ouro);display:grid;place-items:center;box-shadow:0 0 0 0 rgba(243,196,84,.6);animation:pulso 2s infinite}
+.tocar span::after{content:"";border-left:24px solid #1b1206;border-top:15px solid transparent;border-bottom:15px solid transparent;margin-left:6px}
+@keyframes pulso{70%{box-shadow:0 0 0 22px rgba(243,196,84,0)}100%{box-shadow:0 0 0 0 rgba(243,196,84,0)}}
+
+/* comparador */
+.comp-area{display:grid;gap:34px;align-items:center}
+.comp{position:relative;width:min(380px,100%);margin:0 auto;aspect-ratio:941/1672;border-radius:22px;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.6),0 0 0 2px var(--linha);touch-action:pan-y;user-select:none;cursor:ew-resize;--p:50%}
+.comp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.comp .cima{clip-path:inset(0 calc(100% - var(--p)) 0 0)}
+.comp .barra{position:absolute;top:0;bottom:0;left:var(--p);width:3px;background:var(--ouro);transform:translateX(-50%);box-shadow:0 0 18px rgba(243,196,84,.8)}
+.comp .pega{position:absolute;top:50%;left:var(--p);transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;background:var(--ouro);display:grid;place-items:center;color:#1b1206;font-weight:900;font-size:19px;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+.comp .rot{position:absolute;bottom:14px;padding:5px 12px;border-radius:999px;background:rgba(13,11,30,.78);font-size:13px;font-weight:700;letter-spacing:.04em}
+.comp .rot.e{left:12px}.comp .rot.d{right:12px}
+.comp input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+
+/* escolha da história */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0}
+.chip{border:1.5px solid var(--linha);background:rgba(21,18,51,.7);color:var(--creme);padding:11px 18px;border-radius:999px;font:600 15.5px var(--sans);cursor:pointer;transition:.18s}
+.chip:hover{border-color:var(--ouro)}
+.chip[aria-pressed=true]{background:var(--ouro);color:#1b1206;border-color:var(--ouro)}
+.arco{display:grid;gap:12px;margin-top:8px}
+.arco li{list-style:none;background:rgba(21,18,51,.75);border:1px solid var(--linha);border-radius:16px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start;animation:sobe .45s both}
+.arco li:nth-child(2){animation-delay:.08s}.arco li:nth-child(3){animation-delay:.16s}
+.arco b{font-family:var(--serif);color:var(--ouro);font-size:15px;white-space:nowrap;padding-top:2px}
+.arco{padding:0}
+@keyframes sobe{from{opacity:0;transform:translateY(14px)}}
+
+/* passos */
+.passos{display:grid;gap:30px;align-items:center;margin-top:34px}
+.passo-tabs{display:grid;gap:10px}
+.passo-tab{text-align:left;background:rgba(21,18,51,.6);border:1px solid var(--linha);border-radius:16px;padding:15px 18px;color:var(--creme);cursor:pointer;font:inherit;display:grid;grid-template-columns:44px 1fr;gap:4px 12px;position:relative;overflow:hidden;transition:.2s}
+.passo-tab .n{grid-row:1/3;font-family:var(--serif);font-size:30px;color:var(--ouro);line-height:1}
+.passo-tab strong{font-family:var(--serif);font-size:19px}
+.passo-tab span.t{font-size:15px;color:var(--creme2);display:none}
+.passo-tab[aria-selected=true]{background:rgba(29,42,92,.85);border-color:var(--ouro)}
+.passo-tab[aria-selected=true] span.t{display:block}
+.passo-tab .prog{position:absolute;left:0;bottom:0;height:3px;background:var(--ouro);width:0}
+.passo-tab[aria-selected=true] .prog.anda{animation:prog 6s linear forwards}
+@keyframes prog{to{width:100%}}
+.passo-tela{width:min(300px,74vw);margin:0 auto;aspect-ratio:9/16;border-radius:24px;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.6),0 0 0 2px var(--linha);background:#000;position:relative}
+.passo-tela video,.passo-tela img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s}
+.passo-tela .on{opacity:1}
+
+/* cartões */
+.cartoes{display:grid;gap:16px;margin-top:34px}
+.cartao{background:linear-gradient(180deg,rgba(29,42,92,.6),rgba(21,18,51,.8));border:1px solid var(--linha);border-radius:20px;padding:24px;transition:transform .25s,border-color .25s}
+.cartao:hover{transform:translateY(-5px);border-color:var(--ouro)}
+.cartao .ic{font-family:var(--serif);font-size:34px;color:var(--ouro);display:block;margin-bottom:8px}
+.cartao p{color:var(--creme2);margin:8px 0 0;font-size:16px}
+
+/* módulos e faq */
+details{border:1px solid var(--linha);border-radius:16px;background:rgba(21,18,51,.7);margin-bottom:10px;overflow:hidden}
+summary{list-style:none;cursor:pointer;padding:17px 52px 17px 20px;position:relative;font-weight:700;display:flex;gap:14px;align-items:baseline}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:26px;color:var(--ouro);transition:transform .25s;font-weight:400}
+details[open] summary::after{transform:translateY(-50%) rotate(45deg)}
+summary .n{font-family:var(--serif);color:var(--ouro);min-width:26px}
+details .corpo{padding:0 20px 18px 60px;color:var(--creme2);font-size:16px}
+.faq details .corpo{padding-left:20px}
+.duas{display:grid;gap:0 16px}
+
+/* preço */
+.oferta{max-width:560px;margin:34px auto 0;border-radius:26px;padding:3px;background:linear-gradient(140deg,var(--ouro),var(--terra),var(--lilas),var(--ouro));background-size:300% 300%;animation:gira 8s ease infinite}
+@keyframes gira{50%{background-position:100% 50%}}
+.oferta-in{background:var(--noite2);border-radius:24px;padding:32px 24px;text-align:center}
+.tag{display:inline-block;background:var(--terra);color:#fff;font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:999px}
+.valor{font-family:var(--serif);font-size:clamp(60px,14vw,92px);color:var(--ouro);line-height:1;margin:16px 0 4px}
+.valor small{font-size:.36em;vertical-align:top;margin-right:4px;position:relative;top:.35em}
+.de{color:var(--creme2);font-size:16px}
+.relogio{display:flex;justify-content:center;gap:10px;margin:22px 0}
+.relogio div{background:var(--noite);border:1px solid var(--linha);border-radius:14px;min-width:68px;padding:10px 6px}
+.relogio b{display:block;font:700 30px var(--serif);color:var(--creme);font-variant-numeric:tabular-nums}
+.relogio span{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--creme2)}
+.lista{list-style:none;padding:0;margin:22px 0;text-align:left;display:grid;gap:9px}
+.lista li{padding-left:30px;position:relative;font-size:16px}
+.lista li::before{content:"";position:absolute;left:4px;top:8px;width:10px;height:10px;background:var(--ouro);transform:rotate(45deg)}
+.fino{font-size:13.5px;color:var(--creme2);margin-top:14px}
+
+/* autor */
+.autor{display:grid;gap:26px;align-items:center}
+.autor img{width:min(260px,62vw);border-radius:22px;margin:0 auto;box-shadow:0 0 0 2px var(--linha),0 20px 60px rgba(0,0,0,.5)}
+
+footer{padding:34px 0 110px;text-align:center;color:var(--creme2);font-size:14px;border-top:1px solid var(--linha)}
+
+/* barra fixa */
+.fixa{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(13,11,30,.94);backdrop-filter:blur(10px);border-top:1px solid var(--linha);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;transform:translateY(110%);transition:transform .35s}
+.fixa.on{transform:none}
+.fixa .txt{font-size:13.5px;line-height:1.25}
+.fixa .txt b{color:var(--ouro);font-size:17px}
+.fixa .btn{padding:12px 20px;font-size:15.5px;white-space:nowrap}
+
+.aviso{position:fixed;left:50%;bottom:90px;transform:translate(-50%,20px);background:#fff;color:#1b1206;padding:12px 18px;border-radius:12px;font-weight:600;font-size:14.5px;opacity:0;pointer-events:none;transition:.3s;z-index:30;max-width:90vw;text-align:center}
+.aviso.on{opacity:1;transform:translate(-50%,0)}
+
+.rev{opacity:0;transform:translateY(26px);transition:opacity .7s,transform .7s}
+.rev.on{opacity:1;transform:none}
+
+@media(min-width:860px){
+  section{padding:96px 0}
+  .heroi .grade{grid-template-columns:1.15fr .85fr}
+  .comp-area{grid-template-columns:1fr 1fr}
+  .passos{grid-template-columns:1.1fr .9fr}
+  .cartoes{grid-template-columns:repeat(3,1fr)}
+  .duas{grid-template-columns:1fr 1fr}
+  .autor{grid-template-columns:300px 1fr}
+  .fone{width:320px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .rev{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<canvas id="ceu" aria-hidden="true"></canvas>
+
+<div class="faixa" id="faixa">Pré-venda da turma fundadora: <b>R$ 29,90</b> até 1º de dezembro · faltam <b id="faixa-tempo">—</b></div>
+
+<main>
+<!-- HERÓI -->
+<header class="heroi">
+  <div class="wrap grade">
+    <div>
+      <span class="eyebrow">Sua História em Filme · curso rápido</span>
+      <h1>Conte histórias. <em>Faça filmes.</em></h1>
+      <p class="lead">Eu contei a minha vida em vinte e um desenhos animados e não desenhei nenhum. Neste curso eu mostro o caminho inteiro para você fazer o mesmo com a sua história, em desenho animado ou em imagem realista.</p>
+      <div class="preco-linha">
+        <a class="btn js-comprar" href="#oferta">Quero entrar na turma fundadora</a>
+        <span class="preco-mini"><b class="js-preco">R$ 29,90</b> <span class="js-de">na pré-venda · depois <s>R$ 79,90</s></span></span>
+      </div>
+      <ul class="selos">
+        <li>Só precisa do ChatGPT</li>
+        <li>30 aulas curtas</li>
+        <li>Começa em 1º de dezembro</li>
+        <li>Para Instagram e LinkedIn</li>
+      </ul>
+    </div>
+    <div>
+      <div class="fone" id="fone">
+        <video id="chamada" src="assets/chamada.mp4" poster="assets/capa.jpg" playsinline preload="none"></video>
+        <button class="tocar" id="tocar" aria-label="Assistir à chamada do curso, 53 segundos"><span></span>Veja em 53 segundos</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- COMPARADOR -->
+<section id="estilos">
+  <div class="wrap comp-area">
+    <div class="rev">
+      <span class="eyebrow">Você escolhe o estilo</span>
+      <h2>E não precisa ser desenho.</h2>
+      <div class="orn"><i></i></div>
+      <p class="sub">A mesma cena pode virar cinema. Arraste a barra dourada e veja a minha chegada à Nova Zelândia nos dois estilos. O caminho para fazer é o mesmo; o que muda é uma escolha sua no módulo 3.</p>
+      <p class="sub">As duas imagens saíram de fotos minhas e de um pedido escrito. Nenhuma foi desenhada ou fotografada.</p>
+    </div>
+    <div class="comp rev" id="comp">
+      <img src="assets/j.jpg" alt="A cena em versão realista: Yuri de mochila diante das montanhas da Nova Zelândia" loading="lazy">
+      <img class="cima" src="assets/a.jpg" alt="A mesma cena em desenho animado" loading="lazy">
+      <div class="barra"></div><div class="pega" aria-hidden="true">⇆</div>
+      <span class="rot e">Desenho</span><span class="rot d">Realista</span>
+      <input type="range" min="0" max="100" value="50" aria-label="Comparar desenho e realista">
+    </div>
+  </div>
+</section>
+
+<!-- SUA HISTÓRIA -->
+<section id="historia">
+  <div class="wrap">
+    <div class="rev">
+      <span class="eyebrow">Comece por aqui</span>
+      <h2>Qual história você quer contar?</h2>
+      <div class="orn"><i></i></div>
+      <p class="sub">Escolha uma e veja como ela vira uma série. É esse desenho que você faz no primeiro módulo, antes de gerar qualquer imagem.</p>
+      <div class="chips" role="group" aria-label="Tipo de história">
+        <button class="chip" aria-pressed="true" data-h="minha">A minha história</button>
+        <button class="chip" aria-pressed="false" data-h="familia">A da minha família</button>
+        <button class="chip" aria-pressed="false" data-h="negocio">A do meu negócio</button>
+      </div>
+      <ul class="arco" id="arco" aria-live="polite"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- CINCO PASSOS -->
+<section id="passos">
+  <div class="wrap">
+    <div class="rev centro">
+      <span class="eyebrow">Como eu fiz</span>
+      <h2>Cinco passos, do papel ao post</h2>
+      <div class="orn"><i></i></div>
+    </div>
+    <div class="passos rev">
+      <div class="passo-tabs" role="tablist" aria-label="Os cinco passos">
+        <button class="passo-tab" role="tab" aria-selected="true" data-m="c"><span class="n">1</span><strong>A história</strong><span class="t">O caminho inteiro desenhado antes do primeiro vídeo, com um gancho no fim de cada episódio.</span><i class="prog"></i></button>
+        <button class="passo-tab" role="tab" aria-selected="false" data-m="d"><span class="n">2</span><strong>O personagem</strong><span class="t">Fotos suas viram um personagem que se repete igual em todas as cenas.</span><i class="prog"></i></button>
+        <button class="passo-tab" role="tab" aria-selected="false" data-m="e"><span class="n">3</span><strong>A voz</strong><span class="t">A sua voz, clonada. Eu não gravei nenhum episódio da série.</span><i class="prog"></i></button>
+        <button class="passo-tab" role="tab" aria-selected="false" data-m="f"><span class="n">4</span><strong>O movimento</strong><span class="t">Cada cena parada ganha cinco segundos de animação.</span><i class="prog"></i></button>
+        <button class="passo-tab" role="tab" aria-selected="false" data-m="g"><span class="n">5</span><strong>A montagem</strong><span class="t">Voz, cenas e legenda juntas, prontas para o Instagram e o LinkedIn.</span><i class="prog"></i></button>
+      </div>
+      <div class="passo-tela" id="tela" aria-hidden="true">
+        <video data-m="c" src="assets/c.mp4" poster="assets/c.jpg" muted loop playsinline preload="none" class="on"></video>
+        <img data-m="d" src="assets/d.jpg" alt="" loading="lazy">
+        <video data-m="e" src="assets/e.mp4" poster="assets/e.jpg" muted loop playsinline preload="none"></video>
+        <video data-m="f" src="assets/f.mp4" poster="assets/f.jpg" muted loop playsinline preload="none"></video>
+        <video data-m="g" src="assets/g.mp4" poster="assets/g.jpg" muted loop playsinline preload="none"></video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- O QUE LEVA -->
+<section id="leva">
+  <div class="wrap">
+    <div class="rev centro">
+      <span class="eyebrow">No fim do curso</span>
+      <h2>O que você leva</h2>
+      <div class="orn"><i></i></div>
+    </div>
+    <div class="cartoes">
+      <div class="cartao rev"><span class="ic">I</span><h3>Um episódio seu, pronto</h3><p>Um filme de 30 a 45 segundos com a sua história, a sua voz e legenda, no formato do Instagram e do LinkedIn.</p></div>
+      <div class="cartao rev"><span class="ic">II</span><h3>O arco da série inteira</h3><p>A lista dos seus episódios, com o gancho de cada um, para você continuar publicando depois do curso.</p></div>
+      <div class="cartao rev"><span class="ic">III</span><h3>Os meus pedidos de verdade</h3><p>Os textos que eu usei para gerar roteiro, imagem e voz, com o que deu errado e como eu corrigi.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- AULAS -->
+<section id="aulas">
+  <div class="wrap">
+    <div class="rev centro">
+      <span class="eyebrow">Como são as aulas</span>
+      <h2>Curtas, diretas e com a mão na massa</h2>
+      <div class="orn"><i></i></div>
+    </div>
+    <div class="cartoes">
+      <div class="cartao rev"><span class="ic">▶</span><h3>Aulas animadas</h3><p>No mesmo traço e com a mesma voz da série, mostrando os bastidores de cada etapa.</p></div>
+      <div class="cartao rev"><span class="ic">●</span><h3>Aulas gravadas por mim</h3><p>Eu apareço para mostrar, na tela, o que eu faço em cada ferramenta.</p></div>
+      <div class="cartao rev"><span class="ic">✎</span><h3>Folha de exercício</h3><p>Cada módulo traz os pedidos prontos para copiar e colar, e uma lista para conferir o resultado.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MÓDULOS -->
+<section id="modulos">
+  <div class="wrap">
+    <div class="rev centro">
+      <span class="eyebrow">O conteúdo</span>
+      <h2>Dez módulos, três aulas em cada um</h2>
+      <div class="orn"><i></i></div>
+      <p class="sub">Toque em um módulo para ver o que você tem em mãos quando termina.</p>
+    </div>
+    <div class="duas rev" id="lista-modulos"></div>
+  </div>
+</section>
+
+<!-- AUTOR -->
+<section id="autor">
+  <div class="wrap autor">
+    <img class="rev" src="assets/h.jpg" alt="Yuri em desenho animado, convidando quem assiste" loading="lazy">
+    <div class="rev">
+      <span class="eyebrow">Quem ensina</span>
+      <h2>Yuri Moraes</h2>
+      <div class="orn"><i></i></div>
+      <p class="sub">Eu não sou desenhista nem editor de vídeo. Sou do Nordeste, trabalho com vendas e tecnologia, e quis contar a minha história de um jeito que as pessoas parassem para ver.</p>
+      <p class="sub">O resultado foi a série "Do Nordeste para o Olimpo", com vinte e um episódios feitos com inteligência artificial e publicados no Instagram e no LinkedIn. Este curso é o registro de como eu fiz, incluindo os erros.</p>
+    </div>
+  </div>
+</section>
+
+<!-- OFERTA -->
+<section id="oferta">
+  <div class="wrap">
+    <div class="rev centro">
+      <span class="eyebrow">Turma fundadora</span>
+      <h2>Sua história merece virar filme</h2>
+      <div class="orn"><i></i></div>
+    </div>
+    <div class="oferta rev">
+      <div class="oferta-in">
+        <span class="tag js-tag">Pré-venda · até 1º de dezembro</span>
+        <div class="valor"><small>R$</small><span class="js-valor">29,90</span></div>
+        <div class="de js-de2">Depois da pré-venda: <s>R$ 79,90</s></div>
+        <div class="relogio" id="relogio" aria-label="Tempo até o fim da pré-venda">
+          <div><b id="r-d">00</b><span>dias</span></div>
+          <div><b id="r-h">00</b><span>horas</span></div>
+          <div><b id="r-m">00</b><span>min</span></div>
+          <div><b id="r-s">00</b><span>seg</span></div>
+        </div>
+        <a class="btn js-comprar js-checkout" href="#oferta">Quero o meu lugar</a>
+        <ul class="lista">
+          <li>Dez módulos com três aulas curtas em cada um</li>
+          <li>Aulas animadas e aulas gravadas por mim</li>
+          <li>Folhas de exercício com os pedidos prontos</li>
+          <li>O curso começa em 1º de dezembro</li>
+          <li>Sete dias de garantia: se não gostar, devolvo o valor inteiro</li>
+        </ul>
+        <p class="fino">Pagamento seguro pela Kiwify, por Pix ou cartão. As ferramentas de voz e de animação são pagas à parte, direto a cada serviço; no curso eu mostro quanto gastei em cada uma.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="duvidas" class="faq">
+  <div class="wrap" style="max-width:820px">
+    <div class="rev centro">
+      <span class="eyebrow">Dúvidas</span>
+      <h2>Perguntas frequentes</h2>
+      <div class="orn"><i></i></div>
+    </div>
+    <div class="rev">
+      <details><summary>Preciso saber desenhar ou editar vídeo?</summary><div class="corpo">Não. Tudo é feito com pedidos escritos, e eu entrego os pedidos prontos para você adaptar à sua história.</div></details>
+      <details><summary>Funciona para imagem realista?</summary><div class="corpo">Funciona. O caminho é o mesmo do desenho animado. O que muda é o estilo que você escolhe no módulo 3.</div></details>
+      <details><summary>O que eu preciso ter para começar?</summary><div class="corpo">Uma conta no ChatGPT e fotos suas. As outras ferramentas são apresentadas ao longo das aulas.</div></details>
+      <details><summary>Vou ter gastos além do curso?</summary><div class="corpo">Pode ter. As ferramentas de voz e de animação cobram pelo uso. No último módulo eu mostro quanto gastei em cada uma e a alternativa sem custo, quando ela existe.</div></details>
+      <details><summary>Quando eu recebo as aulas?</summary><div class="corpo">O curso começa em 1º de dezembro, dentro da área de alunos. Quem compra na pré-venda garante o preço de R$ 29,90 e entra nesse dia.</div></details>
+      <details><summary>E se eu não gostar?</summary><div class="corpo">Você tem sete dias de garantia. É só pedir e o valor é devolvido inteiro.</div></details>
+    </div>
+    <p class="centro rev" style="margin-top:34px"><a class="btn js-comprar" href="#oferta">Quero entrar na turma fundadora</a></p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">Sua História em Filme · um curso de Yuri Moraes · conteúdo produzido com inteligência artificial</div>
+</footer>
+
+<div class="fixa" id="fixa">
+  <div class="txt"><b class="js-preco">R$ 29,90</b><br><span class="js-fixa-sub">até 1º de dezembro</span></div>
+  <a class="btn js-comprar" href="#oferta">Quero entrar</a>
+</div>
+<div class="aviso" id="aviso" role="status"></div>
+
+<script>
+/* ===== Configuração: preencher antes de publicar ===== */
+const LINK_COMPRA = '';                              // link do checkout da Kiwify
+const FIM_PREVENDA = new Date('2026-12-01T23:59:59-03:00');
+const PRECO_PRE = '29,90', PRECO_CHEIO = '79,90';
+/* ==================================================== */
+
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const calmo = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* módulos */
+const MODULOS = [
+  ['Ideia e arco da história', 'O arco em atos, a lista de episódios com o gancho de cada um e as regras do que não entra na sua história.'],
+  ['Roteiro em blocos curtos', 'O primeiro episódio escrito em seis blocos, do tamanho certo para um vídeo de 30 a 45 segundos.'],
+  ['Estilo visual e personagem', 'A folha de estilo, em desenho ou realista, e o seu personagem criado a partir de fotos.'],
+  ['Geração das cenas', 'As quatro ou cinco cenas do episódio, coerentes entre si.'],
+  ['Voz: clone, pronúncia e tomadas', 'A narração aprovada do episódio, com a sua voz.'],
+  ['Animação dos clipes', 'Um clipe de cinco segundos por cena, e a alternativa sem custo.'],
+  ['Montagem com legenda', 'O vídeo vertical com legenda sincronizada, e a versão bilíngue se você quiser.'],
+  ['Capa, legenda do post e agendamento', 'O post programado no Instagram e no LinkedIn.'],
+  ['Enquete e engajamento', 'Uma enquete para o público decidir a sua próxima história.'],
+  ['Custos reais e erros que eu cometi', 'A planilha de custos e a lista de armadilhas para você não repetir.'],
+];
+$('#lista-modulos').innerHTML = MODULOS.map((m, i) =>
+  `<details${i === 0 ? ' open' : ''}><summary><span class="n">${i + 1}</span>${m[0]}</summary><div class="corpo"><b>Você sai com:</b> ${m[1]}</div></details>`).join('');
+
+/* escolha da história */
+const ARCOS = {
+  minha: [['Episódio 1', 'De onde eu vim: o lugar, a casa e a primeira lembrança que explica quem eu sou.'], ['Episódio 2', 'A virada: o dia em que eu saí do caminho esperado e o que isso custou.'], ['Episódio 3', 'O que eu construí depois, e a pergunta que fica para o próximo episódio.']],
+  familia: [['Episódio 1', 'Como tudo começou: os avós, a cidade e a história que a família repete até hoje.'], ['Episódio 2', 'O tempo difícil que uniu todo mundo, contado por quem viveu.'], ['Episódio 3', 'O que a nova geração herdou, e a cena que ninguém da família esquece.']],
+  negocio: [['Episódio 1', 'O problema que me incomodava a ponto de eu abrir uma empresa por causa dele.'], ['Episódio 2', 'O primeiro cliente, o primeiro erro caro e o que mudou depois.'], ['Episódio 3', 'Onde o negócio está hoje, e o convite para quem assiste fazer parte.']],
+};
+function mostraArco(k) { $('#arco').innerHTML = ARCOS[k].map(a => `<li><b>${a[0]}</b><span>${a[1]}</span></li>`).join(''); }
+$$('.chip').forEach(c => c.addEventListener('click', () => { $$('.chip').forEach(x => x.setAttribute('aria-pressed', x === c)); mostraArco(c.dataset.h); }));
+mostraArco('minha');
+
+/* comparador */
+(() => {
+  const c = $('#comp'), inp = $('input', c);
+  const poe = v => c.style.setProperty('--p', v + '%');
+  inp.addEventListener('input', () => poe(inp.value));
+  let mexeu = false; inp.addEventListener('pointerdown', () => mexeu = true);
+  if (!calmo) new IntersectionObserver((es, o) => es.forEach(e => {
+    if (!e.isIntersecting) return; o.disconnect();
+    const t0 = performance.now();
+    (function passo(t) { if (mexeu) return; const k = (t - t0) / 2200; if (k > 1) { poe(50); inp.value = 50; return; } const v = 50 + Math.sin(k * Math.PI * 2) * 28; poe(v); inp.value = v; requestAnimationFrame(passo); })(t0);
+  }), { threshold: .6 }).observe(c);
+})();
+
+/* cinco passos */
+(() => {
+  const tabs = $$('.passo-tab'), midias = $$('#tela [data-m]'); let i = 0, timer, auto = !calmo, visivel = false;
+  function vai(n, manual) {
+    i = n; if (manual) auto = false;
+    tabs.forEach((t, k) => { t.setAttribute('aria-selected', k === n); const p = $('.prog', t); p.classList.remove('anda'); void p.offsetWidth; if (k === n && auto && visivel) p.classList.add('anda'); });
+    midias.forEach(m => { const on = m.dataset.m === tabs[n].dataset.m; m.classList.toggle('on', on); if (m.tagName === 'VIDEO') { if (on && visivel) { m.currentTime = 0; m.play().catch(() => {}); } else m.pause(); } });
+    clearTimeout(timer); if (auto && visivel) timer = setTimeout(() => vai((i + 1) % tabs.length), 6000);
+  }
+  tabs.forEach((t, k) => t.addEventListener('click', () => vai(k, true)));
+  new IntersectionObserver(es => es.forEach(e => { visivel = e.isIntersecting; if (visivel) vai(i); else { clearTimeout(timer); midias.forEach(m => m.pause && m.pause()); } }), { threshold: .3 }).observe($('.passos'));
+})();
+
+/* vídeo da chamada */
+(() => {
+  const v = $('#chamada'), b = $('#tocar');
+  b.addEventListener('click', () => { v.controls = true; v.play(); b.style.display = 'none'; });
+  const f = $('#fone');
+  if (!calmo && matchMedia('(hover:hover)').matches) {
+    addEventListener('pointermove', e => { const r = f.getBoundingClientRect(); const x = (e.clientX - (r.left + r.width / 2)) / innerWidth, y = (e.clientY - (r.top + r.height / 2)) / innerHeight; f.style.transform = `perspective(900px) rotateY(${x * 14}deg) rotateX(${-y * 10}deg)`; });
+  }
+})();
+
+/* preço e contagem */
+(() => {
+  const dois = n => String(n).padStart(2, '0');
+  function tic() {
+    const falta = FIM_PREVENDA - Date.now();
+    if (falta <= 0) {
+      $$('.js-preco').forEach(e => e.textContent = 'R$ ' + PRECO_CHEIO); $$('.js-valor').forEach(e => e.textContent = PRECO_CHEIO);
+      $$('.js-de,.js-de2').forEach(e => e.textContent = ''); $$('.js-tag').forEach(e => e.textContent = 'Curso completo'); $$('.js-fixa-sub').forEach(e => e.textContent = 'acesso imediato');
+      $('#relogio').style.display = 'none'; $('#faixa').style.display = 'none'; return;
+    }
+    const s = Math.floor(falta / 1000), d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60);
+    $('#r-d').textContent = dois(d); $('#r-h').textContent = dois(h); $('#r-m').textContent = dois(m); $('#r-s').textContent = dois(s % 60);
+    $('#faixa-tempo').textContent = d > 0 ? `${d} dia${d > 1 ? 's' : ''} e ${h} h` : `${dois(h)}:${dois(m)}:${dois(s % 60)}`;
+    setTimeout(tic, 1000);
+  }
+  tic();
+})();
+
+/* botões de compra */
+(() => {
+  const aviso = $('#aviso'); let t;
+  $$('.js-comprar').forEach(b => {
+    const final = b.classList.contains('js-checkout');
+    if (LINK_COMPRA && final) { b.href = LINK_COMPRA; return; }
+    if (final) b.addEventListener('click', e => { e.preventDefault(); aviso.textContent = 'As inscrições abrem em breve. Volte daqui a pouco.'; aviso.classList.add('on'); clearTimeout(t); t = setTimeout(() => aviso.classList.remove('on'), 2600); });
+  });
+})();
+
+/* revelar ao rolar e barra fixa */
+(() => {
+  const o = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); o.unobserve(e.target); } }), { threshold: .12 });
+  $$('.rev').forEach(e => o.observe(e));
+  const fixa = $('#fixa'), oferta = $('#oferta');
+  addEventListener('scroll', () => { const r = oferta.getBoundingClientRect(); fixa.classList.toggle('on', scrollY > 600 && (r.top > innerHeight || r.bottom < 0)); }, { passive: true });
+})();
+
+/* céu de constelações */
+(() => {
+  const c = $('#ceu'), g = c.getContext('2d'); let W, H, es = [], sy = 0;
+  function mede() { const d = Math.min(devicePixelRatio || 1, 2); W = c.width = innerWidth * d; H = c.height = innerHeight * d; es = Array.from({ length: Math.round(innerWidth * innerHeight / 9000) }, () => ({ x: Math.random() * W, y: Math.random() * H, r: (Math.random() * 1.3 + .3) * d, f: Math.random() * 6.28, v: Math.random() * .6 + .2, z: Math.random() * .5 + .1, o: Math.random() < .12 })); }
+  function pinta(t) {
+    const gr = g.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, '#0d0b1e'); gr.addColorStop(.55, '#17143a'); gr.addColorStop(1, '#231a45'); g.fillStyle = gr; g.fillRect(0, 0, W, H);
+    for (const e of es) { const y = ((e.y - sy * e.z) % H + H) % H, a = .35 + .55 * Math.abs(Math.sin(e.f + t / 1000 * e.v)); g.globalAlpha = a; g.fillStyle = e.o ? '#f3c454' : '#f8eeda'; g.beginPath(); g.arc(e.x, y, e.r, 0, 6.28); g.fill(); }
+    g.globalAlpha = 1; if (!calmo) requestAnimationFrame(pinta);
+  }
+  addEventListener('resize', mede); addEventListener('scroll', () => { sy = scrollY * (devicePixelRatio > 1 ? 2 : 1) * .25; if (calmo) pinta(0); }, { passive: true });
+  mede(); pinta(0);
+})();
+</script>
+</body>
+</html>
