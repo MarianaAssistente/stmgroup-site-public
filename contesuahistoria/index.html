@@ -393,7 +393,7 @@ footer{padding:34px 0 110px;text-align:center;color:var(--creme2);font-size:14px
 </main>
 
 <footer>
-  <div class="wrap">Sua História em Filme · um curso de Yuri Moraes · conteúdo produzido com inteligência artificial</div>
+  <div class="wrap">Sua História em Filme · um curso de Yuri Moraes · conteúdo produzido com inteligência artificial · <a href="privacidade.html" style="color:inherit">Política de privacidade</a></div>
 </footer>
 
 <div class="fixa" id="fixa">
@@ -404,7 +404,7 @@ footer{padding:34px 0 110px;text-align:center;color:var(--creme2);font-size:14px
 
 <script>
 /* ===== Configuração: preencher antes de publicar ===== */
-const LINK_COMPRA = '';                              // link do checkout da Kiwify
+const LINK_COMPRA = 'https://pay.kiwify.com.br/eFIdoyB';                              // link do checkout da Kiwify
 const FIM_PREVENDA = new Date('2026-12-01T23:59:59-03:00');
 const PRECO_PRE = '29,90', PRECO_CHEIO = '79,90';
 /* ==================================================== */
@@ -521,6 +521,80 @@ mostraArco('minha');
   }
   addEventListener('resize', mede); addEventListener('scroll', () => { sy = scrollY * (devicePixelRatio > 1 ? 2 : 1) * .25; if (calmo) pinta(0); }, { passive: true });
   mede(); pinta(0);
+})();
+</script>
+
+<!-- Medição: aviso de cookies, pixel da Meta (só com aceite) e repasse das etiquetas de origem ao checkout. Fonte: trafego/medicao-pagina.html -->
+<style>
+  #shf-cookies{position:fixed;left:12px;right:12px;bottom:12px;z-index:9999;max-width:560px;margin:0 auto;
+    background:#111;color:#fff;border-radius:14px;padding:14px 16px;font:14px/1.45 system-ui,sans-serif;
+    box-shadow:0 8px 30px rgba(0,0,0,.35);display:none}
+  #shf-cookies p{margin:0 0 10px}
+  #shf-cookies a{color:#fff;text-decoration:underline}
+  #shf-cookies button{font:inherit;border:0;border-radius:999px;padding:8px 16px;cursor:pointer;margin-right:8px}
+  #shf-cookies .sim{background:#fff;color:#111;font-weight:700}
+  #shf-cookies .nao{background:transparent;color:#fff;outline:1px solid rgba(255,255,255,.5)}
+</style>
+<div id="shf-cookies" role="dialog" aria-label="Aviso de cookies">
+  <p>Esta página usa cookies da Meta para medir as visitas e os anúncios.
+     <a href="privacidade.html">Política de privacidade</a>.</p>
+  <button class="sim" type="button">Aceitar</button>
+  <button class="nao" type="button">Recusar</button>
+</div>
+<script>
+(function () {
+  /* ===== Preencher antes de publicar ===== */
+  var PIXEL_ID = '1604841554284119';       // pixel "Sua História em Filme", criado em 20/11/2026
+  var PRECO = 29.90;                       // trocar para 79.90 em 02/12
+  var NOME = 'Sua História em Filme';
+  /* ======================================= */
+
+  var CHAVE = 'shf-cookies';
+  var REPASSAR = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'src'];
+
+  /* 1. etiquetas de origem: do endereço da página para o link do checkout */
+  function comOrigem(href) {
+    try {
+      var destino = new URL(href, location.href);
+      if (destino.origin === location.origin) return href;      // âncora interna: não mexe
+      var aqui = new URLSearchParams(location.search);
+      REPASSAR.forEach(function (k) {
+        if (aqui.has(k) && !destino.searchParams.has(k)) destino.searchParams.set(k, aqui.get(k));
+      });
+      return destino.toString();
+    } catch (e) { return href; }
+  }
+  document.addEventListener('click', function (ev) {
+    var a = ev.target.closest ? ev.target.closest('a.js-comprar') : null;
+    if (!a) return;
+    if (a.classList.contains('js-checkout')) a.href = comOrigem(a.href);
+    if (window.fbq) fbq('trackCustom', 'CliqueComprar', { destino: a.classList.contains('js-checkout') ? 'checkout' : 'oferta' });
+  }, true);
+
+  /* 2. pixel, só depois do aceite */
+  function ligarPixel() {
+    if (!/^\d+$/.test(PIXEL_ID) || window.fbq) return;
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
+      t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', PIXEL_ID);
+    fbq('track', 'PageView');
+    fbq('track', 'ViewContent', { content_name: NOME, content_type: 'product', value: PRECO, currency: 'BRL' });
+  }
+
+  /* 3. aviso de cookies */
+  function ler() { try { return localStorage.getItem(CHAVE); } catch (e) { return null; } }
+  function gravar(v) { try { localStorage.setItem(CHAVE, v); } catch (e) {} }
+  var caixa = document.getElementById('shf-cookies');
+  var escolha = ler();
+  if (escolha === 'sim') ligarPixel();
+  else if (escolha !== 'nao' && caixa) caixa.style.display = 'block';
+  if (caixa) {
+    caixa.querySelector('.sim').addEventListener('click', function () { gravar('sim'); caixa.style.display = 'none'; ligarPixel(); });
+    caixa.querySelector('.nao').addEventListener('click', function () { gravar('nao'); caixa.style.display = 'none'; });
+  }
 })();
 </script>
 </body>
