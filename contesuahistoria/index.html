@@ -594,10 +594,22 @@ mostraArco('minha');
       return destino.toString();
     } catch (e) { return href; }
   }
+  /* contagem anônima: só totais de aberturas e de cliques em comprar, sem cookie e sem identificar ninguém. Não depende do aceite. */
+  function contar(evento) {
+    try {
+      var q = new URLSearchParams(location.search);
+      var d = JSON.stringify({ e: evento, s: q.get('utm_source') || undefined, m: q.get('utm_medium') || undefined, c: q.get('utm_content') || undefined });
+      var u = 'https://contagem.stmgroup.com.br/v';
+      if (navigator.sendBeacon) navigator.sendBeacon(u, new Blob([d], { type: 'text/plain' }));
+      else fetch(u, { method: 'POST', body: d, keepalive: true, credentials: 'omit' }).catch(function () {});
+    } catch (e) {}
+  }
+  contar('visita');
+
   document.addEventListener('click', function (ev) {
     var a = ev.target.closest ? ev.target.closest('a.js-comprar') : null;
     if (!a) return;
-    if (a.classList.contains('js-checkout')) a.href = comOrigem(a.href);
+    if (a.classList.contains('js-checkout')) { a.href = comOrigem(a.href); contar('comprar'); }
     if (window.fbq) fbq('trackCustom', 'CliqueComprar', { destino: a.classList.contains('js-checkout') ? 'checkout' : 'oferta' });
   }, true);
 
