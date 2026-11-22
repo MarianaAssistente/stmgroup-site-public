@@ -116,6 +116,15 @@ main,header,footer,.faixa{position:relative;z-index:1}
 .cartao:hover{transform:translateY(-5px);border-color:var(--ouro)}
 .cartao .ic{font-family:var(--serif);font-size:34px;color:var(--ouro);display:block;margin-bottom:8px}
 .cartao p{color:var(--creme2);margin:8px 0 0;font-size:16px}
+.bonus{grid-template-columns:1fr 1fr}
+.bonus .cartao{padding:0;overflow:hidden;display:flex;flex-direction:column}
+.bonus .cartao img{width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;display:block;border-bottom:1px solid var(--linha)}
+.bonus .cartao div{padding:16px 16px 20px}
+.bonus .cartao h3{font-size:18px}
+.bonus .cartao p{font-size:15px}
+.autor .links{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:18px}
+.autor .links a{color:var(--ouro);font-weight:700;text-decoration:underline;text-underline-offset:4px}
+.autor .links a:hover{color:#fff}
 
 /* módulos e faq */
 details{border:1px solid var(--linha);border-radius:16px;background:rgba(21,18,51,.7);margin-bottom:10px;overflow:hidden}
@@ -170,6 +179,7 @@ footer{padding:34px 0 110px;text-align:center;color:var(--creme2);font-size:14px
   .comp-area{grid-template-columns:1fr 1fr}
   .passos{grid-template-columns:1.1fr .9fr}
   .cartoes{grid-template-columns:repeat(3,1fr)}
+  .bonus{grid-template-columns:repeat(4,1fr)}
   .duas{grid-template-columns:1fr 1fr}
   .autor{grid-template-columns:300px 1fr}
   .fone{width:320px}
@@ -311,6 +321,24 @@ footer{padding:34px 0 110px;text-align:center;color:var(--creme2);font-size:14px
   </div>
 </section>
 
+<!-- BÔNUS -->
+<section id="bonus">
+  <div class="wrap">
+    <div class="rev centro">
+      <span class="eyebrow">Bônus</span>
+      <h2>E você ainda leva quatro bônus</h2>
+      <div class="orn"><i></i></div>
+      <p class="sub">Entram junto com as aulas, em 1º de dezembro, sem custo a mais.</p>
+    </div>
+    <div class="cartoes bonus">
+      <div class="cartao rev"><img src="assets/bonus-kit-do-diretor.jpg" alt="Capa do bônus Kit do Diretor" loading="lazy" width="640" height="640"><div><h3>Kit do Diretor</h3><p>Instruções e um programa para o seu agente de IA montar o episódio.</p></div></div>
+      <div class="cartao rev"><img src="assets/bonus-kit-landing-page.jpg" alt="Capa do bônus Kit de Landing Page" loading="lazy" width="640" height="640"><div><h3>Kit de Landing Page</h3><p>Um modelo e as instruções para você fazer, com o seu agente, uma página de apresentação no estilo do meu portfólio.</p></div></div>
+      <div class="cartao rev"><img src="assets/bonus-alternativas-gratuitas.jpg" alt="Capa do bônus Alternativas gratuitas" loading="lazy" width="640" height="640"><div><h3>Alternativas gratuitas</h3><p>Saídas sem custo para voz, imagem e animação, com o que eu já usei e o que eu não testei.</p></div></div>
+      <div class="cartao rev"><img src="assets/bonus-guia-completo.jpg" alt="Capa do bônus Guia completo do curso" loading="lazy" width="640" height="640"><div><h3>Guia completo do curso</h3><p>Os dez módulos em um PDF só, com o passo a passo e os pedidos prontos.</p></div></div>
+    </div>
+  </div>
+</section>
+
 <!-- MÓDULOS -->
 <section id="modulos">
   <div class="wrap">
@@ -332,8 +360,9 @@ footer{padding:34px 0 110px;text-align:center;color:var(--creme2);font-size:14px
       <span class="eyebrow">Quem ensina</span>
       <h2>Yuri Moraes</h2>
       <div class="orn"><i></i></div>
-      <p class="sub">Eu não sou desenhista nem editor de vídeo. Sou do Nordeste, trabalho com vendas e tecnologia, e quis contar a minha história de um jeito que as pessoas parassem para ver.</p>
+      <p class="sub">Eu não sou desenhista nem editor de vídeo. Sou do Nordeste, engenheiro de automação, e trabalho com inteligência artificial aplicada a vendas, conteúdo e processos. Quis contar a minha história de um jeito que as pessoas parassem para ver.</p>
       <p class="sub">O resultado foi a série "Do Nordeste para o Olimpo", com vinte e um episódios feitos com inteligência artificial e publicados no Instagram e no LinkedIn. Este curso é o registro de como eu fiz, incluindo os erros.</p>
+      <p class="links"><a href="https://stmgroup.com.br/yuri.moraes" target="_blank" rel="noopener">Conheça o meu portfólio</a><a href="https://www.instagram.com/moraes.yuri_/" target="_blank" rel="noopener">Veja a série no Instagram</a></p>
     </div>
   </div>
 </section>
@@ -362,6 +391,7 @@ footer{padding:34px 0 110px;text-align:center;color:var(--creme2);font-size:14px
           <li>Dez módulos com três aulas curtas em cada um</li>
           <li>Aulas animadas e aulas gravadas por mim</li>
           <li>Guia em PDF de cada módulo e um PDF com o curso inteiro</li>
+          <li>Quatro bônus: Kit do Diretor, Kit de Landing Page, Alternativas gratuitas e Guia completo</li>
           <li>O curso começa em 1º de dezembro</li>
           <li>Sete dias de garantia: se não gostar, devolvo o valor inteiro</li>
         </ul>
